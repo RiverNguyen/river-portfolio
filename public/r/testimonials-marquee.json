@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "testimonials-marquee",
+  "title": "Testimonials Marquee",
+  "author": "ncdai <dai@chanhdai.com>",
+  "description": "A testimonials marquee component for showcasing user feedback in a scrolling format.",
+  "registryDependencies": [
+    "@kibo-ui/marquee",
+    "@ncdai/testimonial"
+  ],
+  "files": [],
+  "docs": "https://chanhdai.com/components/testimonials-marquee",
+  "type": "registry:component"
+}
