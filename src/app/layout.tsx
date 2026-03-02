@@ -8,6 +8,7 @@ import type { WebSite, WithContext } from "schema-dts"
 import { ConsentManager } from "@/components/consent-manager"
 import { DuckFollower } from "@/components/duck-follower"
 import { LenisProvider } from "@/components/lenis-provider"
+import { PageReveal } from "@/components/page-reveal"
 import { Providers } from "@/components/providers"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
 import { USER } from "@/features/portfolio/data/user"
@@ -141,6 +142,7 @@ export default function RootLayout({
 
       <body>
         <LenisProvider>
+          <PageReveal />
           <Providers>
             <NuqsAdapter>
               <ConsentManager>

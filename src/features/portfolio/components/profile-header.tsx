@@ -10,7 +10,6 @@ import { USER } from "@/features/portfolio/data/user"
 import { FlipSentences } from "@/registry/components/flip-sentences"
 import { addQueryParams } from "@/utils/url"
 
-import { PronounceMyName } from "./pronounce-my-name"
 import { VerifiedIcon } from "./verified-icon"
 
 export function ProfileHeader() {

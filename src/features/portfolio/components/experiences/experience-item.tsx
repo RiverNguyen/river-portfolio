@@ -11,15 +11,14 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
   return (
     <div className="screen-line-after space-y-4 py-4">
       <div className="flex items-center gap-3">
-        <div className="flex size-6 shrink-0 items-center justify-center select-none">
+        <div className="flex size-6 shrink-0 items-center justify-center select-non relative">
           {experience.companyLogo ? (
             <Image
               src={experience.companyLogo}
               alt={`${experience.companyName} logo`}
-              width={24}
-              height={24}
+              fill
               quality={100}
-              className="rounded-full"
+              className="rounded-full object-cover"
               unoptimized
               aria-hidden
             />

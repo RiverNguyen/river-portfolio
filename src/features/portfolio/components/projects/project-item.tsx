@@ -19,6 +19,7 @@ import { UTM_PARAMS } from "@/config/site"
 import { addQueryParams } from "@/utils/url"
 
 import type { Project } from "../../types/projects"
+import { ProjectGallery } from "./project-gallery"
 
 export function ProjectItem({
   className,
@@ -42,7 +43,7 @@ export function ProjectItem({
               width={32}
               height={32}
               quality={100}
-              className="mx-4 flex size-6 shrink-0 select-none dark:grayscale"
+              className="mx-4 flex size-6 shrink-0 select-none object-cover"
               unoptimized
               aria-hidden="true"
             />
@@ -121,6 +122,10 @@ export function ProjectItem({
                 <ProseMono>
                   <Markdown>{project.description}</Markdown>
                 </ProseMono>
+              )}
+
+              {project.images && project.images.length > 0 && (
+                <ProjectGallery images={project.images} title={project.title} />
               )}
 
               {project.skills.length > 0 && (

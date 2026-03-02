@@ -26,16 +26,18 @@ export function Nav({
       className={cn("flex items-center gap-4", className)}
     >
       {items.map(({ title, href }) => {
-        const active =
-          activeId === href ||
-          (href === "/"
-            ? ["/", "/index"].includes(activeId || "")
-            : activeId?.startsWith(href))
-
         const hasHash = href.includes("#")
         const [path, hash] = hasHash ? href.split("#") : [href, ""]
         const pathNorm = path || "/"
         const isSamePageHash = hasHash && pathname === pathNorm
+
+        const active =
+          hasHash && hash
+            ? activeId === href || activeId === `#${hash}`
+            : activeId === href ||
+              (href === "/"
+                ? ["/", "/index"].includes(activeId || "")
+                : activeId?.startsWith(href))
 
         if (isSamePageHash && hash) {
           const target = `#${hash}`

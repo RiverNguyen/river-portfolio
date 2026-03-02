@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+        port: "",
+      },
     ],
     qualities: [75, 100],
   },

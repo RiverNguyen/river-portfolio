@@ -14,13 +14,11 @@ const Slot = SlotPrimitive.Slot
 export function CollapsibleList<T>({
   items,
   max = 3,
-
   keyExtractor,
   renderItem,
 }: {
   items: T[]
   max?: number
-
   keyExtractor?: (item: T) => string
   renderItem: (item: T) => React.ReactNode
 }) {

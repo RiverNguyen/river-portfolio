@@ -4,7 +4,7 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "okhub",
     companyName: "OKHub Agency",
-    companyLogo: "https://okhub.vn/background-okhub.jpg",
+    companyLogo: "https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-6/476001178_609089631724531_2211695452587996090_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeH-lXh65H-LAhS-U_gEUavoV64wTWjU6w5XrjBNaNTrDhjVNwh8_OOjfd9X51sXbm-3VXECb0QDnmgkIKY9l9wG&_nc_ohc=ftwmLwKiIhMQ7kNvwHJol7l&_nc_oc=AdmaI9IFUDJlWkh7NEowZnyqeCM4BHKRBiWJzXwknNeVpLjLKeq7nkc_gq1EiUg8ZTE&_nc_zt=23&_nc_ht=scontent.fhan5-8.fna&_nc_gid=uz7tPTrZR8ScA7lSM0_FoA&_nc_ss=8&oh=00_AfxkWINyVlT-KETrKgky8tnk0izl1FUUNg25ZnNhGeV9CQ&oe=69AB7698",
     companyWebsite: "https://okhub.vn",
     positions: [
       {
@@ -17,18 +17,11 @@ export const EXPERIENCES: Experience[] = [
         employmentType: "Full-time",
         icon: "code",
         description: `- **NextJS & WordPress Developer** at **OKHub Agency** (Dec 2024 - Present)  
-  - Build and maintain responsive **Next.js** and **React.js** web applications, optimizing performance and ensuring cross-device compatibility.
-  - Developed custom **WordPress themes** from scratch, optimized for performance, SEO, and accessibility.
-  - Integrate **RESTful APIs** and handle dynamic data from the backend to provide a smooth and interactive user experience.
-  - Create **Custom Post Types** and **ACF fields** to expose dynamic data via **REST API**, enabling seamless integration with **Next.js** front-end applications.
-  - Utilize **GSAP** to create smooth animations and enrich user interaction across both WordPress and Next.js projects.
-  - Collaborate closely with team members to meet deadlines and maintain high-quality standards across all projects.
-  - Manage application state using **Redux**, **Zustand**, and **Context API** for enhanced scalability and data management in web applications.
-  - Apply SEO best practices, including **lazy loading**, **code splitting**, and **image optimization**, to improve **Lighthouse** scores and search engine rankings.
-  - Integrate payment gateways and booking forms for both users and admins, enhancing functionality for e-commerce and booking platforms.
-  - Ensure cross-browser compatibility and optimize websites for mobile devices, delivering a seamless experience across all screen sizes.
-  - Implement security best practices, including managing file permissions, reCAPTCHA integration, and limiting login attempts.
-  - Regularly perform **database backups** and optimize **queries** for performance, ensuring smooth website operations across WordPress and Next.js platforms.
+  - Build and maintain responsive **Next.js**, **React.js** and **WordPress** websites optimized for performance, SEO and accessibility.
+  - Integrate **RESTful APIs**, **Custom Post Types** and **ACF fields** to deliver dynamic, data‑driven experiences in Next.js frontends.
+  - Use **GSAP** and modern UI libraries to create smooth, engaging animations and interactions across projects.
+  - Manage application state with **Redux**, **Zustand** and **Context API** to keep complex UIs scalable and maintainable.
+  - Apply best practices for performance, security and cross‑device compatibility, including code splitting, image optimization and basic hardening.
 `,
         skills: [
           "Next.js",
@@ -65,11 +58,9 @@ export const EXPERIENCES: Experience[] = [
         },
         employmentType: "Full-time",
         description: `- **Web Development Class Manager & Fullstack Developer** at **F8 Technology and Education JSC** (Apr 2024 - Nov 2024)  
-  - Managed and supported web development classes, assisting instructors with materials and providing Q&A support to students.
-  - Tracked student progress, graded assignments, and provided constructive feedback to help them improve their skills.
-  - Contributed to internal projects, optimizing code and improving overall efficiency.
-  - Assisted in **full-stack web development**, working with both frontend and backend technologies to create responsive and functional web applications.
-  - Collaborated with team members to enhance learning resources and implement coding best practices within the curriculum.
+  - Managed and supported web development classes, assisting instructors and answering student questions.
+  - Tracked student progress, graded assignments and gave feedback to improve learning outcomes.
+  - Contributed to internal full‑stack projects, building responsive web applications with modern frontend and backend technologies.
 `,
         icon: "code",
         skills: [
@@ -95,7 +86,7 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "education",
     companyName: "Education",
-    companyLogo: "https://tinhocnews.com/wp-content/uploads/2024/06/logo-fpt-polytechnic-vector-14.jpg",
+    companyLogo: "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-fpt-inkythuatso-1-01-01-14-33-35.jpg",
     positions: [
       {
         id: "c47f5903-88ae-4512-8a50-0b91b0cf99b6",
@@ -106,13 +97,9 @@ export const EXPERIENCES: Experience[] = [
         },
         icon: "education",
         description: `
-  - **Degree**: Information Technology  
-  - **GPA**: 3.6/4  
-  - **Focus**: Web Development  
-  - Achieved **Top 10 Outstanding Students** in 2023 for academic excellence and contributions to the department.
-  - Gained hands-on experience with **web development technologies**, including **Next.js**, **React.js**, and **WordPress**.
-  - Participated in various projects that enhanced practical skills in both frontend and backend development.
-  - Developed a solid foundation in **computer science**, focusing on coding, databases, and algorithms.
+  - **Degree**: Information Technology (GPA 3.6/4), focus on **Web Development**.  
+  - Gained practical experience with **Next.js**, **React.js**, **WordPress** and full‑stack projects during coursework and team assignments.
+  - Built a solid foundation in **computer science**, including programming, databases and algorithms.
 `,
         skills: [
           "HTML",
