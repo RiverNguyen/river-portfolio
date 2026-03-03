@@ -5,7 +5,7 @@ import "swiper/css/parallax"
 
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import Image from "next/image"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import type { Swiper as SwiperInstance } from "swiper"
 import { Autoplay, Parallax } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -17,6 +17,11 @@ type ProjectGalleryProps = {
 
 export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   const swiperRef = useRef<SwiperInstance | null>(null)
+  const [loadedIndices, setLoadedIndices] = useState<Set<number>>(new Set())
+
+  const handleImageLoad = (index: number) => {
+    setLoadedIndices((prev) => new Set([...prev, index]))
+  }
 
   if (!images || images.length === 0) return null
 
@@ -52,6 +57,15 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
           {images.map((src, index) => (
             <SwiperSlide key={index} className="relative overflow-hidden">
               <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-900/60">
+                {/* Skeleton: ẩn khi ảnh đã load */}
+                {!loadedIndices.has(index) && (
+                  <div
+                    className="absolute inset-0 z-10 size-full animate-pulse rounded-b-xl bg-muted"
+                    data-swiper-parallax="70%"
+                    aria-hidden
+                  />
+                )}
+
                 <div
                   className="absolute inset-0 size-full overflow-hidden will-change-transform"
                   data-swiper-parallax="70%"
@@ -60,9 +74,11 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     src={src}
                     alt={`${title} screenshot ${index + 1}`}
                     fill
-                    className="h-full w-full object-cover will-change-transform"
+                    className="h-full w-full object-cover will-change-transform transition-opacity duration-300"
+                    style={{ opacity: loadedIndices.has(index) ? 1 : 0 }}
                     sizes="(min-width: 768px) 600px, 100vw"
                     unoptimized
+                    onLoad={() => handleImageLoad(index)}
                   />
                 </div>
 

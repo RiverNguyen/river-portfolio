@@ -34,10 +34,13 @@ export const MAIN_NAV: NavItem[] = [
 ]
 
 export const GITHUB_USERNAME = "RiverNguyen"
-export const SOURCE_CODE_GITHUB_REPO = "RiverNguyen/river.com"
-export const SOURCE_CODE_GITHUB_URL = "https://github.com/RiverNguyen/river.com"
+export const SOURCE_CODE_GITHUB_REPO = "RiverNguyen/portfolio"
+export const SOURCE_CODE_GITHUB_URL = "https://github.com/RiverNguyen/portfolio"
 
 export const SPONSORSHIP_URL = "https://github.com/sponsors/RiverNguyen"
+
+/** URL đến file CV (PDF). Đặt file trong public/ hoặc dùng URL ngoài. */
+export const RESUME_PDF_URL = "/pdf/resume.pdf"
 
 export const UTM_PARAMS = {
   utm_source: "river.com",

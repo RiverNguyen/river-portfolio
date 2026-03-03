@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { SITE_INFO, SOURCE_CODE_GITHUB_URL } from "@/config/site"
+import { RESUME_PDF_URL, SOURCE_CODE_GITHUB_URL } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 import { Icons } from "./icons"
@@ -35,9 +35,8 @@ export function SiteFooter() {
 
           <a
             className="font-medium"
-            href={`${SITE_INFO.url}/resume`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={RESUME_PDF_URL}
+            download="Giang-Nguyen-Dinh-Resume.pdf"
           >
             Resume
           </a>
@@ -56,9 +55,8 @@ export function SiteFooter() {
 
             <a
               className="flex font-mono text-xs font-medium text-muted-foreground max-sm:hidden"
-              href={`${SITE_INFO.url}/resume`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={RESUME_PDF_URL}
+              download="Giang-Nguyen-Dinh-Resume.pdf"
             >
               Resume
             </a>
