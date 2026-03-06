@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  next-app:
+    container_name: portfolio
+    platform: linux/amd64
+    image: rivernguyen1309/portfolio:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RESEND_API_KEY: ${RESEND_API_KEY}
+        RESEND_FROM: ${RESEND_FROM}
+        GMAIL_USER: ${GMAIL_USER}
+        GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - portfolio
+
+  # Add more containers below (nginx, postgres, etc.)
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  portfolio:
+    external: true
