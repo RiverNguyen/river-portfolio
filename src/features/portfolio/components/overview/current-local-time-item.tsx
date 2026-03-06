@@ -17,6 +17,7 @@ import {
   Clock12Icon,
   type LucideIcon,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 import {
@@ -50,7 +51,7 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
   const [timeString, setTimeString] = useState<string>("")
   const [diffText, setDiffText] = useState<string>("")
   const [ClockIcon, setClockIcon] = useState<LucideIcon>(Clock12Icon)
-
+  const t = useTranslations("Portfolio")
   useEffect(() => {
     const updateTime = () => {
       const now = new Date()
@@ -74,11 +75,11 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
 
       let diff = ""
       if (hoursDiff < 1) {
-        diff = " // same time"
+        diff = " // " + t("sameTime")
       } else {
         const hours = Math.floor(hoursDiff)
         const isAhead = targetOffset > viewerOffset
-        diff = ` // ${hours}h ${isAhead ? "ahead" : "behind"}`
+        diff = ` // ${hours}h ${isAhead ? t("ahead") : t("behind")}`
       }
       setDiffText(diff)
     }

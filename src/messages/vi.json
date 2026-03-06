@@ -1,0 +1,112 @@
+{
+  "Nav": {
+    "portfolio": "Hồ sơ",
+    "blog": "Blog",
+    "contact": "Liên hệ",
+    "language": "Ngôn ngữ",
+    "toggleMenu": "Mở/Tắt menu"
+  },
+  "Footer": {
+    "madeBy": "Tạo với ❤️ bởi {name}",
+    "sourcePrefix": "Mã nguồn có sẵn trên",
+    "blog": "Blog",
+    "resume": "CV"
+  },
+  "Blog": {
+    "title": "Bài viết",
+    "description": "Tổng hợp bài viết về lập trình, thiết kế và ý tưởng.",
+    "backToBlog": "Blog",
+    "allPosts": "Tất cả bài viết",
+    "previous": "Trước",
+    "previousPost": "Bài trước",
+    "next": "Sau",
+    "nextPost": "Bài sau"
+  },
+  "Components": {
+    "title": "Components",
+    "description": "Tổng hợp các component có thể tái sử dụng.",
+    "trustedRegistry": "Registry đáng tin cậy",
+    "configureMcp": "Cấu hình MCP",
+    "configureMcpDescription": "Copy và dán đoạn code sau vào file components.json của dự án.",
+    "readDocs": "Đọc tài liệu",
+    "done": "Xong",
+    "new": "Mới"
+  },
+  "Contact": {
+    "title": "Liên hệ",
+    "subtitle": "Bạn có dự án muốn làm hoặc chỉ muốn chào hỏi? Hãy để lại lời nhắn bên dưới.",
+    "fields": {
+      "name": "Tên",
+      "email": "Email",
+      "subject": "Chủ đề",
+      "message": "Nội dung"
+    },
+    "placeholders": {
+      "name": "Tên của bạn",
+      "email": "you@example.com",
+      "subject": "Bạn muốn nói về điều gì?",
+      "message": "Hãy mô tả dự án của bạn hoặc chỉ cần nói xin chào..."
+    },
+    "validation": {
+      "nameRequired": "Vui lòng nhập tên",
+      "emailInvalid": "Email không hợp lệ",
+      "subjectRequired": "Vui lòng nhập chủ đề",
+      "messageRequired": "Vui lòng nhập nội dung"
+    },
+    "actions": {
+      "sending": "Đang gửi...",
+      "send": "Gửi tin nhắn"
+    },
+    "toast": {
+      "sendSuccess": "Gửi tin nhắn thành công",
+      "sendFail": "Gửi tin nhắn thất bại"
+    },
+    "note": "Mình sẽ phản hồi bạn sớm nhất có thể."
+  },
+  "Portfolio": {
+    "overview": "Tổng quan",
+    "about": "Giới thiệu",
+    "projects": "Dự án",
+    "experience": "Kinh nghiệm",
+    "sameTime": "Cùng giờ",
+    "ahead": "Sớm hơn",
+    "behind": "Trễ hơn",
+    "stack": "Công nghệ",
+    "projectGallery": "Ảnh dự án",
+    "screenshots": "Ảnh chụp màn hình",
+    "showMore": "Xem thêm",
+    "showLess": "Xem ít hơn"
+  },
+  "Common": {
+    "goHome": "Về trang chủ"
+  },
+  "ThemeToggle": {
+    "toggleMode": "Chuyển chế độ"
+  },
+  "Consent": {
+    "common": {
+      "rejectAll": "Từ chối tất cả",
+      "acceptAll": "Chấp nhận tất cả",
+      "customize": "Tùy chỉnh",
+      "save": "Lưu"
+    },
+    "cookieBanner": {
+      "title": "Chúng tôi tôn trọng quyền riêng tư của bạn",
+      "description": "Trang web này sử dụng cookie để cải thiện trải nghiệm duyệt web, phân tích lưu lượng truy cập và hiển thị nội dung được cá nhân hóa."
+    },
+    "consentManagerDialog": {
+      "title": "Tùy chọn quyền riêng tư",
+      "description": "Xem và cập nhật tùy chọn quyền riêng tư của bạn."
+    },
+    "consentTypes": {
+      "necessary": {
+        "title": "Cần thiết",
+        "description": "Những cookie này cần thiết để website hoạt động và không thể tắt."
+      },
+      "measurement": {
+        "title": "Đo lường",
+        "description": "Những cookie này giúp chúng tôi hiểu cách bạn sử dụng website để cải thiện trải nghiệm."
+      }
+    }
+  }
+}

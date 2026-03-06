@@ -1,0 +1,112 @@
+{
+  "Nav": {
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Contact",
+    "language": "Language",
+    "toggleMenu": "Toggle Menu"
+  },
+  "Footer": {
+    "madeBy": "Made with ❤️ by {name}",
+    "sourcePrefix": "The source code is available on",
+    "blog": "Blog",
+    "resume": "Resume"
+  },
+  "Blog": {
+    "title": "Blog",
+    "description": "A collection of articles on development, design, and ideas.",
+    "backToBlog": "Blog",
+    "allPosts": "All Posts",
+    "previous": "Previous",
+    "previousPost": "Previous Post",
+    "next": "Next",
+    "nextPost": "Next Post"
+  },
+  "Components": {
+    "title": "Components",
+    "description": "A collection of reusable components.",
+    "trustedRegistry": "Trusted registry",
+    "configureMcp": "Configure MCP",
+    "configureMcpDescription": "Copy and paste the following code into your project's components.json.",
+    "readDocs": "Read the docs",
+    "done": "Done",
+    "new": "New"
+  },
+  "Contact": {
+    "title": "Contact",
+    "subtitle": "Have a project in mind or want to say hi? Drop a message below.",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "email": "you@example.com",
+      "subject": "What's this about?",
+      "message": "Tell me about your project or just say hello..."
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "emailInvalid": "Invalid email",
+      "subjectRequired": "Subject is required",
+      "messageRequired": "Message is required"
+    },
+    "actions": {
+      "sending": "Sending...",
+      "send": "Send message"
+    },
+    "toast": {
+      "sendSuccess": "Message sent successfully",
+      "sendFail": "Failed to send message"
+    },
+    "note": "I'll get back to you as soon as I can."
+  },
+  "Portfolio": {
+    "overview": "Overview",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "sameTime": "Same time",
+    "ahead": "Ahead",
+    "behind": "Behind",
+    "stack": "Stack",
+    "projectGallery": "Project Gallery",
+    "screenshots": "Screenshots",
+    "showMore": "Show More",
+    "showLess": "Show Less"
+  },
+  "Common": {
+    "goHome": "Go to Home"
+  },
+  "ThemeToggle": {
+    "toggleMode": "Toggle Mode"
+  },
+  "Consent": {
+    "common": {
+      "rejectAll": "Reject All",
+      "acceptAll": "Accept All",
+      "customize": "Customize",
+      "save": "Save"
+    },
+    "cookieBanner": {
+      "title": "We value your privacy",
+      "description": "This site uses cookies to improve your browsing experience, analyze site traffic, and show personalized content."
+    },
+    "consentManagerDialog": {
+      "title": "Privacy preferences",
+      "description": "Review and update your privacy preferences."
+    },
+    "consentTypes": {
+      "necessary": {
+        "title": "Necessary",
+        "description": "These cookies are required for the website to function properly and can't be turned off."
+      },
+      "measurement": {
+        "title": "Measurement",
+        "description": "These cookies help us understand how the site is used so we can improve it."
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import type { Experience } from "../types/experiences"
 
-export const EXPERIENCES: Experience[] = [
+export const EXPERIENCES_EN: Experience[] = [
   {
     id: "okhub",
     companyName: "OKHub Agency",
@@ -121,3 +121,64 @@ export const EXPERIENCES: Experience[] = [
     ],
   },
 ]
+
+export const EXPERIENCES_VI: Experience[] = [
+  {
+    ...EXPERIENCES_EN[0],
+    positions: [
+      {
+        ...EXPERIENCES_EN[0]!.positions[0]!,
+        title: "Lập trình viên Web",
+        employmentPeriod: { ...EXPERIENCES_EN[0]!.positions[0]!.employmentPeriod, end: "Hiện tại" },
+        employmentType: "Toàn thời gian",
+        description: `- **Lập trình viên NextJS & WordPress** tại **OKHub Agency** (12/2024 - Hiện tại)  
+  - Xây dựng và bảo trì website **Next.js**, **React.js** và **WordPress** responsive, tối ưu hiệu năng, SEO và accessibility.
+  - Tích hợp **RESTful APIs**, **Custom Post Types** và **ACF fields** để tạo trải nghiệm động, dữ liệu-driven cho frontend Next.js.
+  - Sử dụng **GSAP** và các UI libraries hiện đại để tạo animation/interaction mượt và hấp dẫn.
+  - Quản lý state bằng **Redux**, **Zustand** và **Context API** để UI phức tạp vẫn dễ mở rộng và bảo trì.
+  - Áp dụng best practices về hiệu năng, bảo mật và tương thích đa thiết bị: code splitting, tối ưu hình ảnh và hardening cơ bản.
+`,
+      },
+    ],
+  },
+  {
+    ...EXPERIENCES_EN[1],
+    companyName: "F8 - Công ty Cổ phần Công nghệ & Giáo dục",
+    positions: [
+      {
+        ...EXPERIENCES_EN[1]!.positions[0]!,
+        title: "Quản lý lớp Web Development - Lập trình viên Fullstack",
+        employmentType: "Toàn thời gian",
+        description: `- **Quản lý lớp Web Development & Lập trình viên Fullstack** tại **F8** (04/2024 - 11/2024)  
+  - Quản lý và hỗ trợ các lớp học lập trình web, hỗ trợ giảng viên và giải đáp thắc mắc cho học viên.
+  - Theo dõi tiến độ, chấm bài và phản hồi để cải thiện kết quả học tập.
+  - Tham gia các dự án nội bộ full-stack, xây dựng ứng dụng web responsive với công nghệ frontend/backend hiện đại.
+`,
+      },
+    ],
+  },
+  {
+    ...EXPERIENCES_EN[2],
+    companyName: "Học vấn",
+    positions: [
+      {
+        ...EXPERIENCES_EN[2]!.positions[0]!,
+        title: "Cao đẳng FPT Polytechnic",
+        description: `
+  - **Ngành**: Công nghệ Thông tin (GPA 3.6/4), tập trung **Phát triển Web**.  
+  - Có kinh nghiệm thực hành với **Next.js**, **React.js**, **WordPress** và các dự án full-stack trong quá trình học và làm bài nhóm.
+  - Xây dựng nền tảng vững về **khoa học máy tính**, bao gồm lập trình, cơ sở dữ liệu và thuật toán.
+`,
+      },
+    ],
+  },
+]
+
+// Backward-compatible export (current site defaults to English).
+export const EXPERIENCES = EXPERIENCES_EN
+
+export type PortfolioLocale = "en" | "vi"
+
+export function getExperiencesByLocale(locale: PortfolioLocale): Experience[] {
+  return locale === "vi" ? EXPERIENCES_VI : EXPERIENCES_EN
+}

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -6,10 +7,11 @@ import { TECH_STACK } from "../data/tech-stack"
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
 export function TechStack() {
+  const t = useTranslations("Portfolio")
   return (
     <Panel id="stack">
       <PanelHeader>
-        <PanelTitle>Stack</PanelTitle>
+        <PanelTitle>{t("stack")}</PanelTitle>
       </PanelHeader>
 
       <PanelContent>

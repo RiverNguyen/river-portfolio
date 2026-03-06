@@ -5,6 +5,7 @@ import "swiper/css/parallax"
 
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { useRef, useState } from "react"
 import type { Swiper as SwiperInstance } from "swiper"
 import { Autoplay, Parallax } from "swiper/modules"
@@ -18,7 +19,7 @@ type ProjectGalleryProps = {
 export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   const swiperRef = useRef<SwiperInstance | null>(null)
   const [loadedIndices, setLoadedIndices] = useState<Set<number>>(new Set())
-
+  const t = useTranslations("Portfolio")
   const handleImageLoad = (index: number) => {
     setLoadedIndices((prev) => new Set([...prev, index]))
   }
@@ -30,8 +31,8 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   return (
     <div className="space-y-1 rounded-xl border border-edge bg-background/40 screen-line-after">
       <div className="flex items-center justify-between px-3 pt-2 text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
-        <span>Project gallery</span>
-        <span className="text-xs opacity-70">Screenshots</span>
+        <span>{t("projectGallery")}</span>
+        <span className="text-xs opacity-70">{t("screenshots")}</span>
       </div>
 
       <div className="relative">

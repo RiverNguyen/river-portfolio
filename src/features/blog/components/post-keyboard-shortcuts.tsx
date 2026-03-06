@@ -1,9 +1,9 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { useHotkeys } from "react-hotkeys-hook"
 
 import type { Post } from "@/features/blog/types/post"
+import { useRouter } from "@/i18n/navigation"
 
 export function PostKeyboardShortcuts({
   basePath,

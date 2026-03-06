@@ -5,7 +5,6 @@ import Script from "next/script"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 import type { WebSite, WithContext } from "schema-dts"
 
-import { ConsentManager } from "@/components/consent-manager"
 import { DuckFollower } from "@/components/duck-follower"
 import { LenisProvider } from "@/components/lenis-provider"
 import { PageReveal } from "@/components/page-reveal"
@@ -145,10 +144,8 @@ export default function RootLayout({
           <PageReveal />
           <Providers>
             <NuqsAdapter>
-              <ConsentManager>
-                {children}
-                <DuckFollower />
-              </ConsentManager>
+              {children}
+              <DuckFollower />
             </NuqsAdapter>
           </Providers>
         </LenisProvider>

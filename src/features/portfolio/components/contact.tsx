@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2, Send } from "lucide-react"
+import { useTranslations } from "next-intl"
 import type { SubmitHandler } from "react-hook-form"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -21,14 +22,12 @@ import { Textarea } from "@/components/ui/textarea"
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
-const contactSchema = z.object({
-  name: z.string().min(1, "Name is required").max(200),
-  email: z.string().email("Invalid email"),
-  subject: z.string().min(1, "Subject is required").max(200),
-  message: z.string().min(1, "Message is required").max(5000),
-})
-
-type ContactFormValues = z.infer<typeof contactSchema>
+type ContactFormValues = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 const defaultValues: ContactFormValues = {
   name: "",
@@ -38,6 +37,15 @@ const defaultValues: ContactFormValues = {
 }
 
 export function Contact() {
+  const t = useTranslations("Contact")
+
+  const contactSchema = z.object({
+    name: z.string().min(1, t("validation.nameRequired")).max(200),
+    email: z.string().email(t("validation.emailInvalid")),
+    subject: z.string().min(1, t("validation.subjectRequired")).max(200),
+    message: z.string().min(1, t("validation.messageRequired")).max(5000),
+  })
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues,
@@ -54,23 +62,23 @@ export function Contact() {
       const data = await res.json()
 
       if (!res.ok) {
-        toast.error((data as { error?: string }).error ?? "Failed to send message")
+        toast.error((data as { error?: string }).error ?? t("toast.sendFail"))
         return
       }
 
-      toast.success("Message sent successfully")
+      toast.success(t("toast.sendSuccess"))
       form.reset(defaultValues)
     } catch {
-      toast.error("Failed to send message")
+      toast.error(t("toast.sendFail"))
     }
   }
 
   return (
     <Panel id="contact">
       <PanelHeader>
-        <PanelTitle>Contact</PanelTitle>
+        <PanelTitle>{t("title")}</PanelTitle>
         <p className="mt-2 text-sm text-muted-foreground">
-          Have a project in mind or want to say hi? Drop a message below.
+          {t("subtitle")}
         </p>
       </PanelHeader>
 
@@ -87,11 +95,11 @@ export function Contact() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Name
+                      {t("fields.name")}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Your name"
+                        placeholder={t("placeholders.name")}
                         className="h-10 rounded-lg border-input/80 bg-background/80 transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
                         {...field}
                         disabled={form.formState.isSubmitting}
@@ -108,12 +116,12 @@ export function Contact() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Email
+                      {t("fields.email")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder={t("placeholders.email")}
                         className="h-10 rounded-lg border-input/80 bg-background/80 transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
                         {...field}
                         disabled={form.formState.isSubmitting}
@@ -130,11 +138,11 @@ export function Contact() {
                 render={({ field }) => (
                   <FormItem className="sm:col-span-2">
                     <FormLabel className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Subject
+                      {t("fields.subject")}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="What's this about?"
+                        placeholder={t("placeholders.subject")}
                         className="h-10 rounded-lg border-input/80 bg-background/80 transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
                         {...field}
                         disabled={form.formState.isSubmitting}
@@ -151,11 +159,11 @@ export function Contact() {
                 render={({ field }) => (
                   <FormItem className="sm:col-span-2">
                     <FormLabel className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Message
+                      {t("fields.message")}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Tell me about your project or just say hello..."
+                        placeholder={t("placeholders.message")}
                         rows={5}
                         className="min-h-28 resize-y rounded-lg border-input/80 bg-background/80 transition-colors placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
                         {...field}
@@ -176,17 +184,17 @@ export function Contact() {
                   {form.formState.isSubmitting ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Sending...
+                      {t("actions.sending")}
                     </>
                   ) : (
                     <>
                       <Send className="size-4" />
-                      Send message
+                      {t("actions.send")}
                     </>
                   )}
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  I&apos;ll get back to you as soon as I can.
+                  {t("note")}
                 </p>
               </div>
             </form>

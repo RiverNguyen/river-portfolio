@@ -3,18 +3,74 @@ import {
   ConsentManagerProvider,
   CookieBanner,
 } from "@c15t/nextjs"
+import { getLocale } from "next-intl/server"
 
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 import { ConsentManagerClient } from "./consent-manager-client"
 
-export function ConsentManager({ children }: { children: React.ReactNode }) {
+type ConsentMessages = {
+  Consent: {
+    common: {
+      acceptAll: string
+      rejectAll: string
+      customize: string
+      save: string
+    }
+    cookieBanner: {
+      title: string
+      description: string
+    }
+    consentManagerDialog: {
+      title: string
+      description: string
+    }
+    consentTypes: {
+      necessary: { title: string; description: string }
+      measurement: { title: string; description: string }
+    }
+  }
+}
+
+export async function ConsentManager({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const locale = await getLocale()
+  const language = locale === "vi" ? "vi" : "en"
+
+  const enMessages = (await import("../messages/en.json")).default as ConsentMessages
+  const viMessages = (await import("../messages/vi.json")).default as ConsentMessages
+
+  const consentTranslations = {
+    defaultLanguage: "en",
+    translations: {
+      en: {
+        common: enMessages.Consent.common,
+        cookieBanner: enMessages.Consent.cookieBanner,
+        consentManagerDialog: enMessages.Consent.consentManagerDialog,
+        consentTypes: enMessages.Consent.consentTypes,
+      },
+      vi: {
+        common: viMessages.Consent.common,
+        cookieBanner: viMessages.Consent.cookieBanner,
+        consentManagerDialog: viMessages.Consent.consentManagerDialog,
+        consentTypes: viMessages.Consent.consentTypes,
+      },
+    },
+  } as const
+
   return (
     <ConsentManagerProvider
       options={{
         mode: "offline",
         consentCategories: ["necessary", "measurement"],
+        overrides: {
+          language,
+        },
+        translations: consentTranslations,
         // ignoreGeoLocation: process.env.NODE_ENV === "development", // Useful for development to always view the banner.
       }}
     >

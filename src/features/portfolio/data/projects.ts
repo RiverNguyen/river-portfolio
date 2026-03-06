@@ -1,6 +1,6 @@
 import type { Project } from "../types/projects"
 
-export const PROJECTS: Project[] = [
+export const PROJECTS_EN: Project[] = [
   {
     id: "mbbank-brand-site",
     title: "MBBank Brand Website",
@@ -143,3 +143,69 @@ It also supports custom tour requests where users can personalize itineraries ba
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2VtSbipILgZ2kG-372MiAbom0460gO_Vhg&s",
   }
 ]
+
+export const PROJECTS_VI: Project[] = [
+  {
+    ...PROJECTS_EN[0],
+    title: "Website thương hiệu MBBank",
+    period: { ...PROJECTS_EN[0].period, end: "Hiện tại" },
+    description: `Website marketing cho MBBank, tập trung vào nhận diện thương hiệu, điểm nổi bật sản phẩm và thu hút khách hàng.
+- Thiết kế và triển khai các landing page nhiều section để truyền tải thông điệp thương hiệu và sản phẩm cốt lõi.
+- Xây dựng layout responsive và hiệu ứng cuộn/animation mượt để tạo cảm giác “premium”.
+- Tối ưu cấu trúc nội dung, SEO và hiệu năng để hỗ trợ chiến dịch marketing và những thời điểm tăng traffic.
+- Phối hợp chặt chẽ với team marketing để cập nhật nội dung và hình ảnh nhanh theo từng chiến dịch.`,
+  },
+  {
+    ...PROJECTS_EN[1],
+    title: "OKHub Agency",
+    description: `- Xây dựng ứng dụng **Next.js** & **React.js** responsive, tương thích đa thiết bị.
+- Phát triển **theme WordPress** tuỳ biến, tối ưu hiệu năng, SEO và accessibility.
+- Tích hợp **RESTful APIs** để tạo trải nghiệm tương tác, dữ liệu động.
+- Tạo **Custom Post Types** & **ACF fields** và expose qua **REST API** cho frontend **Next.js**.
+- Dùng **GSAP** để tạo animation mượt cho cả dự án WordPress và Next.js.
+- Quản lý state bằng **Redux**, **Zustand** và **Context API**.
+- Áp dụng best practices SEO: **lazy loading**, **code splitting**, **tối ưu hình ảnh**.
+- Tích hợp cổng thanh toán và form booking cho nền tảng thương mại điện tử.
+- Đảm bảo tương thích trình duyệt và tối ưu hiển thị trên mobile.
+- Triển khai một số biện pháp bảo mật: phân quyền file, **reCAPTCHA**, giới hạn tần suất đăng nhập.`,
+  },
+  {
+    ...PROJECTS_EN[2],
+    title: "Tiem Tour",
+    description: `Website đặt tour cho phép người dùng tìm kiếm và lọc tour theo điểm đến, ngày, thời lượng và giá.
+Hỗ trợ yêu cầu tour tuỳ chỉnh giúp người dùng cá nhân hoá lịch trình theo nhu cầu. Nền tảng cung cấp tình trạng chỗ và giá theo thời gian thực, đảm bảo trải nghiệm đặt tour mượt và trực quan.
+- Dựng base dự án, UI và animation theo thiết kế.
+- Tạo Custom Post Type và ACF để xây dựng REST API từ WordPress, phục vụ dữ liệu cho giao diện Next.js.
+- Tích hợp thanh toán (OnePay) và form gửi thông tin cho admin và người dùng.`,
+  },
+  {
+    ...PROJECTS_EN[3],
+    title: "Zio Hair",
+    description: `Nền tảng online cho phép khách hàng đăng ký, đăng nhập và đặt lịch salon bằng cách chọn ngày, giờ và stylist. Người dùng có thể xem dịch vụ và sản phẩm chăm sóc tóc, thêm vào giỏ hàng và thanh toán online.
+- Quản lý đăng ký, đăng nhập và tài khoản người dùng.
+- Triển khai tính năng đặt lịch theo ngày, giờ và stylist.
+- Xây dựng giỏ hàng cho dịch vụ và sản phẩm chăm sóc tóc.
+- Tích hợp thanh toán online và thông báo xác nhận đặt lịch.
+- Xây dựng trang quản trị để quản lý lịch hẹn, dịch vụ và sản phẩm.`,
+  },
+  {
+    ...PROJECTS_EN[4],
+    title: "Lotus Charm Travel",
+    description: `Nền tảng đặt tour cá nhân hoá cho phép tìm kiếm và lọc tour theo điểm đến, ngày, thời lượng và ngân sách. Hệ thống hỗ trợ yêu cầu tour tuỳ chỉnh, giúp du khách thiết kế lịch trình theo sở thích. Website có hỗ trợ đa ngôn ngữ (Anh, Trung) và hiển thị tình trạng chỗ theo thời gian thực, mang lại trải nghiệm đặt tour mượt mà, thân thiện.
+- Xây dựng base dự án, UI responsive và animation mượt theo thiết kế (Figma).
+- Tạo Custom Post Types và ACF fields trong WordPress để expose dữ liệu qua REST API cho frontend Next.js.
+- Triển khai lọc tour theo điểm đến, thời lượng, ngày và giá.
+- Tích hợp cổng thanh toán (Megapay) và form booking cho admin và người dùng.
+- Tối ưu hiệu năng (PageSpeed Insights, lazy loading, tối ưu hình ảnh, code splitting).
+- Đảm bảo best practices SEO và chức năng đa ngôn ngữ cho khách quốc tế.`,
+  },
+]
+
+// Backward-compatible export (current site defaults to English).
+export const PROJECTS = PROJECTS_EN
+
+export type PortfolioLocale = "en" | "vi"
+
+export function getProjectsByLocale(locale: PortfolioLocale): Project[] {
+  return locale === "vi" ? PROJECTS_VI : PROJECTS_EN
+}

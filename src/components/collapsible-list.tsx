@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Slot as SlotPrimitive } from "radix-ui"
 import React from "react"
 
@@ -22,6 +23,7 @@ export function CollapsibleList<T>({
   keyExtractor?: (item: T) => string
   renderItem: (item: T) => React.ReactNode
 }) {
+  const t = useTranslations("Portfolio")
   return (
     <Collapsible>
       {items.slice(0, max).map((award, index) => (
@@ -56,11 +58,11 @@ export function CollapsibleList<T>({
               variant="default"
             >
               <span className="hidden group-data-[state=closed]/collapsible-trigger:block">
-                Show More
+                {t("showMore")}
               </span>
 
               <span className="hidden group-data-[state=open]/collapsible-trigger:block">
-                Show Less
+                {t("showLess")}
               </span>
 
               <ChevronDownIcon

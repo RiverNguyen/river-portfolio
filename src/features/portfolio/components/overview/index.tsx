@@ -5,8 +5,9 @@ import {
   NonBinaryIcon,
   VenusIcon,
 } from "lucide-react"
+import { getLocale, getTranslations } from "next-intl/server"
 
-import { USER } from "@/features/portfolio/data/user"
+import { getUserByLocale } from "@/features/portfolio/data/user"
 import type { User } from "@/features/portfolio/types/user"
 import { cn } from "@/lib/utils"
 import { urlToName } from "@/utils/url"
@@ -23,13 +24,17 @@ import {
 import { JobItem } from "./job-item"
 import { PhoneItem } from "./phone-item"
 
-export function Overview() {
+export async function Overview() {
+  const locale = await getLocale()
+  const t = await getTranslations("Portfolio")
+  const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+
   return (
     <Panel>
-      <h2 className="sr-only">Overview</h2>
+      <h2 className="sr-only">{t("overview")}</h2>
 
       <PanelContent className="space-y-2.5">
-        {USER.jobs.map((job, index) => {
+        {user.jobs.map((job, index) => {
           return (
             <JobItem
               key={index}
@@ -52,19 +57,19 @@ export function Overview() {
             </IntroItemIcon>
             <IntroItemContent>
               <IntroItemLink
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
-                aria-label={`Location: ${USER.address}`}
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(user.address)}`}
+                aria-label={`Location: ${user.address}`}
               >
-                {USER.address}
+                {user.address}
               </IntroItemLink>
             </IntroItemContent>
           </IntroItem>
 
-          <CurrentLocalTimeItem timeZone={USER.timeZone} />
+          <CurrentLocalTimeItem timeZone={user.timeZone} />
 
-          <PhoneItem phoneNumber={USER.phoneNumber} />
+          <PhoneItem phoneNumber={user.phoneNumber} />
 
-          <EmailItem email={USER.email} />
+          <EmailItem email={user.email} />
 
           <IntroItem>
             <IntroItemIcon>
@@ -72,18 +77,18 @@ export function Overview() {
             </IntroItemIcon>
             <IntroItemContent>
               <IntroItemLink
-                href={USER.website}
-                aria-label={`Personal website: ${urlToName(USER.website)}`}
+                href={user.website}
+                aria-label={`Personal website: ${urlToName(user.website)}`}
               >
-                {urlToName(USER.website)}
+                {urlToName(user.website)}
               </IntroItemLink>
             </IntroItemContent>
           </IntroItem>
 
           <IntroItem>
-            <IntroItemIcon>{getGenderIcon(USER.gender)}</IntroItemIcon>
-            <IntroItemContent aria-label={`Pronouns: ${USER.pronouns}`}>
-              {USER.pronouns}
+            <IntroItemIcon>{getGenderIcon(user.gender)}</IntroItemIcon>
+            <IntroItemContent aria-label={`Pronouns: ${user.pronouns}`}>
+              {user.pronouns}
             </IntroItemContent>
           </IntroItem>
         </div>

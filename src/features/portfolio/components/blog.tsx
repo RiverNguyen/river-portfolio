@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "lucide-react"
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
 import React from "react"
 
 import { Button } from "@/components/ui/button"
@@ -8,14 +9,15 @@ import { getAllPosts } from "@/features/blog/data/posts"
 
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "./panel"
 
-export function Blog() {
+export async function Blog() {
+  const t = await getTranslations("Blog")
   const allPosts = getAllPosts()
 
   return (
     <Panel id="blog">
       <PanelHeader>
         <PanelTitle>
-          Blog
+          {t("title")}
           <PanelTitleSup>({allPosts.length})</PanelTitleSup>
         </PanelTitle>
       </PanelHeader>
@@ -36,7 +38,7 @@ export function Blog() {
       <div className="screen-line-before flex justify-center py-2">
         <Button className="px-3" variant="default" asChild>
           <Link href="/blog">
-            All Posts
+            {t("allPosts")}
             <ArrowRightIcon />
           </Link>
         </Button>

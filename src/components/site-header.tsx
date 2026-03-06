@@ -1,12 +1,11 @@
 import dynamic from "next/dynamic"
-import Link from "next/link"
+import { getTranslations } from "next-intl/server"
 
 import { DesktopNav } from "@/components/desktop-nav"
-import { MAIN_NAV } from "@/config/site"
-import { getAllPosts } from "@/features/blog/data/posts"
-import type { PostPreview } from "@/features/blog/types/post"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
+import { LanguageSwitcher } from "./language-switcher"
 import { SiteHeaderMark } from "./site-header-mark"
 import { ThemeToggle } from "./theme-toggle"
 
@@ -14,24 +13,25 @@ const BrandContextMenu = dynamic(() =>
   import("@/components/brand-context-menu").then((mod) => mod.BrandContextMenu)
 )
 
-const CommandMenu = dynamic(() =>
-  import("@/components/command-menu").then((mod) => mod.CommandMenu)
-)
-
 const MobileNav = dynamic(() =>
   import("@/components/mobile-nav").then((mod) => mod.MobileNav)
 )
 
-export function SiteHeader() {
-  const posts = getAllPosts()
+export async function SiteHeader() {
+  const t = await getTranslations("Nav")
+  // const posts = getAllPosts()
+  // const postPreviews: PostPreview[] = posts.map((post) => ({
+  //   slug: post.slug,
+  //   title: post.metadata.title,
+  //   category: post.metadata.category,
+  //   icon: post.metadata.icon,
+  // }))
 
-  // Minimize data serialized to client component - only send necessary fields
-  const postPreviews: PostPreview[] = posts.map((post) => ({
-    slug: post.slug,
-    title: post.metadata.title,
-    category: post.metadata.category,
-    icon: post.metadata.icon,
-  }))
+  const navItems = [
+    { title: t("portfolio"), href: "/" },
+    { title: t("blog"), href: "/blog" },
+    { title: t("contact"), href: "/#contact" },
+  ]
 
   return (
     <header
@@ -58,14 +58,15 @@ export function SiteHeader() {
 
         <div className="flex-1" />
 
-        <DesktopNav items={MAIN_NAV} />
+        <DesktopNav items={navItems} />
 
         <div className="flex items-center *:first:mr-2">
           {/* <CommandMenu posts={postPreviews} /> */}
           {/* <NavItemGitHub /> */}
           {/* <span className="mx-2 flex h-4 w-px bg-border" /> */}
           <ThemeToggle />
-          <MobileNav items={MAIN_NAV} />
+          <LanguageSwitcher />
+          <MobileNav items={navItems} />
         </div>
       </div>
     </header>

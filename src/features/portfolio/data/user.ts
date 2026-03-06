@@ -1,6 +1,6 @@
 import type { User } from "@/features/portfolio/types/user"
 
-export const USER = {
+export const USER_EN = {
   firstName: "Giang",
   lastName: "Nguyễn Đình",
   displayName: "Giang Nguyễn Đình",
@@ -66,3 +66,53 @@ export const USER = {
   ],
   dateCreated: "2026-02-10", // YYYY-MM-DD
 } satisfies User
+
+export const USER_VI = {
+  ...USER_EN,
+  pronouns: "anh",
+  bio: "Lập trình viên Web",
+  flipSentences: [
+    "Kỹ sư phần mềm",
+    "Lập trình viên Full-stack",
+    "Lập trình viên Next.js",
+    "Lập trình viên React",
+    "Lập trình viên TypeScript",
+    "Lập trình viên JavaScript",
+    "Lập trình viên Node.js",
+    "Lập trình viên WordPress",
+  ],
+  address: "Hà Nội, Việt Nam",
+  jobTitle: "Lập trình viên Web",
+  jobs: [
+    {
+      title: "Lập trình viên Web",
+      company: "OKHub Agency",
+      website: "https://okhub.vn",
+    },
+  ],
+  about: `- **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm xây dựng các ứng dụng web chất lượng cao, pixel-perfect.
+- Thành thạo **Next.js**, **React**, **TypeScript**, **Tailwind CSS** và các công cụ front-end hiện đại để tạo trải nghiệm hướng người dùng.
+- Mạnh về **tích hợp API** với **REST** và **GraphQL**, làm việc nhóm với **Git**, **GitHub** và **GitLab**.
+- Tập trung vào **hiệu năng**: áp dụng lazy loading, code splitting và tối ưu hình ảnh để giao diện luôn nhanh.
+- Luôn học hỏi, có nền tảng **UI/UX** tốt và kinh nghiệm chuyển thiết kế Figma (và các design assets khác) thành giao diện responsive.`,
+  keywords: [
+    ...USER_EN.keywords,
+    "lập trình viên web",
+    "lập trình viên full stack",
+    "lập trình viên next.js",
+    "lập trình viên react",
+    "lập trình viên typescript",
+    "lập trình viên javascript",
+    "lập trình viên node.js",
+    "lập trình viên wordpress",
+  ],
+} satisfies User
+
+// Backward-compatible export (current site defaults to English).
+export const USER = USER_EN
+
+export type PortfolioLocale = "en" | "vi"
+
+export function getUserByLocale(locale: PortfolioLocale): User {
+  return locale === "vi" ? USER_VI : USER_EN
+}

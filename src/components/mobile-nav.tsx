@@ -1,9 +1,10 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useLocale, useTranslations } from "next-intl"
 
 import { useLenis } from "@/components/lenis-provider"
+import { Link } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,7 +16,10 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import type { NavItem } from "@/types/nav"
 
 export function MobileNav({ items }: { items: NavItem[] }) {
+  const t = useTranslations("Nav")
+  const locale = useLocale()
   const pathname = usePathname()
+  const pathnameNorm = normalizePathname(pathname, locale)
   const lenis = useLenis()
   const isDesktop = useMediaQuery("(min-width: 40rem)") // sm breakpoint
 
@@ -27,7 +31,7 @@ export function MobileNav({ items }: { items: NavItem[] }) {
     >
       <span className="flex h-0.5 w-4 transform rounded-[1px] bg-foreground transition-transform group-data-[state=open]:translate-y-0.75 group-data-[state=open]:rotate-45" />
       <span className="flex h-0.5 w-4 transform rounded-[1px] bg-foreground transition-transform group-data-[state=open]:-translate-y-0.75 group-data-[state=open]:-rotate-45" />
-      <span className="sr-only">Toggle Menu</span>
+      <span className="sr-only">{t("toggleMenu")}</span>
     </Button>
   )
 
@@ -44,7 +48,7 @@ export function MobileNav({ items }: { items: NavItem[] }) {
           const hasHash = link.href.includes("#")
           const [path, hash] = hasHash ? link.href.split("#") : [link.href, ""]
           const pathNorm = path || "/"
-          const isSamePageHash = hasHash && pathname === pathNorm && hash
+          const isSamePageHash = hasHash && pathnameNorm === pathNorm && hash
 
           if (isSamePageHash) {
             const target = `#${hash}`
@@ -70,4 +74,17 @@ export function MobileNav({ items }: { items: NavItem[] }) {
       </DropdownMenuContent>
     </DropdownMenu>
   )
+}
+
+function normalizePathname(pathname: string, locale: string) {
+  if (pathname === `/${locale}`) {
+    return "/"
+  }
+
+  const prefix = `/${locale}/`
+  if (pathname.startsWith(prefix)) {
+    return `/${pathname.slice(prefix.length)}`
+  }
+
+  return pathname
 }

@@ -1,9 +1,10 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useLocale } from "next-intl"
 import React from "react"
 
+import { Link } from "@/i18n/navigation"
 import { useLenis } from "@/components/lenis-provider"
 import { cn } from "@/lib/utils"
 import type { NavItem } from "@/types/nav"
@@ -17,8 +18,11 @@ export function Nav({
   activeId?: string
   className?: string
 }) {
+  const locale = useLocale()
   const pathname = usePathname()
   const lenis = useLenis()
+
+  const pathnameNorm = normalizePathname(pathname, locale)
 
   return (
     <nav
@@ -29,7 +33,7 @@ export function Nav({
         const hasHash = href.includes("#")
         const [path, hash] = hasHash ? href.split("#") : [href, ""]
         const pathNorm = path || "/"
-        const isSamePageHash = hasHash && pathname === pathNorm
+        const isSamePageHash = hasHash && pathnameNorm === pathNorm
 
         const active =
           hasHash && hash
@@ -84,4 +88,17 @@ export function NavItem({
       {...props}
     />
   )
+}
+
+function normalizePathname(pathname: string, locale: string) {
+  if (pathname === `/${locale}`) {
+    return "/"
+  }
+
+  const prefix = `/${locale}/`
+  if (pathname.startsWith(prefix)) {
+    return `/${pathname.slice(prefix.length)}`
+  }
+
+  return pathname
 }

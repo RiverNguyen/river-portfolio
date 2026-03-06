@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useTheme } from "next-themes"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -16,7 +17,7 @@ import { Kbd } from "./ui/kbd"
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
-
+  const t = useTranslations("ThemeToggle")
   const { setMetaColor } = useMetaColor()
 
   const playClick = useSound("/audio/ui-sounds/click.wav")
@@ -41,10 +42,10 @@ export function ThemeToggle() {
             variant="ghost"
             size="icon"
             onClick={switchTheme}
-            // onClick={() => {
-            //   if (!document.startViewTransition) switchTheme();
-            //   document.startViewTransition(switchTheme);
-            // }}
+          // onClick={() => {
+          //   if (!document.startViewTransition) switchTheme();
+          //   document.startViewTransition(switchTheme);
+          // }}
           />
         }
       >
@@ -55,7 +56,7 @@ export function ThemeToggle() {
 
       <TooltipContent className="pr-2 pl-3">
         <div className="flex items-center gap-3">
-          Toggle Mode
+          {t("toggleMode")}
           <Kbd>D</Kbd>
         </div>
       </TooltipContent>

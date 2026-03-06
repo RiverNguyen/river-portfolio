@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { getLocale } from "next-intl/server"
 
 import {
   Tooltip,
@@ -6,13 +7,16 @@ import {
   TooltipTrigger,
 } from "@/components/base/ui/tooltip"
 import { UTM_PARAMS } from "@/config/site"
-import { USER } from "@/features/portfolio/data/user"
+import { getUserByLocale } from "@/features/portfolio/data/user"
 import { FlipSentences } from "@/registry/components/flip-sentences"
 import { addQueryParams } from "@/utils/url"
 
 import { VerifiedIcon } from "./verified-icon"
 
-export function ProfileHeader() {
+export async function ProfileHeader() {
+  const locale = await getLocale()
+  const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+
   return (
     <div className="screen-line-after flex border-x border-edge">
       {/* <div className="absolute top-[-3.5px] left-[-4.5px] size-2 rounded-xs border bg-popover" /> */}
@@ -22,8 +26,8 @@ export function ProfileHeader() {
         <div className="mx-0.5 my-0.75">
           <img
             className="size-30 rounded-full ring-1 ring-border ring-offset-2 ring-offset-background select-none sm:size-40"
-            alt={`${USER.displayName}'s avatar`}
-            src={USER.avatar}
+            alt={`${user.displayName}'s avatar`}
+            src={user.avatar}
             fetchPriority="high"
           />
         </div>
@@ -42,7 +46,7 @@ export function ProfileHeader() {
         <div className="border-t border-edge">
           <div className="flex items-center gap-2 pl-4">
             <h1 className="-translate-y-px text-3xl font-semibold tracking-tight">
-              {USER.displayName}
+              {user.displayName}
             </h1>
 
             <VerifiedIcon
@@ -50,13 +54,13 @@ export function ProfileHeader() {
               aria-label="Verified"
             />
 
-            {USER.affiliateBadge && (
+            {user.affiliateBadge && (
               <Tooltip>
                 <TooltipTrigger
                   render={
                     <a
                       className="relative flex after:absolute after:inset-0 after:rounded-sm after:ring after:ring-black/10 after:ring-inset dark:after:ring-white/15"
-                      href={addQueryParams(USER.affiliateBadge.url, UTM_PARAMS)}
+                      href={addQueryParams(user.affiliateBadge.url, UTM_PARAMS)}
                       target="_blank"
                       rel="noopener"
                     />
@@ -64,8 +68,8 @@ export function ProfileHeader() {
                 >
                   <Image
                     className="rounded-sm"
-                    src={USER.affiliateBadge.logo}
-                    alt={USER.affiliateBadge.name}
+                    src={user.affiliateBadge.logo}
+                    alt={user.affiliateBadge.name}
                     width={20}
                     height={20}
                     quality={100}
@@ -78,11 +82,11 @@ export function ProfileHeader() {
                     An affiliate of{" "}
                     <a
                       className="font-medium underline-offset-4 hover:underline"
-                      href={addQueryParams(USER.affiliateBadge.url, UTM_PARAMS)}
+                      href={addQueryParams(user.affiliateBadge.url, UTM_PARAMS)}
                       target="_blank"
                       rel="noopener"
                     >
-                      {USER.affiliateBadge.name}
+                      {user.affiliateBadge.name}
                     </a>
                   </p>
                 </TooltipContent>
@@ -105,7 +109,7 @@ export function ProfileHeader() {
                 exit: { y: 10, opacity: 0 },
               }}
             >
-              {USER.flipSentences}
+              {user.flipSentences}
             </FlipSentences>
           </div>
         </div>

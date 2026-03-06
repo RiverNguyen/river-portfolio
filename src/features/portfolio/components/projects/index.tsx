@@ -1,21 +1,26 @@
 import { CollapsibleList } from "@/components/collapsible-list"
+import { getLocale, getTranslations } from "next-intl/server"
 
-import { PROJECTS } from "../../data/projects"
+import { getProjectsByLocale } from "../../data/projects"
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "../panel"
 import { ProjectItem } from "./project-item"
 
-export function Projects() {
+export async function Projects() {
+  const locale = await getLocale()
+  const t = await getTranslations("Portfolio")
+  const projects = getProjectsByLocale(locale === "vi" ? "vi" : "en")
+
   return (
     <Panel id="projects">
       <PanelHeader>
         <PanelTitle>
-          Projects
-          <PanelTitleSup>({PROJECTS.length})</PanelTitleSup>
+          {t("projects")}
+          <PanelTitleSup>({projects.length})</PanelTitleSup>
         </PanelTitle>
       </PanelHeader>
 
       <CollapsibleList
-        items={PROJECTS}
+        items={projects}
         max={4}
         renderItem={(item) => <ProjectItem project={item} />}
       />

@@ -1,3 +1,4 @@
+import { useLocale } from "next-intl"
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts"
 
 import { About } from "@/features/portfolio/components/about"
@@ -15,6 +16,7 @@ import { USER } from "@/features/portfolio/data/user"
 import { cn } from "@/lib/utils"
 
 export default function Page() {
+  const locale = useLocale()
   return (
     <>
       <script
@@ -58,8 +60,12 @@ export default function Page() {
         <Projects />
         <Separator />
 
-        <Blog />
-        <Separator />
+        {locale === "en" && (
+          <>
+            <Blog />
+            <Separator />
+          </>
+        )}
 
         <Contact />
         <Separator />

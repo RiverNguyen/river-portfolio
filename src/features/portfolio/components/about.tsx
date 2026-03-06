@@ -1,19 +1,25 @@
 import { Markdown } from "@/components/markdown"
 import { ProseMono } from "@/components/ui/typography"
-import { USER } from "@/features/portfolio/data/user"
+import { getLocale, getTranslations } from "next-intl/server"
+
+import { getUserByLocale } from "@/features/portfolio/data/user"
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
-export function About() {
+export async function About() {
+  const locale = await getLocale()
+  const t = await getTranslations("Portfolio")
+  const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+
   return (
     <Panel id="about">
       <PanelHeader>
-        <PanelTitle>About</PanelTitle>
+        <PanelTitle>{t("about")}</PanelTitle>
       </PanelHeader>
 
       <PanelContent>
         <ProseMono>
-          <Markdown>{USER.about}</Markdown>
+          <Markdown>{user.about}</Markdown>
         </ProseMono>
       </PanelContent>
     </Panel>
