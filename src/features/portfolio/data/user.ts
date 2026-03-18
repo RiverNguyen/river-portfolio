@@ -22,7 +22,7 @@ export const USER_EN = {
   address: "Ha Noi, Viet Nam",
   phoneNumber: "MDM0NTYxMzA5MA==", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "bmdpYW5nMTMwOUBnbWFpbC5jb20=", // base64 encoded
-  website: "https://river.com",
+  website: "http://river-portfolio.vercel.app",
   jobTitle: "Web Developer",
   jobs: [
     {
@@ -36,14 +36,14 @@ export const USER_EN = {
 - Strong in **API integration** with **REST** and **GraphQL**, and collaborative workflows using **Git**, **GitHub**, and **GitLab**.
 - Focused on **performance**, applying lazy loading, code splitting, and image optimization to keep interfaces fast.
 - Continuously learning, with solid **UI/UX** fundamentals and experience turning Figma and other design assets into responsive interfaces.`,
-  avatar: "https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-6/465750960_1916864268794763_162486911259508675_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeH4e4rbPOtIG0ejmd_73JF0kQuy6LI79xGRC7Losjv3EflBaPx9bBTszy0BZVpW6osXQYT9k6wNe_-aZ66upcWT&_nc_ohc=Ao8RW4gUBZ0Q7kNvwGmOWcV&_nc_oc=Admf9f-RhrkbtUgr1oBYrl8xs8CE-pat-PyF1URwrGFa_XPk3C9BnZ6d6_n_Yw1AQ48&_nc_zt=23&_nc_ht=scontent.fhan5-9.fna&_nc_gid=Ze3VABcTjV6DMGPw9HwoCA&_nc_ss=8&oh=00_Afzl_y5Puw_M38R_DxvOUb3eX-oOUyW07g8B7P8G07TEhA&oe=69AB90FD",
+  avatar: "/avatar.jpg",
   ogImage:
-    "https://assets.chanhdai.com/images/screenshot-og-image-dark.png?v=6",
+    "/image.png",
   namePronunciationUrl: "",
   affiliateBadge: {
     name: "OKHub Agency",
     url: "https://okhub.vn",
-    logo: "https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-6/476001178_609089631724531_2211695452587996090_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeH-lXh65H-LAhS-U_gEUavoV64wTWjU6w5XrjBNaNTrDhjVNwh8_OOjfd9X51sXbm-3VXECb0QDnmgkIKY9l9wG&_nc_ohc=ftwmLwKiIhMQ7kNvwHJol7l&_nc_oc=AdmaI9IFUDJlWkh7NEowZnyqeCM4BHKRBiWJzXwknNeVpLjLKeq7nkc_gq1EiUg8ZTE&_nc_zt=23&_nc_ht=scontent.fhan5-8.fna&_nc_gid=uz7tPTrZR8ScA7lSM0_FoA&_nc_ss=8&oh=00_AfxkWINyVlT-KETrKgky8tnk0izl1FUUNg25ZnNhGeV9CQ&oe=69AB7698",
+    logo: "/company.jpg",
   },
   timeZone: "Asia/Ho_Chi_Minh",
   keywords: [

@@ -3,7 +3,7 @@ import type { NavItem } from "@/types/nav"
 
 export const SITE_INFO = {
   name: USER.displayName,
-  url: process.env.APP_URL || "https://river.com",
+  url: process.env.APP_URL || "http://river-portfolio.vercel.app",
   ogImage: USER.ogImage,
   description: USER.bio,
   keywords: USER.keywords,
@@ -43,5 +43,5 @@ export const SPONSORSHIP_URL = "https://github.com/sponsors/RiverNguyen"
 export const RESUME_PDF_URL = "/pdf/resume.pdf"
 
 export const UTM_PARAMS = {
-  utm_source: "river.com",
+  utm_source: "river-portfolio.vercel.app",
 }
