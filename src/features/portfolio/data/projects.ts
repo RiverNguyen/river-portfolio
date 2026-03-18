@@ -59,7 +59,7 @@ export const PROJECTS_EN: Project[] = [
 - Integrated payment gateways and booking forms for e-commerce platforms.
 - Ensured cross-browser compatibility and mobile responsiveness.
 - Implemented security measures: file permissions, **reCAPTCHA**, and login rate limiting.`,
-    logo: "https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-6/476001178_609089631724531_2211695452587996090_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeH-lXh65H-LAhS-U_gEUavoV64wTWjU6w5XrjBNaNTrDhjVNwh8_OOjfd9X51sXbm-3VXECb0QDnmgkIKY9l9wG&_nc_ohc=ftwmLwKiIhMQ7kNvwHJol7l&_nc_oc=AdmaI9IFUDJlWkh7NEowZnyqeCM4BHKRBiWJzXwknNeVpLjLKeq7nkc_gq1EiUg8ZTE&_nc_zt=23&_nc_ht=scontent.fhan5-8.fna&_nc_gid=uz7tPTrZR8ScA7lSM0_FoA&_nc_ss=8&oh=00_AfxkWINyVlT-KETrKgky8tnk0izl1FUUNg25ZnNhGeV9CQ&oe=69AB7698",
+    logo: "/company.jpg",
     images: [
       "/projects/okhub/image-1.png",
       "/projects/okhub/image-2.png",
