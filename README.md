@@ -1,6 +1,6 @@
 # River Portfolio
 
-Personal portfolio of **Giang Nguyễn Đình** (Nguyễn Đình Giang / River) — Frontend Developer based in Hà Nội.
+Personal portfolio of **Nguyễn Đình Giang** (River) — Frontend Developer based in Hà Nội.
 
 **Live:** [rivernguyen.id.vn](https://rivernguyen.id.vn)
 
@@ -109,4 +109,4 @@ public/                    # Images, assets, project screenshots
 
 ## License
 
-[MIT](LICENSE) © Giang Nguyễn Đình
+[MIT](LICENSE) © Nguyễn Đình Giang

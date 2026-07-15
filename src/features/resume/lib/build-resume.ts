@@ -95,15 +95,12 @@ function mapProject(project: Project): ResumeProject {
 
 function mapEducation(exp: Experience, locale: PortfolioLocale): ResumeEducation[] {
   return exp.positions.map((position) => ({
-    school: position.title,
+    school: exp.companyName,
     period: formatPeriod(
       position.employmentPeriod.start,
       position.employmentPeriod.end
     ),
-    degree:
-      locale === "vi"
-        ? "Công nghệ thông tin"
-        : "Information Technology",
+    degree: position.title,
     highlights: parseMarkdownBullets(position.description),
   }))
 }
@@ -146,8 +143,12 @@ export function buildResume(locale: PortfolioLocale): Resume {
   const experiences = getExperiencesByLocale(locale)
   const projects = getProjectsByLocale(locale)
 
-  const workExperiences = experiences.filter((exp) => exp.id !== "education")
-  const educationExperience = experiences.find((exp) => exp.id === "education")
+  const workExperiences = experiences.filter(
+    (exp) => !exp.id.startsWith("education")
+  )
+  const educationExperiences = experiences.filter((exp) =>
+    exp.id.startsWith("education")
+  )
 
   return {
     name: user.displayName,
@@ -163,9 +164,9 @@ export function buildResume(locale: PortfolioLocale): Resume {
     experience: workExperiences.flatMap(mapExperience),
     skills: buildSkills(workExperiences, projects, locale),
     projects: projects.map(mapProject),
-    education: educationExperience
-      ? mapEducation(educationExperience, locale)
-      : [],
+    education: educationExperiences.flatMap((experience) =>
+      mapEducation(experience, locale)
+    ),
   }
 }
 

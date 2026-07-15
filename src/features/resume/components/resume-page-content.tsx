@@ -37,27 +37,53 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
         dangerouslySetInnerHTML={{
           __html: `
             @media print {
-              header,
-              footer {
+              header.sticky,
+              footer.max-w-screen,
+              .resume-actions,
+              [data-slot="scroll-to-top"] {
                 display: none !important;
               }
 
               main {
                 padding: 0 !important;
-              }
-
-              .resume-actions {
-                display: none !important;
+                max-width: none !important;
+                overflow: visible !important;
               }
 
               .resume-document {
                 border: none !important;
                 box-shadow: none !important;
+                background: #fff !important;
+                color: #111 !important;
+                -webkit-print-color-adjust: economy;
+                print-color-adjust: economy;
               }
 
+              .resume-document header {
+                display: block !important;
+              }
+
+              .resume-document,
               .resume-document * {
-                print-color-adjust: exact;
-                -webkit-print-color-adjust: exact;
+                color: #111 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+              }
+
+              .resume-document a {
+                color: #111 !important;
+                text-decoration: underline;
+              }
+
+              .resume-document .text-muted-foreground,
+              .resume-document [class*="text-muted"] {
+                color: #444 !important;
+              }
+
+              .resume-document svg {
+                color: #111 !important;
+                stroke: #111 !important;
               }
             }
           `,
@@ -74,7 +100,7 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
             <Button variant="outline" size="sm" asChild>
               <a
                 href={RESUME_PDF_URL}
-                download="Giang-Nguyen-Dinh-Resume.pdf"
+                download="Nguyen-Dinh-Giang-Resume.pdf"
               >
                 <DownloadIcon />
                 {labels.downloadPdf}

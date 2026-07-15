@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   title: {
     template: `%s | ${SITE_INFO.name}`,
-    default: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    default: `${USER.displayName} | ${USER.jobTitle}`,
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     alternateLocale: ["vi_VN"],
-    title: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    title: `${USER.displayName} | ${USER.jobTitle}`,
     description: SITE_INFO.description,
     images: [
       {
@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    title: `${USER.displayName} | ${USER.jobTitle}`,
     description: SITE_INFO.description,
     images: [SITE_INFO.ogImage],
   },

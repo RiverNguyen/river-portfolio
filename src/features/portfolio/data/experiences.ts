@@ -121,14 +121,41 @@ export const EXPERIENCES_EN: Experience[] = [
     ],
   },
   {
-    id: "education",
-    companyName: "Education",
+    id: "education-utc",
+    companyName: "University of Transport and Communications",
     companyLogo:
-      "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-fpt-inkythuatso-1-01-01-14-33-35.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/f/fa/LogoUTC.jpg",
+    companyWebsite: "https://www.utc.edu.vn",
+    positions: [
+      {
+        id: "9e1f1f4e-0e01-4f0c-9efb-427304527bc5",
+        title: "Bachelor's Student",
+        employmentPeriod: {
+          start: "2025",
+          end: "Present",
+        },
+        icon: "education",
+        description: `
+  - Currently studying at **University of Transport and Communications (UTC / GTVT)**.
+  - Continuing academic growth in **Information Technology** while working as a frontend developer.
+`,
+        skills: [
+          "Information Technology",
+          "Web Development",
+          "Computer Science",
+        ],
+      },
+    ],
+  },
+  {
+    id: "education-fpt",
+    companyName: "FPT Polytechnic",
+    companyLogo: "/education/fpt-polytechnic.jpg",
+    companyWebsite: "https://caodang.fpt.edu.vn",
     positions: [
       {
         id: "c47f5903-88ae-4512-8a50-0b91b0cf99b6",
-        title: "FPT Polytechnic",
+        title: "Information Technology",
         employmentPeriod: {
           start: "2022",
           end: "2025",
@@ -220,11 +247,29 @@ export const EXPERIENCES_VI: Experience[] = [
   },
   {
     ...EXPERIENCES_EN[3],
-    companyName: "Học vấn",
+    companyName: "Đại học Giao thông Vận tải",
     positions: [
       {
         ...EXPERIENCES_EN[3]!.positions[0]!,
-        title: "Cao đẳng FPT Polytechnic",
+        title: "Sinh viên",
+        employmentPeriod: {
+          start: "2025",
+          end: "Hiện tại",
+        },
+        description: `
+  - Đang học tại **Đại học Giao thông Vận tải (UTC / GTVT)**.
+  - Tiếp tục nâng nền tảng **Công nghệ thông tin** song song với công việc frontend developer.
+`,
+      },
+    ],
+  },
+  {
+    ...EXPERIENCES_EN[4],
+    companyName: "Cao đẳng FPT Polytechnic",
+    positions: [
+      {
+        ...EXPERIENCES_EN[4]!.positions[0]!,
+        title: "Công nghệ thông tin",
         description: `
   - **Ngành**: Công nghệ Thông tin (GPA 3.6/4), tập trung **Phát triển Web**.  
   - Có kinh nghiệm thực hành với **Next.js**, **React.js**, **WordPress** và các dự án full-stack trong quá trình học và làm bài nhóm.

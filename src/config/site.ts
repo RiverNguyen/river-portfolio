@@ -5,7 +5,7 @@ export const SITE_INFO = {
   name: USER.displayName,
   url: process.env.APP_URL || "https://rivernguyen.id.vn",
   ogImage: USER.ogImage,
-  description: `${USER.displayName} (Nguyễn Đình Giang) — ${USER.jobTitle} based in Ha Noi. Portfolio, projects, blog and contact.`,
+  description: `${USER.displayName} (River) — ${USER.jobTitle} based in Ha Noi. Portfolio, projects, blog and contact.`,
   keywords: USER.keywords,
 }
 

@@ -161,7 +161,7 @@ export function PageReveal() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Giang Nguyễn Đình
+          Nguyễn Đình Giang
         </motion.p>
 
         <motion.div

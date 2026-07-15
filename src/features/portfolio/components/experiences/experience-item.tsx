@@ -18,7 +18,11 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
               alt={`${experience.companyName} logo`}
               fill
               quality={100}
-              className="rounded-full object-cover"
+              className={
+                experience.companyLogo.endsWith(".svg")
+                  ? "rounded-full object-contain p-0.5"
+                  : "rounded-full object-cover"
+              }
               unoptimized
               aria-hidden
             />

@@ -3,7 +3,7 @@ import type { User } from "@/features/portfolio/types/user"
 export const USER_EN = {
   firstName: "Giang",
   lastName: "Nguyễn",
-  displayName: "Giang Nguyễn Đình",
+  displayName: "Nguyễn Đình Giang",
   username: "river",
   gender: "male",
   pronouns: "he/him",
@@ -30,11 +30,11 @@ export const USER_EN = {
       website: "https://bateco.vn",
     },
   ],
-  about: `I'm **Giang Nguyễn Đình** (also known as **Nguyễn Đình Giang** / River) — a **Frontend Developer** with 1.5+ year of experience delivering pixel-perfect, high-quality web applications.
-- Skilled in **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and modern front-end tooling to build user-centric experiences.
-- Strong in **API integration** with **REST** and **GraphQL**, and collaborative workflows using **Git**, **GitHub**, and **GitLab**.
-- Focused on **performance**, applying lazy loading, code splitting, and image optimization to keep interfaces fast.
-- Continuously learning, with solid **UI/UX** fundamentals and experience turning Figma and other design assets into responsive interfaces.`,
+  about: `I'm **Nguyễn Đình Giang** (River) — a **Frontend Developer** with 1.5+ years of experience shipping polished, high-performance web products from design to production.
+- Build modern UIs with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**, turning Figma into responsive, accessible interfaces.
+- Integrate **REST** and **GraphQL** APIs, and collaborate smoothly with teams via **Git**, **GitHub**, and **GitLab**.
+- Care about speed: lazy loading, code splitting, image optimization, and clean component architecture.
+- Use **Docker** for consistent local and deployment environments, and keep learning to sharpen both craft and delivery.`,
   avatar: "/avatar.jpg",
   ogImage: "/image.png",
   namePronunciationUrl: "",
@@ -45,14 +45,14 @@ export const USER_EN = {
   },
   timeZone: "Asia/Ho_Chi_Minh",
   keywords: [
-    "Giang Nguyễn Đình",
     "Nguyễn Đình Giang",
-    "Giang Nguyen Dinh",
     "Nguyen Dinh Giang",
-    "giang nguyễn đình",
     "nguyễn đình giang",
-    "giang nguyen dinh",
     "nguyen dinh giang",
+    "Giang Nguyễn Đình",
+    "Giang Nguyen Dinh",
+    "giang nguyễn đình",
+    "giang nguyen dinh",
     "River Nguyen",
     "rivernguyen",
     "river",
@@ -93,11 +93,11 @@ export const USER_VI = {
       website: "https://bateco.vn",
     },
   ],
-  about: `Tôi là **Giang Nguyễn Đình** (còn gọi là **Nguyễn Đình Giang** / River) — **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm xây dựng các ứng dụng web chất lượng cao, pixel-perfect.
-- Thành thạo **Next.js**, **React**, **TypeScript**, **Tailwind CSS** và các công cụ front-end hiện đại để tạo trải nghiệm hướng người dùng.
-- Mạnh về **tích hợp API** với **REST** và **GraphQL**, làm việc nhóm với **Git**, **GitHub** và **GitLab**.
-- Tập trung vào **hiệu năng**: áp dụng lazy loading, code splitting và tối ưu hình ảnh để giao diện luôn nhanh.
-- Luôn học hỏi, có nền tảng **UI/UX** tốt và kinh nghiệm chuyển thiết kế Figma (và các design assets khác) thành giao diện responsive.`,
+  about: `Tôi là **Nguyễn Đình Giang** (River) — **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm đưa sản phẩm web từ thiết kế đến production, chú trọng chất lượng và hiệu năng.
+- Xây dựng UI hiện đại với **Next.js**, **React**, **TypeScript** và **Tailwind CSS**; chuyển Figma thành giao diện responsive, dễ dùng.
+- Tích hợp API **REST** và **GraphQL**, phối hợp nhóm mượt với **Git**, **GitHub** và **GitLab**.
+- Ưu tiên tốc độ: lazy loading, code splitting, tối ưu hình ảnh và kiến trúc component gọn.
+- Dùng **Docker** để đồng bộ môi trường local và deploy, đồng thời luôn học để nâng kỹ năng lẫn cách làm việc.`,
   keywords: [
     ...USER_EN.keywords,
     "lập trình viên frontend",

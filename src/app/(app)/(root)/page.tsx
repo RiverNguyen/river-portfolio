@@ -85,7 +85,7 @@ function getPageJsonLd(): WithContext<PageSchema> {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    name: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    name: `${USER.displayName} | ${USER.jobTitle}`,
     url: SITE_INFO.url,
     dateCreated: new Date(USER.dateCreated).toISOString(),
     dateModified: new Date().toISOString(),
@@ -97,9 +97,9 @@ function getPageJsonLd(): WithContext<PageSchema> {
       additionalName: "Đình",
       familyName: USER.lastName,
       alternateName: [
-        "Nguyễn Đình Giang",
-        "Giang Nguyen Dinh",
+        "Giang Nguyễn Đình",
         "Nguyen Dinh Giang",
+        "Giang Nguyen Dinh",
         USER.username,
         "River Nguyen",
       ],
