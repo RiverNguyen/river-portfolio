@@ -1,0 +1,44 @@
+---
+title: WordPress làm Headless CMS với Next.js
+description: Pattern thực tế mình hay dùng — Custom Post Types, ACF fields và REST API cấp dữ liệu cho frontend Next.js.
+image: /blogs/wordpress.png
+new: true
+createdAt: 2026-02-20
+updatedAt: 2026-02-20
+---
+
+Phần lớn dự án khách hàng của mình nằm ở giao điểm **WordPress** và **Next.js**. WordPress quản lý nội dung; Next.js mang lại frontend nhanh, hiện đại mà người dùng mong đợi.
+
+## Pattern cơ bản
+
+1. **WordPress** lưu content qua Custom Post Types và ACF fields
+2. **REST API** expose JSON có cấu trúc cho từng loại nội dung
+3. **Next.js** fetch data lúc build hoặc on-demand
+4. **Tailwind + shadcn/ui** render UI pixel-perfect từ thiết kế Figma
+
+Setup này giúp khách hàng không chuyên kỹ thuật vẫn quen admin WordPress, trong khi site public vẫn nhanh và thân thiện SEO.
+
+## Ví dụ: fetch danh sách tour
+
+```ts
+const res = await fetch(`${WP_API}/wp/v2/tours?_embed`, {
+  next: { revalidate: 3600 },
+})
+
+const tours = await res.json()
+```
+
+Ở các dự án như **Tiem Tour** và **Lotus Charm Travel**, mình dùng đúng flow này cho listing tour, bộ lọc và form đặt chỗ.
+
+## Mẹo tiết kiệm thời gian
+
+- Định nghĩa ACF field groups sớm, giữ tên field REST nhất quán
+- Dùng `revalidate` thay vì build tĩnh hoàn toàn khi content thay đổi thường xuyên
+- Cache response WordPress và tối ưu ảnh ở cả CMS lẫn frontend
+- Giữ logic payment và auth ở phía Next.js khi có thể
+
+## Khi nào hợp nhất
+
+Headless WordPress rất hợp cho site marketing, nền tảng booking và storefront e-commerce — nơi editor cần linh hoạt nhưng user cần tốc độ.
+
+Admin ở WordPress. Trải nghiệm ở Next.js. Ai cũng có lợi.

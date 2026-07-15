@@ -1,0 +1,44 @@
+---
+title: WordPress as a Headless CMS with Next.js
+description: A practical pattern I use on client projects — Custom Post Types, ACF fields, and REST API feeding a Next.js frontend.
+image: /blogs/wordpress.png
+new: true
+createdAt: 2026-02-20
+updatedAt: 2026-02-20
+---
+
+Most of my client work sits at the intersection of **WordPress** and **Next.js**. WordPress handles content management; Next.js delivers the fast, modern frontend users expect.
+
+## The pattern
+
+1. **WordPress** stores content with Custom Post Types and ACF fields
+2. **REST API** exposes structured JSON for each content type
+3. **Next.js** fetches data at build time or on demand
+4. **Tailwind + shadcn/ui** render pixel-perfect UI from Figma designs
+
+This setup gives non-technical clients a familiar admin panel while the public site stays fast and SEO-friendly.
+
+## Example: fetching tours
+
+```ts
+const res = await fetch(`${WP_API}/wp/v2/tours?_embed`, {
+  next: { revalidate: 3600 },
+})
+
+const tours = await res.json()
+```
+
+On projects like **Tiem Tour** and **Lotus Charm Travel**, I use this exact flow for tour listings, filters, and booking forms.
+
+## Tips that save time
+
+- Define ACF field groups early and keep REST field names consistent
+- Use `revalidate` instead of fully static builds when content changes often
+- Cache WordPress responses and optimize images at both CMS and frontend layers
+- Keep payment and auth logic on the Next.js side when possible
+
+## When it works best
+
+Headless WordPress shines for marketing sites, booking platforms, and e-commerce storefronts where content editors need flexibility but users need speed.
+
+The admin stays in WordPress. The experience stays in Next.js. Everyone wins.

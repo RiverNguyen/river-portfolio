@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server"
 
-import { RESUME_PDF_URL, SOURCE_CODE_GITHUB_URL } from "@/config/site"
+import { FluidGradientText } from "@/components/fluid-gradient-text"
+import { SOURCE_CODE_GITHUB_URL } from "@/config/site"
 import { USER } from "@/features/portfolio/data/user"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
@@ -31,23 +32,34 @@ export async function SiteFooter() {
         </p>
 
         <div className="screen-line-before flex justify-center gap-2 py-3 font-mono text-xs text-muted-foreground sm:hidden">
+          <Link className="font-medium" href="/projects">
+            {t("projects")}
+          </Link>
+
+          <span className="opacity-50">•</span>
+
           <Link className="font-medium" href="/blog">
             {t("blog")}
           </Link>
 
           <span className="opacity-50">•</span>
 
-          <a
-            className="font-medium"
-            href={RESUME_PDF_URL}
-            download="Giang-Nguyen-Dinh-Resume.pdf"
-          >
+          <Link className="font-medium" href="/resume">
             {t("resume")}
-          </a>
+          </Link>
         </div>
 
         <div className="screen-line-before screen-line-after flex w-full before:z-1 after:z-1">
           <div className="mx-auto flex items-center justify-center gap-3 border-x border-edge bg-background px-4">
+            <Link
+              className="flex font-mono text-xs font-medium text-muted-foreground max-sm:hidden"
+              href="/projects"
+            >
+              {t("projects")}
+            </Link>
+
+            <Separator className="max-sm:hidden" />
+
             <Link
               className="flex font-mono text-xs font-medium text-muted-foreground max-sm:hidden"
               href="/blog"
@@ -57,13 +69,12 @@ export async function SiteFooter() {
 
             <Separator className="max-sm:hidden" />
 
-            <a
+            <Link
               className="flex font-mono text-xs font-medium text-muted-foreground max-sm:hidden"
-              href={RESUME_PDF_URL}
-              download="Giang-Nguyen-Dinh-Resume.pdf"
+              href="/resume"
             >
               {t("resume")}
-            </a>
+            </Link>
 
             <Separator className="max-sm:hidden" />
 
@@ -113,6 +124,10 @@ export async function SiteFooter() {
               <span className="sr-only">Zalo</span>
             </a>
           </div>
+        </div>
+
+        <div className="screen-line-before mx-auto aspect-4/1 max-h-36 w-full border-x border-edge text-foreground md:max-w-3xl">
+          <FluidGradientText text="river" svgViewBoxWidth={800} />
         </div>
       </div>
       <div className="pb-[env(safe-area-inset-bottom,0px)]">

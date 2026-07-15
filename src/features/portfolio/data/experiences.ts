@@ -2,6 +2,43 @@ import type { Experience } from "../types/experiences"
 
 export const EXPERIENCES_EN: Experience[] = [
   {
+    id: "bateco",
+    companyName: "Bateco Group",
+    companyLogo: "/bateco.png",
+    companyWebsite: "https://bateco.vn",
+    positions: [
+      {
+        id: "6b469f04-835b-4895-8300-5363483a1531",
+        title: "Web Developer",
+        employmentPeriod: {
+          start: "05.2026",
+          end: "Present",
+        },
+        employmentType: "Full-time",
+        icon: "code",
+        description: `- **Web Developer** at **Bateco Group** (May 2026 - Present)  
+  - Build and maintain responsive corporate websites with **Next.js** and **React.js**, optimized for performance, SEO and accessibility.
+  - Integrate **RESTful APIs** to deliver dynamic content and interactive features across the group's business domains.
+  - Use **GSAP**, **Tailwind CSS** and **Shadcn/UI** to create smooth animations and a polished, consistent UI.
+  - Manage application state with **Zustand**; use **Docker** for reliable, reproducible development and deployment environments.
+`,
+        skills: [
+          "Next.js",
+          "React.js",
+          "Docker",
+          "Tailwind CSS",
+          "Shadcn/UI",
+          "RESTful APIs",
+          "GSAP",
+          "Zustand",
+          "SEO",
+          "Motion Animation",
+        ],
+      },
+    ],
+    isCurrentEmployer: true,
+  },
+  {
     id: "okhub",
     companyName: "OKHub Agency",
     companyLogo: "/company.jpg",
@@ -12,7 +49,7 @@ export const EXPERIENCES_EN: Experience[] = [
         title: "Web Developer",
         employmentPeriod: {
           start: "12.2024",
-          end: "Present",
+          end: "05.2026",
         },
         employmentType: "Full-time",
         icon: "code",
@@ -42,12 +79,12 @@ export const EXPERIENCES_EN: Experience[] = [
         ],
       },
     ],
-    isCurrentEmployer: true,
   },
   {
     id: "f8-technology-and-education-jsc",
     companyName: "F8 - Technology and Education JSC",
-    companyLogo: "https://khoahochatde.com/wp-content/uploads/2025/01/channels4_profile-2.jpg",
+    companyLogo:
+      "https://khoahochatde.com/wp-content/uploads/2025/01/channels4_profile-2.jpg",
     positions: [
       {
         id: "3e831244-8d8c-41e2-b2ce-7f3946956afd",
@@ -86,7 +123,8 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "education",
     companyName: "Education",
-    companyLogo: "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-fpt-inkythuatso-1-01-01-14-33-35.jpg",
+    companyLogo:
+      "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-fpt-inkythuatso-1-01-01-14-33-35.jpg",
     positions: [
       {
         id: "c47f5903-88ae-4512-8a50-0b91b0cf99b6",
@@ -129,24 +167,47 @@ export const EXPERIENCES_VI: Experience[] = [
       {
         ...EXPERIENCES_EN[0]!.positions[0]!,
         title: "Lập trình viên Web",
-        employmentPeriod: { ...EXPERIENCES_EN[0]!.positions[0]!.employmentPeriod, end: "Hiện tại" },
+        employmentPeriod: {
+          ...EXPERIENCES_EN[0]!.positions[0]!.employmentPeriod,
+          end: "Hiện tại",
+        },
         employmentType: "Toàn thời gian",
-        description: `- **Lập trình viên NextJS & WordPress** tại **OKHub Agency** (12/2024 - Hiện tại)  
-  - Xây dựng và bảo trì website **Next.js**, **React.js** và **WordPress** responsive, tối ưu hiệu năng, SEO và accessibility.
-  - Tích hợp **RESTful APIs**, **Custom Post Types** và **ACF fields** để tạo trải nghiệm động, dữ liệu-driven cho frontend Next.js.
-  - Sử dụng **GSAP** và các UI libraries hiện đại để tạo animation/interaction mượt và hấp dẫn.
-  - Quản lý state bằng **Redux**, **Zustand** và **Context API** để UI phức tạp vẫn dễ mở rộng và bảo trì.
-  - Áp dụng best practices về hiệu năng, bảo mật và tương thích đa thiết bị: code splitting, tối ưu hình ảnh và hardening cơ bản.
+        description: `- **Lập trình viên Web** tại **Bateco Group** (05/2026 - Hiện tại)  
+  - Xây dựng và bảo trì website doanh nghiệp responsive bằng **Next.js** và **React.js**, tối ưu hiệu năng, SEO và accessibility.
+  - Tích hợp **RESTful APIs** để triển khai nội dung động và tính năng tương tác cho các lĩnh vực kinh doanh của tập đoàn.
+  - Sử dụng **GSAP**, **Tailwind CSS** và **Shadcn/UI** để tạo animation mượt và giao diện nhất quán, chuyên nghiệp.
+  - Quản lý state với **Zustand**; dùng **Docker** để đồng bộ môi trường phát triển và triển khai ổn định.
 `,
       },
     ],
   },
   {
     ...EXPERIENCES_EN[1],
-    companyName: "F8 - Công ty Cổ phần Công nghệ & Giáo dục",
     positions: [
       {
         ...EXPERIENCES_EN[1]!.positions[0]!,
+        title: "Lập trình viên Web",
+        employmentPeriod: {
+          ...EXPERIENCES_EN[1]!.positions[0]!.employmentPeriod,
+          end: "05.2026",
+        },
+        employmentType: "Toàn thời gian",
+        description: `- **Lập trình viên NextJS & WordPress** tại **OKHub Agency** (12/2024 - 05/2026)  
+  - Xây dựng và bảo trì website **Next.js**, **React.js** và **WordPress** responsive, tối ưu hiệu năng, SEO và accessibility.
+  - Tích hợp **RESTful APIs**, **Custom Post Types** và **ACF fields** để triển khai trải nghiệm động trên frontend Next.js.
+  - Dùng **GSAP** và các thư viện UI hiện đại để tạo animation và tương tác mượt trên các dự án.
+  - Quản lý state với **Redux**, **Zustand** và **Context API** để UI phức tạp dễ mở rộng và bảo trì.
+  - Áp dụng best practices về hiệu năng, bảo mật và tương thích đa thiết bị, gồm code splitting, tối ưu hình ảnh và hardening cơ bản.
+`,
+      },
+    ],
+  },
+  {
+    ...EXPERIENCES_EN[2],
+    companyName: "F8 - Công ty Cổ phần Công nghệ & Giáo dục",
+    positions: [
+      {
+        ...EXPERIENCES_EN[2]!.positions[0]!,
         title: "Quản lý lớp Web Development - Lập trình viên Fullstack",
         employmentType: "Toàn thời gian",
         description: `- **Quản lý lớp Web Development & Lập trình viên Fullstack** tại **F8** (04/2024 - 11/2024)  
@@ -158,11 +219,11 @@ export const EXPERIENCES_VI: Experience[] = [
     ],
   },
   {
-    ...EXPERIENCES_EN[2],
+    ...EXPERIENCES_EN[3],
     companyName: "Học vấn",
     positions: [
       {
-        ...EXPERIENCES_EN[2]!.positions[0]!,
+        ...EXPERIENCES_EN[3]!.positions[0]!,
         title: "Cao đẳng FPT Polytechnic",
         description: `
   - **Ngành**: Công nghệ Thông tin (GPA 3.6/4), tập trung **Phát triển Web**.  

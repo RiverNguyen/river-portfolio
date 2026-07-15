@@ -29,6 +29,8 @@ export async function SiteHeader() {
 
   const navItems = [
     { title: t("portfolio"), href: "/" },
+    { title: t("projects"), href: "/projects" },
+    { title: t("resume"), href: "/resume" },
     { title: t("blog"), href: "/blog" },
     { title: t("contact"), href: "/#contact" },
   ]

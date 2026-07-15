@@ -104,7 +104,7 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
   },
   {
     title: "Projects",
-    href: "/#projects",
+    href: "/projects",
     icon: BoxIcon,
   },
   {

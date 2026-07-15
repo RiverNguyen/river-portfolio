@@ -1,31 +1,29 @@
 import { getTableOfContents } from "fumadocs-core/content/toc"
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
+import { ArrowLeftIcon } from "lucide-react"
 import type { Metadata } from "next"
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import { getLocale, getTranslations } from "next-intl/server"
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts"
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/base/ui/tooltip"
 import { InlineTOC } from "@/components/inline-toc"
 import { MDX } from "@/components/mdx"
 import { Button } from "@/components/ui/button"
-import { Kbd } from "@/components/ui/kbd"
 import { Prose } from "@/components/ui/typography"
 import { SITE_INFO } from "@/config/site"
+import { Link } from "@/i18n/navigation"
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts"
+import { PostPaginationButton } from "@/features/blog/components/post-pagination-button"
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions"
 import { PostShareMenu } from "@/features/blog/components/post-share-menu"
 import {
   findNeighbour,
   getAllPosts,
+  getBlogLocale,
   getPostBySlug,
 } from "@/features/blog/data/posts"
 import type { Post } from "@/features/blog/types/post"
 import { USER } from "@/features/portfolio/data/user"
+import { getAbsoluteUrl, getLanguageAlternates, getLocalizedUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 export async function generateStaticParams() {
@@ -41,7 +39,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const slug = (await params).slug
-  const post = getPostBySlug(slug)
+  const locale = await getLocale()
+  const post = getPostBySlug(slug, getBlogLocale(locale))
 
   if (!post) {
     return notFound()
@@ -57,12 +56,16 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: postUrl,
+      languages: getLanguageAlternates(postUrl),
     },
     openGraph: {
-      url: postUrl,
+      url: getLocalizedUrl(postUrl, "en"),
       type: "article",
+      locale: locale === "vi" ? "vi_VN" : "en_US",
       publishedTime: new Date(createdAt).toISOString(),
       modifiedTime: new Date(updatedAt).toISOString(),
+      title,
+      description,
       images: {
         url: ogImage,
         width: 1200,
@@ -72,12 +75,16 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      title,
+      description,
       images: [ogImage],
     },
   }
 }
 
 function getPageJsonLd(post: Post): WithContext<PageSchema> {
+  const postUrl = getPostUrl(post)
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -85,16 +92,24 @@ function getPageJsonLd(post: Post): WithContext<PageSchema> {
     description: post.metadata.description,
     image:
       post.metadata.image ||
-      `/og/simple?title=${encodeURIComponent(post.metadata.title)}`,
-    url: `${SITE_INFO.url}${getPostUrl(post)}`,
+      getAbsoluteUrl(
+        `/og/simple?title=${encodeURIComponent(post.metadata.title)}`
+      ),
+    url: getAbsoluteUrl(postUrl),
+    mainEntityOfPage: getAbsoluteUrl(postUrl),
     datePublished: new Date(post.metadata.createdAt).toISOString(),
     dateModified: new Date(post.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
       name: USER.displayName,
-      identifier: USER.username,
-      image: USER.avatar,
+      url: SITE_INFO.url,
+      image: getAbsoluteUrl(USER.avatar),
     },
+    publisher: {
+      "@type": "Person",
+      name: USER.displayName,
+    },
+    inLanguage: ["en", "vi"],
   }
 }
 
@@ -106,7 +121,10 @@ export default async function Page({
   }>
 }) {
   const slug = (await params).slug
-  const post = getPostBySlug(slug)
+  const locale = await getLocale()
+  const blogLocale = getBlogLocale(locale)
+  const t = await getTranslations("Blog")
+  const post = getPostBySlug(slug, blogLocale)
 
   if (!post) {
     notFound()
@@ -114,7 +132,7 @@ export default async function Page({
 
   const toc = getTableOfContents(post.content)
 
-  const allPosts = getAllPosts()
+  const allPosts = getAllPosts(blogLocale)
   const { previous, next } = findNeighbour(allPosts, slug)
 
   return (
@@ -136,7 +154,7 @@ export default async function Page({
         >
           <Link href="/blog">
             <ArrowLeftIcon />
-            Blog
+            {t("backToBlog")}
           </Link>
         </Button>
 
@@ -149,51 +167,19 @@ export default async function Page({
           <PostShareMenu title={post.metadata.title} url={getPostUrl(post)} />
 
           {previous && (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button variant="secondary" size="icon-sm" asChild>
-                    <Link href={`/blog/${previous.slug}`} />
-                  </Button>
-                }
-              >
-                <ArrowLeftIcon />
-                <span className="sr-only">Previous</span>
-              </TooltipTrigger>
-
-              <TooltipContent className="pr-2 pl-3">
-                <div className="flex items-center gap-3">
-                  Previous Post
-                  <Kbd>
-                    <ArrowLeftIcon />
-                  </Kbd>
-                </div>
-              </TooltipContent>
-            </Tooltip>
+            <PostPaginationButton
+              href={`/blog/${previous.slug}`}
+              direction="previous"
+              label={t("previousPost")}
+            />
           )}
 
           {next && (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button variant="secondary" size="icon-sm" asChild>
-                    <Link href={`/blog/${next.slug}`} />
-                  </Button>
-                }
-              >
-                <span className="sr-only">Next</span>
-                <ArrowRightIcon />
-              </TooltipTrigger>
-
-              <TooltipContent className="pr-2 pl-3">
-                <div className="flex items-center gap-3">
-                  Next Post
-                  <Kbd>
-                    <ArrowRightIcon />
-                  </Kbd>
-                </div>
-              </TooltipContent>
-            </Tooltip>
+            <PostPaginationButton
+              href={`/blog/${next.slug}`}
+              direction="next"
+              label={t("nextPost")}
+            />
           )}
         </div>
       </div>

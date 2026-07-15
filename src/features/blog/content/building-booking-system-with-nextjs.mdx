@@ -1,0 +1,44 @@
+---
+title: Building a Booking System with Next.js
+description: Lessons from shipping salon and tour booking platforms — forms, payments, admin flows, and keeping UX simple.
+image: /blogs/booking.png
+createdAt: 2026-02-10
+updatedAt: 2026-02-10
+---
+
+Booking flows look simple on the surface: pick a date, pick a slot, pay, done. In practice, they touch authentication, inventory, payments, notifications, and admin dashboards.
+
+I've shipped this pattern on **Zio Hair** (salon appointments + e-commerce) and **Tiem Tour** (tour search, filters, and custom requests).
+
+## Core user flow
+
+1. Browse services or tours
+2. Filter by date, time, stylist, or destination
+3. Add to cart or book directly
+4. Pay via **OnePay** or **Megapay**
+5. Receive confirmation (email / admin notification)
+
+The goal is zero confusion between steps. Every screen should answer: _where am I, what did I pick, and what's next?_
+
+## Frontend architecture
+
+```tsx
+// Simplified booking state
+const [step, setStep] = useState<"browse" | "details" | "payment">("browse")
+const [selection, setSelection] = useState<BookingSelection | null>(null)
+```
+
+I typically use **Zustand** for multi-step booking state — lighter than Redux for form-heavy flows, but still easy to debug.
+
+## Admin side matters too
+
+Clients need to manage appointments, update availability, and handle cancellations. WordPress admin + custom post types often handle this, while Next.js serves the customer-facing UI.
+
+## What I learned
+
+- Validate early: disable invalid dates/times before the user reaches payment
+- Show loading states on payment redirects — users panic on blank screens
+- Log booking failures server-side; "payment failed" without context is useless
+- Mobile-first: most booking traffic is on phones
+
+A good booking system feels boring in the best way — predictable, fast, and trustworthy.

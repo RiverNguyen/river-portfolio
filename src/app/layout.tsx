@@ -2,6 +2,7 @@ import "@/styles/globals.css"
 
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
+import { getLocale } from "next-intl/server"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 import type { WebSite, WithContext } from "schema-dts"
 
@@ -12,6 +13,7 @@ import { Providers } from "@/components/providers"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
 import { USER } from "@/features/portfolio/data/user"
 import { fontMono, fontPixelSquare, fontSans } from "@/lib/fonts"
+import { getLanguageAlternates } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 function getWebSiteJsonLd(): WithContext<WebSite> {
@@ -20,7 +22,9 @@ function getWebSiteJsonLd(): WithContext<WebSite> {
     "@type": "WebSite",
     name: SITE_INFO.name,
     url: SITE_INFO.url,
-    alternateName: [USER.username],
+    description: SITE_INFO.description,
+    inLanguage: ["en", "vi"],
+    alternateName: [USER.username, USER.displayName],
   }
 }
 
@@ -39,45 +43,68 @@ const darkModeScript = String.raw`
   } catch (_) {}
 `
 
+const preloaderBootScript = String.raw`
+  try {
+    var path = location.pathname;
+    var isHome = path === '/' || path === '/vi' || path === '/en';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isHome && !reduced && localStorage.getItem('portfolio-preloader-seen') !== '1') {
+      document.documentElement.setAttribute('data-preloader', '1');
+    }
+  } catch (_) {}
+`
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
   alternates: {
     canonical: "/",
+    languages: getLanguageAlternates("/"),
   },
   title: {
-    template: `%s – ${SITE_INFO.name}`,
-    default: `${USER.displayName} – ${USER.jobTitle}`,
+    template: `%s | ${SITE_INFO.name}`,
+    default: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
   authors: [
     {
-      name: "river",
+      name: USER.displayName,
       url: SITE_INFO.url,
     },
   ],
-  creator: "river",
+  creator: USER.displayName,
+  publisher: USER.displayName,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     siteName: SITE_INFO.name,
-    url: "/",
-    type: "profile",
+    url: SITE_INFO.url,
+    type: "website",
     locale: "en_US",
-    firstName: USER.firstName,
-    lastName: USER.lastName,
-    username: USER.username,
-    gender: USER.gender,
+    alternateLocale: ["vi_VN"],
+    title: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    description: SITE_INFO.description,
     images: [
       {
         url: SITE_INFO.ogImage,
         width: 1200,
         height: 630,
-        alt: SITE_INFO.name,
+        alt: `${USER.displayName} — ${USER.jobTitle}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    creator: "@river", // Twitter username
+    title: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    description: SITE_INFO.description,
     images: [SITE_INFO.ogImage],
   },
   icons: {
@@ -106,14 +133,16 @@ export const viewport: Viewport = {
   themeColor: META_THEME_COLORS.light,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const locale = await getLocale()
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={cn(
         fontSans.variable,
         fontMono.variable,
@@ -125,6 +154,10 @@ export default function RootLayout({
         <script
           type="text/javascript"
           dangerouslySetInnerHTML={{ __html: darkModeScript }}
+        />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{ __html: preloaderBootScript }}
         />
         {/*
           Thanks @tailwindcss. We inject the script via the `<Script/>` tag again,

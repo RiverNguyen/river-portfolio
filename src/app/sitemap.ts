@@ -1,23 +1,27 @@
 import type { MetadataRoute } from "next"
 
 import { SITE_INFO } from "@/config/site"
-import { getAllPosts, getPostsByCategory } from "@/features/blog/data/posts"
+import { getAllPosts } from "@/features/blog/data/posts"
+import { getLanguageAlternates, getLocalizedUrl } from "@/lib/seo"
+
+const STATIC_ROUTES = ["", "/projects", "/resume", "/blog"] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts().map((post) => ({
-    url: `${SITE_INFO.url}/blog/${post.slug}`,
-    lastModified: new Date(post.metadata.updatedAt).toISOString(),
+    url: getLocalizedUrl(`/blog/${post.slug}`, "en"),
+    lastModified: new Date(post.metadata.updatedAt),
+    alternates: {
+      languages: getLanguageAlternates(`/blog/${post.slug}`),
+    },
   }))
 
-  const components = getPostsByCategory("components").map((post) => ({
-    url: `${SITE_INFO.url}/components/${post.slug}`,
-    lastModified: new Date(post.metadata.updatedAt).toISOString(),
+  const routes = STATIC_ROUTES.map((route) => ({
+    url: getLocalizedUrl(route, "en"),
+    lastModified: new Date(),
+    alternates: {
+      languages: getLanguageAlternates(route),
+    },
   }))
 
-  const routes = ["", "/blog", "/components"].map((route) => ({
-    url: `${SITE_INFO.url}${route}`,
-    lastModified: new Date().toISOString(),
-  }))
-
-  return [...routes, ...posts, ...components]
+  return [...routes, ...posts]
 }

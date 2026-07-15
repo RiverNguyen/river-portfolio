@@ -1,0 +1,53 @@
+---
+title: GSAP Animations in Production
+description: How I use GSAP on client sites without hurting performance — scroll triggers, page transitions, and knowing when to stop.
+image: /blogs/gsap.png
+createdAt: 2026-01-28
+updatedAt: 2026-01-28
+---
+
+Animation is the fastest way to make a site feel premium — or the fastest way to make it feel slow. On projects like **MBBank**, **Inno JSC**, and **OKHub**, I use **GSAP** to add motion that supports the brand, not distracts from it.
+
+## My default stack
+
+- **GSAP** for timeline-based animations
+- **ScrollTrigger** for scroll-linked effects
+- **Swiper** for carousels with parallax slides
+- `prefers-reduced-motion` checks where motion isn't essential
+
+## A simple hero entrance
+
+```tsx
+useEffect(() => {
+  const ctx = gsap.context(() => {
+    gsap.from(".hero-title", {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    })
+  })
+
+  return () => ctx.revert()
+}, [])
+```
+
+Always wrap GSAP in `gsap.context()` and clean up on unmount. Orphaned tweens cause jank when navigating in Next.js.
+
+## Rules I follow
+
+1. **Animate transform and opacity** — avoid layout-triggering properties
+2. **One hero moment per page** — not every element needs to fly in
+3. **Respect reduced motion** — offer a static fallback
+4. **Test on mid-range phones** — if it stutters on a 3-year-old Android, dial it back
+5. **Lazy-init ScrollTrigger** — don't register triggers for off-screen sections immediately
+
+## Parallax without the lag
+
+On project galleries I use Swiper's parallax module with `watchSlidesProgress` instead of heavy scroll listeners on every frame. Less main-thread work, smoother swipes.
+
+## When not to use GSAP
+
+For simple hover states or toggles, CSS transitions are enough. GSAP earns its place when you need sequenced timelines, scroll choreography, or cross-element coordination.
+
+Motion should feel intentional — like the site is responding to you, not performing for you.

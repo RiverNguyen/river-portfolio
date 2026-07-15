@@ -1,17 +1,17 @@
 import { ArrowRightIcon } from "lucide-react"
-import Link from "next/link"
-import { getTranslations } from "next-intl/server"
-import React from "react"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
 import { PostItem } from "@/features/blog/components/post-item"
-import { getAllPosts } from "@/features/blog/data/posts"
+import { getAllPosts, getBlogLocale } from "@/features/blog/data/posts"
+import { Link } from "@/i18n/navigation"
 
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "./panel"
 
 export async function Blog() {
+  const locale = await getLocale()
   const t = await getTranslations("Blog")
-  const allPosts = getAllPosts()
+  const allPosts = getAllPosts(getBlogLocale(locale))
 
   return (
     <Panel id="blog">

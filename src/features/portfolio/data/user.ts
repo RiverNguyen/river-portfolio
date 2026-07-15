@@ -2,7 +2,7 @@ import type { User } from "@/features/portfolio/types/user"
 
 export const USER_EN = {
   firstName: "Giang",
-  lastName: "Nguyễn Đình",
+  lastName: "Nguyễn",
   displayName: "Giang Nguyễn Đình",
   username: "river",
   gender: "male",
@@ -17,52 +17,55 @@ export const USER_EN = {
     "JavaScript Developer",
     "Node.js Developer",
     "WordPress Developer",
-
   ],
   address: "Ha Noi, Viet Nam",
   phoneNumber: "MDM0NTYxMzA5MA==", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "bmdpYW5nMTMwOUBnbWFpbC5jb20=", // base64 encoded
-  website: "http://river-portfolio.vercel.app",
-  jobTitle: "Web Developer",
+  website: "https://rivernguyen.id.vn",
+  jobTitle: "Frontend Developer",
   jobs: [
     {
-      title: "Web Developer",
-      company: "OKHub Agency",
-      website: "https://okhub.vn",
+      title: "Frontend Developer",
+      company: "Bateco Group",
+      website: "https://bateco.vn",
     },
   ],
-  about: `- **Frontend Developer** with 1.5+ year of experience delivering pixel-perfect, high-quality web applications.
+  about: `I'm **Giang Nguyễn Đình** (also known as **Nguyễn Đình Giang** / River) — a **Frontend Developer** with 1.5+ year of experience delivering pixel-perfect, high-quality web applications.
 - Skilled in **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and modern front-end tooling to build user-centric experiences.
 - Strong in **API integration** with **REST** and **GraphQL**, and collaborative workflows using **Git**, **GitHub**, and **GitLab**.
 - Focused on **performance**, applying lazy loading, code splitting, and image optimization to keep interfaces fast.
 - Continuously learning, with solid **UI/UX** fundamentals and experience turning Figma and other design assets into responsive interfaces.`,
   avatar: "/avatar.jpg",
-  ogImage:
-    "/image.png",
+  ogImage: "/image.png",
   namePronunciationUrl: "",
   affiliateBadge: {
-    name: "OKHub Agency",
-    url: "https://okhub.vn",
-    logo: "/company.jpg",
+    name: "Bateco Group",
+    url: "https://bateco.vn",
+    logo: "/bateco.png",
   },
   timeZone: "Asia/Ho_Chi_Minh",
   keywords: [
-    "river",
-    "nguyen giang",
-    "nguyen giang dinh",
+    "Giang Nguyễn Đình",
+    "Nguyễn Đình Giang",
+    "Giang Nguyen Dinh",
+    "Nguyen Dinh Giang",
+    "giang nguyễn đình",
+    "nguyễn đình giang",
     "giang nguyen dinh",
-    "giang nguyen",
-    "giang",
-    "nguyen",
-    "dinh",
+    "nguyen dinh giang",
+    "River Nguyen",
+    "rivernguyen",
+    "river",
+    "frontend developer Hà Nội",
     "web developer",
     "full stack developer",
     "next.js developer",
     "react developer",
-    "type script developer",
+    "typescript developer",
     "javascript developer",
     "node.js developer",
     "wordpress developer",
+    "frontend developer",
   ],
   dateCreated: "2026-02-10", // YYYY-MM-DD
 } satisfies User
@@ -82,21 +85,22 @@ export const USER_VI = {
     "Lập trình viên WordPress",
   ],
   address: "Hà Nội, Việt Nam",
-  jobTitle: "Lập trình viên Web",
+  jobTitle: "Lập trình viên Frontend",
   jobs: [
     {
-      title: "Lập trình viên Web",
-      company: "OKHub Agency",
-      website: "https://okhub.vn",
+      title: "Lập trình viên Frontend",
+      company: "Bateco Group",
+      website: "https://bateco.vn",
     },
   ],
-  about: `- **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm xây dựng các ứng dụng web chất lượng cao, pixel-perfect.
+  about: `Tôi là **Giang Nguyễn Đình** (còn gọi là **Nguyễn Đình Giang** / River) — **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm xây dựng các ứng dụng web chất lượng cao, pixel-perfect.
 - Thành thạo **Next.js**, **React**, **TypeScript**, **Tailwind CSS** và các công cụ front-end hiện đại để tạo trải nghiệm hướng người dùng.
 - Mạnh về **tích hợp API** với **REST** và **GraphQL**, làm việc nhóm với **Git**, **GitHub** và **GitLab**.
 - Tập trung vào **hiệu năng**: áp dụng lazy loading, code splitting và tối ưu hình ảnh để giao diện luôn nhanh.
 - Luôn học hỏi, có nền tảng **UI/UX** tốt và kinh nghiệm chuyển thiết kế Figma (và các design assets khác) thành giao diện responsive.`,
   keywords: [
     ...USER_EN.keywords,
+    "lập trình viên frontend",
     "lập trình viên web",
     "lập trình viên full stack",
     "lập trình viên next.js",

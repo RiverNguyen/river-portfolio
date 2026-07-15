@@ -29,13 +29,13 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   const hasMultipleImages = images.length > 1
 
   return (
-    <div className="space-y-1 rounded-xl border border-edge bg-background/40 screen-line-after">
-      <div className="flex items-center justify-between px-3 pt-2 text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="screen-line-after max-w-full space-y-1 overflow-hidden rounded-xl border border-edge bg-background/40">
+      <div className="flex items-center justify-between px-3 pt-2 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
         <span>{t("projectGallery")}</span>
         <span className="text-xs opacity-70">{t("screenshots")}</span>
       </div>
 
-      <div className="relative">
+      <div className="relative max-w-full overflow-hidden">
         <Swiper
           modules={[Parallax, Autoplay]}
           slidesPerView={1}
@@ -44,16 +44,16 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
           autoplay={
             hasMultipleImages
               ? {
-                delay: 3200,
-                disableOnInteraction: false,
-              }
+                  delay: 3200,
+                  disableOnInteraction: false,
+                }
               : false
           }
           parallax
           onSwiper={(instance) => {
             swiperRef.current = instance
           }}
-          className="w-full overflow-hidden rounded-b-xl border-t border-edge/60 bg-muted/70"
+          className="w-full max-w-full overflow-hidden rounded-b-xl border-t border-edge/60 bg-muted/70"
         >
           {images.map((src, index) => (
             <SwiperSlide key={index} className="relative overflow-hidden">
@@ -75,7 +75,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     src={src}
                     alt={`${title} screenshot ${index + 1}`}
                     fill
-                    className="h-full w-full object-cover will-change-transform transition-opacity duration-300"
+                    className="h-full w-full object-cover transition-opacity duration-300 will-change-transform"
                     style={{ opacity: loadedIndices.has(index) ? 1 : 0 }}
                     sizes="(min-width: 768px) 600px, 100vw"
                     unoptimized
@@ -90,7 +90,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
         </Swiper>
 
         {hasMultipleImages && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-3 z-[1]">
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 z-[1] flex justify-center px-3">
             <div className="pointer-events-auto flex gap-2 rounded-full border border-edge/80 bg-background/95 px-2 py-1 shadow-lg shadow-black/40">
               <button
                 type="button"
@@ -115,4 +115,3 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
     </div>
   )
 }
-

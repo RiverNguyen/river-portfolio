@@ -1,0 +1,61 @@
+---
+title: Tối ưu Next.js cho Core Web Vitals
+description: Các win hiệu năng thực tế từ dự án khách hàng — ảnh, font, code splitting và audit Lighthouse có ý nghĩa.
+image: /blogs/next.png
+createdAt: 2026-01-15
+updatedAt: 2026-01-15
+---
+
+Hiệu năng không phải việc làm một lần. Mỗi lần bàn giao dự án, mình chạy **Lighthouse**, kiểm tra **Core Web Vitals** và sửa những gì user thực sự cảm nhận — không chỉ đuổi điểm audit.
+
+## Checklist mình dùng
+
+### Hình ảnh
+
+- Dùng `next/image` với `width` / `height` rõ ràng
+- Serve WebP/AVIF khi có thể
+- Lazy-load media below the fold
+- Đừng ship ảnh hero 4000px cho container 1200px
+
+### JavaScript
+
+- Dynamic import component nặng (carousel, chart, thư viện animation)
+- Tránh ship GSAP ScrollTrigger ở trang không dùng
+- Giữ client component nhỏ — đẩy data fetching lên server
+
+```tsx
+const ProjectGallery = dynamic(
+  () => import("./project-gallery").then((m) => m.ProjectGallery),
+  { ssr: false }
+)
+```
+
+### Font
+
+- Subset font theo ký tự cần dùng
+- Dùng `display: swap` để tránh chữ vô hình lúc load
+- Giới hạn số font family — hai cái thường là đủ
+
+### Caching
+
+- Đặt `revalidate` hợp lý cho trang lấy data từ CMS
+- Cache static asset lâu ở tầng CDN
+- Đừng re-fetch data WordPress không đổi mỗi request
+
+## Metric mình theo dõi
+
+| Metric  | Ý nghĩa                                    |
+| ------- | ------------------------------------------ |
+| **LCP** | Nội dung chính hiện đủ nhanh chưa?        |
+| **INP** | Tương tác có phản hồi mượt không?          |
+| **CLS** | Layout có nhảy khi đang load không?       |
+
+## Ví dụ thực tế
+
+Ở **Lotus Charm Travel**, mình cải thiện PageSpeed bằng tối ưu ảnh, code splitting và defer script không quan trọng. Site hướng tới khách quốc tế trên mạng di động — mỗi 100ms đều đáng kể.
+
+## Kết luận
+
+Đuổi điểm Lighthouse hoàn hảo ít quan trọng hơn việc sửa cảm giác thực tế: hero chậm, scroll giật, layout shift lúc load.
+
+Bắt đầu từ ảnh và bundle JavaScript. Chỉ vậy thôi đã giải quyết phần lớn vấn đề.

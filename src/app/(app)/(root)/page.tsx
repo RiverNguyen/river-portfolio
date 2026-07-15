@@ -1,6 +1,6 @@
-import { useLocale } from "next-intl"
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts"
 
+import { SITE_INFO } from "@/config/site"
 import { About } from "@/features/portfolio/components/about"
 import { Blog } from "@/features/portfolio/components/blog"
 import { Contact } from "@/features/portfolio/components/contact"
@@ -12,11 +12,12 @@ import { ProfileHeader } from "@/features/portfolio/components/profile-header"
 import { Projects } from "@/features/portfolio/components/projects"
 import { SocialLinks } from "@/features/portfolio/components/social-links"
 import { TechStack } from "@/features/portfolio/components/tech-stack"
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 import { USER } from "@/features/portfolio/data/user"
+import { getAbsoluteUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 export default function Page() {
-  const locale = useLocale()
   return (
     <>
       <script
@@ -52,20 +53,14 @@ export default function Page() {
         {/* <Components />
         <Separator /> */}
 
-
-
         <Experiences />
         <Separator />
 
         <Projects />
         <Separator />
 
-        {locale === "en" && (
-          <>
-            <Blog />
-            <Separator />
-          </>
-        )}
+        <Blog />
+        <Separator />
 
         <Contact />
         <Separator />
@@ -90,13 +85,34 @@ function getPageJsonLd(): WithContext<PageSchema> {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
+    name: `${USER.displayName} | Nguyễn Đình Giang | ${USER.jobTitle}`,
+    url: SITE_INFO.url,
     dateCreated: new Date(USER.dateCreated).toISOString(),
     dateModified: new Date().toISOString(),
+    inLanguage: ["en", "vi"],
     mainEntity: {
       "@type": "Person",
       name: USER.displayName,
-      identifier: USER.username,
-      image: USER.avatar,
+      givenName: USER.firstName,
+      additionalName: "Đình",
+      familyName: USER.lastName,
+      alternateName: [
+        "Nguyễn Đình Giang",
+        "Giang Nguyen Dinh",
+        "Nguyen Dinh Giang",
+        USER.username,
+        "River Nguyen",
+      ],
+      url: SITE_INFO.url,
+      image: getAbsoluteUrl(USER.avatar),
+      jobTitle: USER.jobTitle,
+      description: SITE_INFO.description,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: USER.address,
+        addressCountry: "VN",
+      },
+      sameAs: SOCIAL_LINKS.map((link) => link.href),
     },
   }
 }

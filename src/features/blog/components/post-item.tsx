@@ -1,8 +1,8 @@
 import { format } from "date-fns"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Post } from "@/features/blog/types/post"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
 export function PostItem({
@@ -31,6 +31,7 @@ export function PostItem({
             quality={100}
             priority={shouldPreloadImage}
             unoptimized
+            className="object-cover"
           />
 
           <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset dark:ring-white/10" />

@@ -1,6 +1,8 @@
 {
   "Nav": {
     "portfolio": "Hồ sơ",
+    "resume": "CV",
+    "projects": "Dự án",
     "blog": "Blog",
     "contact": "Liên hệ",
     "language": "Ngôn ngữ",
@@ -10,7 +12,8 @@
     "madeBy": "Tạo với ❤️ bởi {name}",
     "sourcePrefix": "Mã nguồn có sẵn trên",
     "blog": "Blog",
-    "resume": "CV"
+    "resume": "CV",
+    "projects": "Dự án"
   },
   "Blog": {
     "title": "Bài viết",
@@ -21,6 +24,14 @@
     "previousPost": "Bài trước",
     "next": "Sau",
     "nextPost": "Bài sau"
+  },
+  "ProjectsPage": {
+    "title": "Dự án",
+    "description": "Các dự án khách hàng và sản phẩm tiêu biểu — brand site, nền tảng booking, và xây dựng WordPress/Next.js.",
+    "allProjects": "Tất cả dự án",
+    "archiveLabel": "Tác phẩm chọn lọc",
+    "viewDetails": "Chi tiết",
+    "viewProject": "Mở trang live"
   },
   "Components": {
     "title": "Components",
@@ -76,6 +87,18 @@
     "screenshots": "Ảnh chụp màn hình",
     "showMore": "Xem thêm",
     "showLess": "Xem ít hơn"
+  },
+  "Resume": {
+    "title": "CV",
+    "objective": "Mục tiêu",
+    "experience": "Kinh nghiệm làm việc",
+    "skills": "Kỹ năng",
+    "projects": "Dự án",
+    "education": "Học vấn",
+    "technologies": "Công nghệ",
+    "responsibilities": "Trách nhiệm",
+    "downloadPdf": "Tải PDF",
+    "print": "In"
   },
   "Common": {
     "goHome": "Về trang chủ"

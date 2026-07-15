@@ -1,0 +1,61 @@
+---
+title: Optimizing Next.js for Core Web Vitals
+description: Practical performance wins from real client projects — images, fonts, code splitting, and Lighthouse audits that actually matter.
+image: /blogs/next.png
+createdAt: 2026-01-15
+updatedAt: 2026-01-15
+---
+
+Performance isn't a one-time task. On every client handoff, I run **Lighthouse**, check **Core Web Vitals**, and fix the issues that affect real users — not just the audit score.
+
+## The checklist I use
+
+### Images
+
+- Use `next/image` with explicit `width` / `height`
+- Serve WebP/AVIF where possible
+- Lazy-load below-the-fold media
+- Don't ship 4000px hero images for a 1200px container
+
+### JavaScript
+
+- Dynamic import heavy components (carousels, charts, animation libs)
+- Avoid shipping GSAP ScrollTrigger on pages that don't use it
+- Keep client components small — push data fetching to the server
+
+```tsx
+const ProjectGallery = dynamic(
+  () => import("./project-gallery").then((m) => m.ProjectGallery),
+  { ssr: false }
+)
+```
+
+### Fonts
+
+- Subset fonts to needed characters
+- Use `display: swap` to avoid invisible text during load
+- Limit font families — two is usually enough
+
+### Caching
+
+- Set sensible `revalidate` for CMS-backed pages
+- Cache static assets with long TTL at the CDN layer
+- Don't re-fetch unchanged WordPress data on every request
+
+## Metrics I watch
+
+| Metric  | What it tells you                        |
+| ------- | ---------------------------------------- |
+| **LCP** | Is the main content visible fast enough? |
+| **INP** | Do interactions feel responsive?         |
+| **CLS** | Does the layout jump while loading?      |
+
+## Real project example
+
+On **Lotus Charm Travel**, we improved PageSpeed by combining image optimization, code splitting, and deferring non-critical scripts. The site targets international tourists on mobile networks — every 100ms matters.
+
+## Final thought
+
+Chasing a perfect Lighthouse score is less important than fixing what users feel: slow heroes, janky scroll, and layout shifts on load.
+
+Start with images and JavaScript bundle size. That alone fixes most problems.

@@ -1,6 +1,8 @@
 {
   "Nav": {
     "portfolio": "Portfolio",
+    "resume": "Resume",
+    "projects": "Projects",
     "blog": "Blog",
     "contact": "Contact",
     "language": "Language",
@@ -10,7 +12,8 @@
     "madeBy": "Made with ❤️ by {name}",
     "sourcePrefix": "The source code is available on",
     "blog": "Blog",
-    "resume": "Resume"
+    "resume": "Resume",
+    "projects": "Projects"
   },
   "Blog": {
     "title": "Blog",
@@ -21,6 +24,14 @@
     "previousPost": "Previous Post",
     "next": "Next",
     "nextPost": "Next Post"
+  },
+  "ProjectsPage": {
+    "title": "Projects",
+    "description": "Selected client work and products — brand sites, booking platforms, and WordPress/Next.js builds.",
+    "allProjects": "All Projects",
+    "archiveLabel": "Selected Work",
+    "viewDetails": "Details",
+    "viewProject": "Open live site"
   },
   "Components": {
     "title": "Components",
@@ -76,6 +87,18 @@
     "screenshots": "Screenshots",
     "showMore": "Show More",
     "showLess": "Show Less"
+  },
+  "Resume": {
+    "title": "Resume",
+    "objective": "Objective",
+    "experience": "Work Experience",
+    "skills": "Skills",
+    "projects": "Projects",
+    "education": "Education",
+    "technologies": "Technologies",
+    "responsibilities": "Responsibilities",
+    "downloadPdf": "Download PDF",
+    "print": "Print"
   },
   "Common": {
     "goHome": "Go to Home"

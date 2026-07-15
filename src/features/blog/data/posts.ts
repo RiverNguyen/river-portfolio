@@ -5,6 +5,10 @@ import { cache } from "react"
 
 import type { Post, PostMetadata } from "@/features/blog/types/post"
 
+export type BlogLocale = "en" | "vi"
+
+const CONTENT_DIR = path.join(process.cwd(), "src/features/blog/content")
+
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent)
 
@@ -15,6 +19,8 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getMDXFiles(dir: string) {
+  if (!fs.existsSync(dir)) return []
+
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx")
 }
 
@@ -39,26 +45,42 @@ function getMDXData(dir: string) {
   })
 }
 
-export const getAllPosts = cache(() => {
-  return getMDXData(path.join(process.cwd(), "src/features/blog/content")).sort(
-    (a, b) => {
-      if (a.metadata.pinned && !b.metadata.pinned) return -1
-      if (!a.metadata.pinned && b.metadata.pinned) return 1
+function sortPosts(posts: Post[]) {
+  return posts.sort((a, b) => {
+    if (a.metadata.pinned && !b.metadata.pinned) return -1
+    if (!a.metadata.pinned && b.metadata.pinned) return 1
 
-      return (
-        new Date(b.metadata.createdAt).getTime() -
-        new Date(a.metadata.createdAt).getTime()
-      )
-    }
-  )
-})
-
-export function getPostBySlug(slug: string) {
-  return getAllPosts().find((post) => post.slug === slug)
+    return (
+      new Date(b.metadata.createdAt).getTime() -
+      new Date(a.metadata.createdAt).getTime()
+    )
+  })
 }
 
-export function getPostsByCategory(category: string) {
-  return getAllPosts().filter((post) => post.metadata?.category === category)
+function mergeLocalizedPosts(enPosts: Post[], viPosts: Post[]) {
+  return enPosts.map((enPost) => {
+    const viPost = viPosts.find((post) => post.slug === enPost.slug)
+    return viPost ?? enPost
+  })
+}
+
+export const getAllPosts = cache((locale: BlogLocale = "en") => {
+  const enPosts = sortPosts(getMDXData(CONTENT_DIR))
+
+  if (locale === "en") {
+    return enPosts
+  }
+
+  const viPosts = getMDXData(path.join(CONTENT_DIR, "vi"))
+  return sortPosts(mergeLocalizedPosts(enPosts, viPosts))
+})
+
+export function getPostBySlug(slug: string, locale: BlogLocale = "en") {
+  return getAllPosts(locale).find((post) => post.slug === slug)
+}
+
+export function getPostsByCategory(category: string, locale: BlogLocale = "en") {
+  return getAllPosts(locale).filter((post) => post.metadata?.category === category)
 }
 
 export function findNeighbour(posts: Post[], slug: string) {
@@ -74,4 +96,8 @@ export function findNeighbour(posts: Post[], slug: string) {
   }
 
   return { previous: null, next: null }
+}
+
+export function getBlogLocale(locale: string): BlogLocale {
+  return locale === "vi" ? "vi" : "en"
 }

@@ -35,8 +35,6 @@ export function LanguageSwitcher() {
     return qs ? `?${qs}` : ""
   }, [searchParams])
 
-  const hash = typeof window !== "undefined" ? window.location.hash : ""
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,6 +50,7 @@ export function LanguageSwitcher() {
             key={target}
             onSelect={() => {
               if (target === locale) return
+              const hash = window.location.hash
               router.replace(`${pathname}${search}${hash}`, { locale: target })
             }}
           >

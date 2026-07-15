@@ -34,6 +34,8 @@ ARG GMAIL_USER
 ENV GMAIL_USER=${GMAIL_USER}
 ARG GMAIL_APP_PASSWORD
 ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+ARG APP_URL
+ENV APP_URL=${APP_URL}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
@@ -77,6 +79,8 @@ ARG GMAIL_USER
 ENV GMAIL_USER=${GMAIL_USER}
 ARG GMAIL_APP_PASSWORD
 ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+ARG APP_URL
+ENV APP_URL=${APP_URL}
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1

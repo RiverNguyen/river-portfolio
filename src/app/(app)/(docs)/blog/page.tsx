@@ -1,28 +1,38 @@
 import type { Metadata } from "next"
+import { getLocale, getTranslations } from "next-intl/server"
 import { Suspense } from "react"
 
 import { PostList } from "@/features/blog/components/post-list"
 import { PostListWithSearch } from "@/features/blog/components/post-list-with-search"
 import { PostSearchInput } from "@/features/blog/components/post-search-input"
-import { getAllPosts } from "@/features/blog/data/posts"
+import { getAllPosts, getBlogLocale } from "@/features/blog/data/posts"
+import { createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "A collection of articles on development, design, and ideas.",
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Blog")
+
+  return createPageMetadata({
+    path: "/blog",
+    title: t("title"),
+    description: t("description"),
+    type: "website",
+  })
 }
 
-export default function Page() {
-  const allPosts = getAllPosts()
+export default async function Page() {
+  const locale = await getLocale()
+  const t = await getTranslations("Blog")
+  const allPosts = getAllPosts(getBlogLocale(locale))
 
   return (
     <div className="min-h-svh">
       <div className="screen-line-after px-4">
-        <h1 className="text-3xl font-semibold">Blog</h1>
+        <h1 className="text-3xl font-semibold">{t("title")}</h1>
       </div>
 
       <div className="p-4">
         <p className="font-mono text-sm text-balance text-muted-foreground">
-          {metadata.description}
+          {t("description")}
         </p>
       </div>
 

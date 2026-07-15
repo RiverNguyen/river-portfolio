@@ -320,6 +320,24 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Instant cover before React hydrates the homepage preloader (solid — no grid flash) */
+  html[data-preloader="1"] {
+    background: #09090b;
+  }
+
+  html[data-preloader="1"] body {
+    overflow: hidden;
+  }
+
+  html[data-preloader="1"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: #09090b;
+    pointer-events: none;
+  }
+
   /* Custom scrollbar styling. Thanks @shadcn-ui */
   ::-webkit-scrollbar {
     width: 5px;

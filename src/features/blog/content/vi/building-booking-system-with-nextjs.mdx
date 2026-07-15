@@ -1,0 +1,44 @@
+---
+title: Xây dựng hệ thống đặt lịch với Next.js
+description: Bài học từ các nền tảng đặt salon và tour — form, thanh toán, admin flow và giữ UX đơn giản.
+image: /blogs/booking.png
+createdAt: 2026-02-10
+updatedAt: 2026-02-10
+---
+
+Flow đặt lịch nhìn bề ngoài đơn giản: chọn ngày, chọn giờ, thanh toán, xong. Thực tế nó đụng tới auth, inventory, payment, notification và dashboard admin.
+
+Mình đã triển khai pattern này ở **Zio Hair** (đặt lịch salon + e-commerce) và **Tiem Tour** (tìm tour, lọc và yêu cầu tour tuỳ chỉnh).
+
+## Luồng người dùng cốt lõi
+
+1. Duyệt dịch vụ hoặc tour
+2. Lọc theo ngày, giờ, stylist hoặc điểm đến
+3. Thêm vào giỏ hoặc đặt trực tiếp
+4. Thanh toán qua **OnePay** hoặc **Megapay**
+5. Nhận xác nhận (email / thông báo admin)
+
+Mục tiêu là không gây nhầm lẫn giữa các bước. Mỗi màn hình phải trả lời: _mình đang ở đâu, đã chọn gì, bước tiếp theo là gì?_
+
+## Kiến trúc frontend
+
+```tsx
+// Booking state đơn giản hoá
+const [step, setStep] = useState<"browse" | "details" | "payment">("browse")
+const [selection, setSelection] = useState<BookingSelection | null>(null)
+```
+
+Mình thường dùng **Zustand** cho multi-step booking — nhẹ hơn Redux với flow nhiều form, vẫn dễ debug.
+
+## Phía admin cũng quan trọng
+
+Khách hàng cần quản lý lịch hẹn, cập nhật slot trống và xử lý huỷ. WordPress admin + custom post types thường lo phần này, còn Next.js phục vụ UI phía người dùng.
+
+## Bài học rút ra
+
+- Validate sớm: disable ngày/giờ không hợp lệ trước khi user tới bước thanh toán
+- Hiện loading khi redirect payment — user dễ hoảng khi thấy màn hình trắng
+- Log lỗi booking phía server; "payment failed" không context thì vô dụng
+- Mobile-first: phần lớn traffic đặt lịch từ điện thoại
+
+Hệ thống booking tốt cảm giác "nhàm" theo nghĩa tốt — dự đoán được, nhanh và đáng tin.

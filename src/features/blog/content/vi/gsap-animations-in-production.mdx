@@ -1,0 +1,53 @@
+---
+title: GSAP Animation trong Production
+description: Cách mình dùng GSAP trên site khách hàng mà không làm chậm site — scroll trigger, page transition và biết khi nào nên dừng.
+image: /blogs/gsap.png
+createdAt: 2026-01-28
+updatedAt: 2026-01-28
+---
+
+Animation là cách nhanh nhất để site trông premium — hoặc cũng là cách nhanh nhất để site bị chậm. Ở các dự án như **MBBank**, **Inno JSC** và **OKHub**, mình dùng **GSAP** để thêm chuyển động hỗ trợ thương hiệu, không gây xao nhãng.
+
+## Stack mặc định
+
+- **GSAP** cho animation theo timeline
+- **ScrollTrigger** cho hiệu ứng gắn scroll
+- **Swiper** cho carousel có parallax
+- Kiểm tra `prefers-reduced-motion` khi motion không bắt buộc
+
+## Hero entrance đơn giản
+
+```tsx
+useEffect(() => {
+  const ctx = gsap.context(() => {
+    gsap.from(".hero-title", {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    })
+  })
+
+  return () => ctx.revert()
+}, [])
+```
+
+Luôn bọc GSAP trong `gsap.context()` và cleanup khi unmount. Tween còn sót gây giật khi navigate trong Next.js.
+
+## Quy tắc mình tuân theo
+
+1. **Animate transform và opacity** — tránh property gây reflow layout
+2. **Một hero moment mỗi trang** — không phải element nào cũng cần bay vào
+3. **Tôn trọng reduced motion** — có fallback tĩnh
+4. **Test trên máy tầm trung** — giật trên Android 3 năm tuổi thì giảm bớt
+5. **Lazy-init ScrollTrigger** — đừng register trigger cho section off-screen ngay lập tức
+
+## Parallax không lag
+
+Ở project gallery mình dùng parallax module của Swiper với `watchSlidesProgress` thay vì scroll listener nặng mỗi frame. Ít tải main thread hơn, swipe mượt hơn.
+
+## Khi không cần GSAP
+
+Hover state hoặc toggle đơn giản thì CSS transition là đủ. GSAP xứng đáng khi cần timeline có thứ tự, scroll choreography hoặc điều phối nhiều element.
+
+Motion nên có chủ đích — như site đang phản hồi bạn, không phải đang biểu diễn cho bạn.
