@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowUpRightIcon, BoxIcon, InfinityIcon } from "lucide-react"
+import { ArrowUpRightIcon, BoxIcon, InfinityIcon, NotebookTextIcon } from "lucide-react"
 import { motion } from "motion/react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
@@ -18,13 +18,23 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Tag } from "@/components/ui/tag"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { ProseMono } from "@/components/ui/typography"
 import { UTM_PARAMS } from "@/config/site"
 import type { Project } from "@/features/portfolio/types/projects"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { addQueryParams } from "@/utils/url"
 
 import { ProjectGallery } from "./project-gallery"
+import {
+  FeaturedProjectsSlider,
+  pickFeaturedProjects,
+} from "./featured-projects-slider"
 
 function getProjectSummary(description?: string) {
   if (!description) return ""
@@ -81,6 +91,7 @@ function ProjectCover({
           src={cover}
           alt={project.title}
           fill
+          quality={90}
           sizes={
             featured
               ? "(max-width: 768px) 100vw, 768px"
@@ -155,6 +166,14 @@ function ProjectArchiveCard({
               start={project.period.start}
               end={project.period.end}
             />
+            {project.caseStudySlug ? (
+              <>
+                <span className="opacity-30">/</span>
+                <span className="rounded-sm border border-edge px-1.5 py-0.5 text-[10px] tracking-wider uppercase">
+                  {t("caseStudy")}
+                </span>
+              </>
+            ) : null}
           </div>
 
           <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
@@ -230,7 +249,7 @@ function ProjectDetailDialog({
           data-lenis-prevent
           className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"
         >
-          <DialogHeader className="gap-3 border-b border-edge p-5 pr-12 text-left sm:p-6 sm:pr-14">
+          <DialogHeader className="gap-3 border-b border-edge p-5 pr-12 text-left sm:p-6">
             <div className="flex min-w-0 items-start gap-3">
               {activeProject.logo ? (
                 <Image
@@ -245,12 +264,33 @@ function ProjectDetailDialog({
               ) : null}
 
               <div className="min-w-0 flex-1 space-y-2">
-                <p className="font-mono text-xs text-muted-foreground">
-                  <ProjectPeriod
-                    start={activeProject.period.start}
-                    end={activeProject.period.end}
-                  />
-                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-mono text-xs text-muted-foreground">
+                    <ProjectPeriod
+                      start={activeProject.period.start}
+                      end={activeProject.period.end}
+                    />
+                  </p>
+
+                  {activeProject.caseStudySlug ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link
+                          href={`/projects/${activeProject.caseStudySlug}`}
+                          onClick={() => onOpenChange(false)}
+                          aria-label={t("caseStudy")}
+                          className="inline-flex items-center gap-1 rounded-sm border border-edge px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase transition-colors hover:border-foreground/30 hover:text-foreground"
+                        >
+                          <NotebookTextIcon className="size-3" />
+                          {t("caseStudy")}
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("caseStudy")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : null}
+                </div>
 
                 <DialogTitle className="text-xl text-balance sm:text-2xl">
                   <a
@@ -322,7 +362,9 @@ export function ProjectArchive({ projects }: { projects: Project[] }) {
 
   if (projects.length === 0) return null
 
-  const [featured, ...rest] = projects
+  const featured = pickFeaturedProjects(projects, 4)
+  const featuredIds = new Set(featured.map((project) => project.id))
+  const rest = projects.filter((project) => !featuredIds.has(project.id))
 
   const handleOpen = (project: Project) => {
     setSelected(project)
@@ -332,13 +374,7 @@ export function ProjectArchive({ projects }: { projects: Project[] }) {
   return (
     <>
       <div>
-        <ProjectArchiveCard
-          project={featured}
-          index={0}
-          featured
-          priority
-          onOpen={handleOpen}
-        />
+        <FeaturedProjectsSlider projects={featured} onOpen={handleOpen} />
 
         {rest.length > 0 ? (
           <div className="relative grid grid-cols-1 gap-4 py-4 sm:grid-cols-2">
@@ -351,7 +387,7 @@ export function ProjectArchive({ projects }: { projects: Project[] }) {
               <ProjectArchiveCard
                 key={project.id}
                 project={project}
-                index={index + 1}
+                index={featured.length + index}
                 onOpen={handleOpen}
               />
             ))}

@@ -40,6 +40,9 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.36",
+    "@ai-sdk/openai-compatible": "^3.0.27",
+    "@ai-sdk/react": "^4.0.61",
     "@base-ui/react": "^1.1.0",
     "@bprogress/next": "^3.2.12",
     "@c15t/nextjs": "^1.8.1",
@@ -49,6 +52,7 @@
     "@openpanel/web": "^1.0.7",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.6",
+    "ai": "^7.0.58",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -78,6 +82,7 @@
     "react-medium-image-zoom": "^5.4.0",
     "react-use": "^17.6.0",
     "react-use-measure": "^2.1.7",
+    "recharts": "3.8.0",
     "resend": "^4.0.0",
     "schema-dts": "^1.1.5",
     "sharp": "^0.34.3",

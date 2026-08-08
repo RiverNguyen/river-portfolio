@@ -13,7 +13,8 @@
     "sourcePrefix": "The source code is available on",
     "blog": "Blog",
     "resume": "Resume",
-    "projects": "Projects"
+    "projects": "Projects",
+    "contact": "Contact"
   },
   "Blog": {
     "title": "Blog",
@@ -30,8 +31,26 @@
     "description": "Selected client work and products — brand sites, booking platforms, and WordPress/Next.js builds.",
     "allProjects": "All Projects",
     "archiveLabel": "Selected Work",
+    "featured": "Featured Projects",
     "viewDetails": "Details",
-    "viewProject": "Open live site"
+    "viewProject": "Open live site",
+    "caseStudy": "Case study"
+  },
+  "CaseStudy": {
+    "label": "Case study",
+    "backToProjects": "Projects",
+    "viewLive": "Live site",
+    "role": "Role",
+    "period": "Period",
+    "stack": "Stack",
+    "summary": "Overview",
+    "outcomes": "Outcomes",
+    "metrics": "Impact",
+    "metricsNote": "Lab / shipping",
+    "gallery": "Gallery",
+    "tech": "Technologies",
+    "ctaNote": "Want something in this vein — booking, headless CMS, or a travel storefront?",
+    "ctaContact": "Talk to me"
   },
   "Components": {
     "title": "Components",
@@ -45,7 +64,14 @@
   },
   "Contact": {
     "title": "Contact",
-    "subtitle": "Have a project in mind or want to say hi? Drop a message below.",
+    "status": "Available for work",
+    "headline": "Let's build something.",
+    "subtitle": "Have a project in mind or just want to say hi? Reach out directly or drop a message below.",
+    "channelsTitle": "Direct channels",
+    "channelsDescription": "Prefer email, phone, or a quick chat? These usually get the fastest reply.",
+    "responseTime": "Typical reply within 1–2 business days.",
+    "socialTitle": "Elsewhere",
+    "formTitle": "Send a message",
     "fields": {
       "name": "Name",
       "email": "Email",
@@ -86,7 +112,23 @@
     "projectGallery": "Project Gallery",
     "screenshots": "Screenshots",
     "showMore": "Show More",
-    "showLess": "Show Less"
+    "showLess": "Show Less",
+    "affiliateOf": "An affiliate of <link>{name}</link>",
+    "now": "Now",
+    "nowUpdated": "Updated {date}",
+    "contactCtaStatus": "Available for work",
+    "contactCtaTitle": "Got an idea? Let's ship it.",
+    "contactCtaDescription": "Brand sites, product UIs, or a rebuild that needs to feel fast — drop a line and I'll reply soon.",
+    "contactCtaAction": "Start a conversation"
+  },
+  "Visitors": {
+    "title": "Insights",
+    "subtitle": "Last 30 days",
+    "uniqueVisitors": "Unique visitors",
+    "sessions": "Sessions",
+    "views": "Views",
+    "sessionDuration": "Session duration",
+    "visitors": "Visitors"
   },
   "Resume": {
     "title": "Resume",
@@ -100,8 +142,34 @@
     "downloadPdf": "Download PDF",
     "print": "Print"
   },
+  "Chat": {
+    "title": "Ask River",
+    "subtitle": "Portfolio assistant",
+    "open": "Open chat",
+    "close": "Close chat",
+    "reset": "Reset chat",
+    "send": "Send",
+    "stop": "Stop",
+    "placeholder": "Ask about projects, stack, or hiring…",
+    "welcome": "Ask anything about River's work — projects, stack, experience, or how to get in touch.",
+    "suggestion1": "What projects has River shipped?",
+    "suggestion2": "What's River's stack?",
+    "suggestion3": "How can I hire River?",
+    "assistantLabel": "River Bot",
+    "thinking": "Thinking…",
+    "error": "Something went wrong. Try again."
+  },
   "Common": {
-    "goHome": "Go to Home"
+    "goHome": "Go to Home",
+    "notFoundStatus": "Lost signal",
+    "notFoundTitle": "This page drifted off the map.",
+    "notFoundDescription": "The URL may be outdated, mistyped, or never existed. Pick a known route below.",
+    "links": {
+      "home": "Home",
+      "projects": "Projects",
+      "blog": "Blog",
+      "contact": "Contact"
+    }
   },
   "ThemeToggle": {
     "toggleMode": "Toggle Mode"

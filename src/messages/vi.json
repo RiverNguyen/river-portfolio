@@ -13,7 +13,8 @@
     "sourcePrefix": "Mã nguồn có sẵn trên",
     "blog": "Blog",
     "resume": "CV",
-    "projects": "Dự án"
+    "projects": "Dự án",
+    "contact": "Liên hệ"
   },
   "Blog": {
     "title": "Bài viết",
@@ -30,8 +31,26 @@
     "description": "Các dự án khách hàng và sản phẩm tiêu biểu — brand site, nền tảng booking, và xây dựng WordPress/Next.js.",
     "allProjects": "Tất cả dự án",
     "archiveLabel": "Tác phẩm chọn lọc",
+    "featured": "Dự án nổi bật",
     "viewDetails": "Chi tiết",
-    "viewProject": "Mở trang live"
+    "viewProject": "Mở trang live",
+    "caseStudy": "Case study"
+  },
+  "CaseStudy": {
+    "label": "Case study",
+    "backToProjects": "Dự án",
+    "viewLive": "Xem live",
+    "role": "Vai trò",
+    "period": "Thời gian",
+    "stack": "Công nghệ",
+    "summary": "Tổng quan",
+    "outcomes": "Kết quả",
+    "metrics": "Tác động",
+    "metricsNote": "Lab / shipping",
+    "gallery": "Thư viện ảnh",
+    "tech": "Công nghệ dùng",
+    "ctaNote": "Bạn cần kiểu này — booking, headless CMS, hay storefront du lịch?",
+    "ctaContact": "Nhắn mình"
   },
   "Components": {
     "title": "Components",
@@ -45,7 +64,14 @@
   },
   "Contact": {
     "title": "Liên hệ",
-    "subtitle": "Bạn có dự án muốn làm hoặc chỉ muốn chào hỏi? Hãy để lại lời nhắn bên dưới.",
+    "status": "Đang nhận dự án",
+    "headline": "Cùng làm một thứ gì đó.",
+    "subtitle": "Bạn có dự án muốn làm hoặc chỉ muốn chào hỏi? Liên hệ trực tiếp hoặc để lại lời nhắn bên dưới.",
+    "channelsTitle": "Kênh trực tiếp",
+    "channelsDescription": "Thích email, gọi điện, hoặc chat nhanh? Những kênh này thường được phản hồi sớm nhất.",
+    "responseTime": "Thường phản hồi trong 1–2 ngày làm việc.",
+    "socialTitle": "Mạng xã hội",
+    "formTitle": "Gửi tin nhắn",
     "fields": {
       "name": "Tên",
       "email": "Email",
@@ -86,7 +112,23 @@
     "projectGallery": "Ảnh dự án",
     "screenshots": "Ảnh chụp màn hình",
     "showMore": "Xem thêm",
-    "showLess": "Xem ít hơn"
+    "showLess": "Xem ít hơn",
+    "affiliateOf": "Thành viên của <link>{name}</link>",
+    "now": "Hiện tại",
+    "nowUpdated": "Cập nhật {date}",
+    "contactCtaStatus": "Đang nhận dự án",
+    "contactCtaTitle": "Có ý tưởng? Cùng làm thật.",
+    "contactCtaDescription": "Brand site, UI sản phẩm, hay một bản rebuild cần cảm giác nhanh — nhắn mình, mình sẽ trả lời sớm.",
+    "contactCtaAction": "Bắt đầu trò chuyện"
+  },
+  "Visitors": {
+    "title": "Insights",
+    "subtitle": "30 ngày gần nhất",
+    "uniqueVisitors": "Khách unique",
+    "sessions": "Phiên",
+    "views": "Lượt xem",
+    "sessionDuration": "Thời lượng phiên",
+    "visitors": "Khách"
   },
   "Resume": {
     "title": "CV",
@@ -100,8 +142,34 @@
     "downloadPdf": "Tải PDF",
     "print": "In"
   },
+  "Chat": {
+    "title": "Hỏi River",
+    "subtitle": "Trợ lý portfolio",
+    "open": "Mở chat",
+    "close": "Đóng chat",
+    "reset": "Xóa hội thoại",
+    "send": "Gửi",
+    "stop": "Dừng",
+    "placeholder": "Hỏi về dự án, stack, hoặc tuyển dụng…",
+    "welcome": "Hỏi bất cứ điều gì về công việc của River — dự án, stack, kinh nghiệm, hoặc cách liên hệ.",
+    "suggestion1": "River đã làm những dự án nào?",
+    "suggestion2": "River dùng stack gì?",
+    "suggestion3": "Làm sao để thuê River?",
+    "assistantLabel": "River Bot",
+    "thinking": "Đang nghĩ…",
+    "error": "Có lỗi xảy ra. Thử lại nhé."
+  },
   "Common": {
-    "goHome": "Về trang chủ"
+    "goHome": "Về trang chủ",
+    "notFoundStatus": "Mất tín hiệu",
+    "notFoundTitle": "Trang này đã lệch khỏi bản đồ.",
+    "notFoundDescription": "URL có thể cũ, gõ sai, hoặc chưa từng tồn tại. Chọn một đường đã biết bên dưới.",
+    "links": {
+      "home": "Home",
+      "projects": "Projects",
+      "blog": "Blog",
+      "contact": "Contact"
+    }
   },
   "ThemeToggle": {
     "toggleMode": "Chuyển chế độ"

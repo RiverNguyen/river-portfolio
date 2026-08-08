@@ -16,8 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 
-const LOCALES = ["en", "vi"] as const
-type Locale = (typeof LOCALES)[number]
+const LOCALES = [
+  { code: "en", label: "EN", flag: "🇺🇸" },
+  { code: "vi", label: "VI", flag: "🇻🇳" },
+] as const
+
+type Locale = (typeof LOCALES)[number]["code"]
 
 export function LanguageSwitcher() {
   const t = useTranslations("Nav")
@@ -45,18 +49,23 @@ export function LanguageSwitcher() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" sideOffset={8} className="w-36">
-        {LOCALES.map((target) => (
+        {LOCALES.map(({ code, label, flag }) => (
           <DropdownMenuItem
-            key={target}
+            key={code}
             onSelect={() => {
-              if (target === locale) return
+              if (code === locale) return
               const hash = window.location.hash
-              router.replace(`${pathname}${search}${hash}`, { locale: target })
+              router.replace(`${pathname}${search}${hash}`, { locale: code })
             }}
           >
-            <span className="flex w-full items-center justify-between">
-              <span>{target.toUpperCase()}</span>
-              {target === locale ? <span aria-hidden="true">✓</span> : null}
+            <span className="flex w-full items-center justify-between gap-2">
+              <span className="flex items-center gap-2">
+                <span className="text-base leading-none" aria-hidden>
+                  {flag}
+                </span>
+                <span>{label}</span>
+              </span>
+              {code === locale ? <span aria-hidden="true">✓</span> : null}
             </span>
           </DropdownMenuItem>
         ))}

@@ -42,3 +42,7 @@ next-env.d.ts
 
 # ncdai
 .ncdai
+
+# runtime data (guestbook removed; visitors persist here)
+/data/*.json
+!/data/.gitkeep

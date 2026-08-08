@@ -10,7 +10,7 @@ import {
 import { usePathname } from "next/navigation"
 import { useEffect, useLayoutEffect, useState } from "react"
 
-import { FlickeringGrid } from "@/components/ui/flickering-grid"
+import { StarfieldBackground } from "@/components/canvasui/starfield"
 import { SlidingNumber } from "@/components/ui/sliding-number"
 import { TextShimmerWave } from "@/components/ui/text-shimmer-wave"
 import { routing } from "@/i18n/routing"
@@ -100,7 +100,7 @@ export function PageReveal() {
 
     count.set(0)
     const controls = animate(count, 100, {
-      duration: 2.4,
+      duration: 2.2,
       ease: [0.16, 1, 0.3, 1],
       onComplete: () => {
         try {
@@ -108,7 +108,8 @@ export function PageReveal() {
         } catch {
           // ignore write failures
         }
-        setTimeout(() => setPhase("reveal"), 120)
+        // Freeze starfield for a beat, then slide — avoids canvas+transform jank.
+        setPhase("reveal")
       },
     })
     return controls.stop
@@ -121,32 +122,29 @@ export function PageReveal() {
 
   if (phase === null || phase === "done") return null
 
+  const revealing = phase === "reveal"
+
   return (
     <motion.div
       data-page-reveal
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-zinc-950 text-white"
-      initial={{ opacity: 1 }}
-      animate={phase === "reveal" ? { y: "-100%" } : { y: 0 }}
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0f] text-white"
+      initial={false}
+      animate={revealing ? { y: "-100%" } : { y: 0 }}
       transition={{
-        duration: 0.75,
+        duration: 0.55,
         ease: [0.76, 0, 0.24, 1],
       }}
+      style={{ willChange: revealing ? "transform" : "auto" }}
       onAnimationComplete={() => {
         setPhase((current) => (current === "reveal" ? "done" : current))
       }}
     >
-      <FlickeringGrid
-        className="absolute inset-0 z-0 size-full"
-        squareSize={3}
-        gridGap={5}
-        flickerChance={0.22}
-        color="rgb(255, 255, 255)"
-        maxOpacity={0.18}
-      />
-
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_10%,rgba(9,9,11,0.72)_100%)]"
-        aria-hidden
+      <StarfieldBackground
+        className="absolute inset-0 z-0"
+        count={140}
+        speed={0.85}
+        twinkle
+        paused={revealing}
       />
 
       <Corner className="top-5 left-5 z-[2] border-t border-l sm:top-8 sm:left-8" />
@@ -159,7 +157,7 @@ export function PageReveal() {
           className="font-pixel-square text-[11px] tracking-[0.35em] text-zinc-500 uppercase"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.45, delay: 0.08 }}
         >
           Nguyễn Đình Giang
         </motion.p>
@@ -168,7 +166,7 @@ export function PageReveal() {
           className="flex flex-col items-center gap-3"
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="relative flex items-baseline gap-1 font-pixel-square text-white select-none">
             <div className="text-7xl tabular-nums sm:text-8xl">
@@ -178,7 +176,7 @@ export function PageReveal() {
               className="text-2xl text-zinc-400 sm:text-3xl"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
+              transition={{ duration: 0.35, delay: 0.2 }}
             >
               %
             </motion.span>

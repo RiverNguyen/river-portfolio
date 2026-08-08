@@ -1,4 +1,4 @@
-import { BoxIcon, InfinityIcon, LinkIcon } from "lucide-react"
+import { BoxIcon, InfinityIcon, LinkIcon, NotebookTextIcon } from "lucide-react"
 import Image from "next/image"
 
 import { Markdown } from "@/components/markdown"
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip"
 import { ProseMono } from "@/components/ui/typography"
 import { UTM_PARAMS } from "@/config/site"
+import { Link } from "@/i18n/navigation"
 import { addQueryParams } from "@/utils/url"
 
 import type { Project } from "../../types/projects"
@@ -24,9 +25,11 @@ import { ProjectGallery } from "./project-gallery"
 export function ProjectItem({
   className,
   project,
+  caseStudyLabel = "Case study",
 }: {
   className?: string
   project: Project
+  caseStudyLabel?: string
 }) {
   const { start, end } = project.period
   const isOngoing = !end
@@ -56,12 +59,19 @@ export function ProjectItem({
             </div>
           )}
 
-          <div className="flex-1 border-l border-dashed border-edge">
-            <CollapsibleTrigger className="flex w-full items-center gap-2 p-4 pr-2 text-left">
-              <div className="flex-1">
-                <h3 className="mb-1 leading-snug font-medium text-balance">
-                  {project.title}
-                </h3>
+          <div className="flex flex-1 items-center border-l border-dashed border-edge">
+            <CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-2 p-4 pr-2 text-left">
+              <div className="min-w-0 flex-1">
+                <div className="mb-1 flex flex-wrap items-center gap-2">
+                  <h3 className="leading-snug font-medium text-balance">
+                    {project.title}
+                  </h3>
+                  {project.caseStudySlug ? (
+                    <span className="rounded-sm border border-edge px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                      {caseStudyLabel}
+                    </span>
+                  ) : null}
+                </div>
 
                 <dl className="text-sm text-muted-foreground">
                   <dt className="sr-only">Period</dt>
@@ -87,10 +97,38 @@ export function ProjectItem({
                 </dl>
               </div>
 
+              <div
+                className="shrink-0 text-muted-foreground [&_svg]:size-4"
+                aria-hidden
+              >
+                <CollapsibleChevronsIcon />
+              </div>
+            </CollapsibleTrigger>
+
+            <div className="flex shrink-0 items-center gap-0.5 pr-2">
+              {project.caseStudySlug ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex">
+                      <Link
+                        className="relative flex size-6 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
+                        href={`/projects/${project.caseStudySlug}`}
+                        aria-label={caseStudyLabel}
+                      >
+                        <NotebookTextIcon className="pointer-events-none size-4" />
+                      </Link>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{caseStudyLabel}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : null}
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <a
-                    className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
+                    className="relative flex size-6 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
                     href={addQueryParams(project.link, UTM_PARAMS)}
                     target="_blank"
                     rel="noopener"
@@ -99,19 +137,11 @@ export function ProjectItem({
                     <span className="sr-only">Open Project Link</span>
                   </a>
                 </TooltipTrigger>
-
                 <TooltipContent>
                   <p>Open Project Link</p>
                 </TooltipContent>
               </Tooltip>
-
-              <div
-                className="shrink-0 text-muted-foreground [&_svg]:size-4"
-                aria-hidden
-              >
-                <CollapsibleChevronsIcon />
-              </div>
-            </CollapsibleTrigger>
+            </div>
           </div>
         </div>
 

@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next"
 
-import { SITE_INFO } from "@/config/site"
 import { getAllPosts } from "@/features/blog/data/posts"
+import { getAllCaseStudySlugs } from "@/features/portfolio/data/case-studies"
 import { getLanguageAlternates, getLocalizedUrl } from "@/lib/seo"
 
-const STATIC_ROUTES = ["", "/projects", "/resume", "/blog"] as const
+const STATIC_ROUTES = ["", "/projects", "/resume", "/blog", "/contact"] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts().map((post) => ({
@@ -12,6 +12,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.metadata.updatedAt),
     alternates: {
       languages: getLanguageAlternates(`/blog/${post.slug}`),
+    },
+  }))
+
+  const caseStudies = getAllCaseStudySlugs().map((slug) => ({
+    url: getLocalizedUrl(`/projects/${slug}`, "en"),
+    lastModified: new Date(),
+    alternates: {
+      languages: getLanguageAlternates(`/projects/${slug}`),
     },
   }))
 
@@ -23,5 +31,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }))
 
-  return [...routes, ...posts]
+  return [...routes, ...caseStudies, ...posts]
 }

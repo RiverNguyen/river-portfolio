@@ -1,12 +1,23 @@
-
 import { SOCIAL_LINKS } from "../../data/social-links"
-import { Panel } from "../panel"
+import { Panel, PanelHeader, PanelTitle } from "../panel"
 import { SocialLinkItem } from "./social-link-item"
 
-export function SocialLinks() {
+export function SocialLinks({
+  className,
+  title,
+}: {
+  className?: string
+  title?: string
+}) {
   return (
-    <Panel>
-      <h2 className="sr-only">Social Links</h2>
+    <Panel className={className}>
+      {title ? (
+        <PanelHeader>
+          <PanelTitle className="text-xl sm:text-2xl">{title}</PanelTitle>
+        </PanelHeader>
+      ) : (
+        <h2 className="sr-only">Social Links</h2>
+      )}
 
       <div className="relative">
         <div className="pointer-events-none absolute inset-0 -z-1 grid grid-cols-1 gap-4 max-sm:hidden sm:grid-cols-2">

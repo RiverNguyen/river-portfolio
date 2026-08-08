@@ -1,4 +1,5 @@
 FROM node:22-alpine AS base
+RUN apk add --no-cache libc6-compat
 
 # Step 1. Rebuild the source code only when needed
 FROM base AS builder
@@ -36,6 +37,10 @@ ARG GMAIL_APP_PASSWORD
 ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
 ARG APP_URL
 ENV APP_URL=${APP_URL}
+ARG ANTHROPIC_API_KEY
+ENV ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+ARG AI_CHAT_MODEL
+ENV AI_CHAT_MODEL=${AI_CHAT_MODEL}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
@@ -54,11 +59,11 @@ FROM base AS runner
 
 WORKDIR /app
 
-# Don't run production as root
+# Don't run production as root (entrypoint drops privileges after fixing volume perms)
+RUN apk add --no-cache su-exec
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-RUN mkdir -p /app/.next/cache
-USER nextjs
+RUN mkdir -p /app/.next/cache /app/data && chown -R nextjs:nodejs /app/data
 
 COPY --from=builder /app/public ./public
 
@@ -69,6 +74,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/.next/cache ./.next/cache
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # COPY --chown=nextjs:nodejs --from=builder /app/ ./
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Environment variables must be redefined at run time
 ARG RESEND_API_KEY
@@ -81,10 +89,13 @@ ARG GMAIL_APP_PASSWORD
 ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
 ARG APP_URL
 ENV APP_URL=${APP_URL}
-
-# Uncomment the following line to disable telemetry at run time
-# ENV NEXT_TELEMETRY_DISABLED 1
+ARG ANTHROPIC_API_KEY
+ENV ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+ARG AI_CHAT_MODEL
+ENV AI_CHAT_MODEL=${AI_CHAT_MODEL}
+ENV VISITORS_DATA_PATH=/app/data/visitors.json
 
 # Note: Don't expose ports here, Compose will handle that for us
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "server.js"]

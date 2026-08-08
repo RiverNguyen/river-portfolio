@@ -33,7 +33,7 @@ export const MAIN_NAV: NavItem[] = [
   },
   {
     title: "Contact",
-    href: "/#contact",
+    href: "/contact",
   },
 ]
 

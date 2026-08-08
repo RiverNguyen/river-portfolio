@@ -47,6 +47,12 @@ export async function SiteFooter() {
           <Link className="font-medium" href="/resume">
             {t("resume")}
           </Link>
+
+          <span className="opacity-50">•</span>
+
+          <Link className="font-medium" href="/contact">
+            {t("contact")}
+          </Link>
         </div>
 
         <div className="screen-line-before screen-line-after flex w-full before:z-1 after:z-1">
@@ -74,6 +80,15 @@ export async function SiteFooter() {
               href="/resume"
             >
               {t("resume")}
+            </Link>
+
+            <Separator className="max-sm:hidden" />
+
+            <Link
+              className="flex font-mono text-xs font-medium text-muted-foreground max-sm:hidden"
+              href="/contact"
+            >
+              {t("contact")}
             </Link>
 
             <Separator className="max-sm:hidden" />

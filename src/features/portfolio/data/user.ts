@@ -35,13 +35,13 @@ export const USER_EN = {
 - Integrate **REST** and **GraphQL** APIs, and collaborate smoothly with teams via **Git**, **GitHub**, and **GitLab**.
 - Care about speed: lazy loading, code splitting, image optimization, and clean component architecture.
 - Use **Docker** for consistent local and deployment environments, and keep learning to sharpen both craft and delivery.`,
-  avatar: "/avatar.jpg",
+  avatar: "/avatar.webp",
   ogImage: "/image.png",
-  namePronunciationUrl: "",
+  namePronunciationUrl: "/audio/ui-sounds/voice.mp3",
   affiliateBadge: {
     name: "Bateco Group",
     url: "https://bateco.vn",
-    logo: "/bateco.png",
+    logo: "/bateco.webp",
   },
   timeZone: "Asia/Ho_Chi_Minh",
   keywords: [

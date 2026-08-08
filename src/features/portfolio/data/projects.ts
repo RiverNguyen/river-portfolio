@@ -1,6 +1,35 @@
 import type { Project } from "../types/projects"
 
-export const PROJECTS_EN: Project[] = [
+export const PROJECTS_EN_SOURCE: Project[] = [
+  {
+    id: "tiem-tour",
+    title: "Tiem Tour",
+    period: {
+      start: "06.2025",
+      end: "08.2025",
+    },
+    link: "https://tiemtourshagiang.com",
+    skills: [
+      "WordPress + NextJS",
+      "REST API",
+      "ShadCn UI",
+      "Tailwind CSS",
+      "GSAP",
+      "Swiper",
+    ],
+    description: `A tour booking website that allows users to search and filter tours by destination, date, duration, and price.
+It also supports custom tour requests where users can personalize itineraries based on their preferences. The platform provides real-time availability and pricing, ensuring a smooth and intuitive booking experience.
+- Built project base, UI, and animation from design.
+- Created custom post type and ACF to develop REST API from WordPress to serve data to Next.js interface.
+- Integrated payment (OnePay) and submit form for admin and user.`,
+    logo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/ee/63/d7/caption.jpg?w=1200&h=-1&s=1",
+    isExpanded: true,
+    images: [
+      "/projects/tiemtour/image.webp",
+      "/projects/tiemtour/image-1.webp",
+      "/projects/tiemtour/image-2.webp",
+    ],
+  },
   {
     id: "mbbank-brand-site",
     title: "MBBank Brand Website",
@@ -28,38 +57,9 @@ export const PROJECTS_EN: Project[] = [
 - Password to enroll in the website is: "66668888"`,
     isExpanded: true,
     images: [
-      "/projects/mbbank/image.png",
-      "/projects/mbbank/image-1.png",
-      "/projects/mbbank/image-2.png",
-    ],
-  },
-  {
-    id: "tiem-tour",
-    title: "Tiem Tour",
-    period: {
-      start: "06.2025",
-      end: "08.2025",
-    },
-    link: "https://tiemtourshagiang.com",
-    skills: [
-      "WordPress + NextJS",
-      "REST API",
-      "ShadCn UI",
-      "Tailwind CSS",
-      "GSAP",
-      "Swiper",
-    ],
-    description: `A tour booking website that allows users to search and filter tours by destination, date, duration, and price.
-It also supports custom tour requests where users can personalize itineraries based on their preferences. The platform provides real-time availability and pricing, ensuring a smooth and intuitive booking experience.
-- Built project base, UI, and animation from design.
-- Created custom post type and ACF to develop REST API from WordPress to serve data to Next.js interface.
-- Integrated payment (OnePay) and submit form for admin and user.`,
-    logo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/ee/63/d7/caption.jpg?w=1200&h=-1&s=1",
-    isExpanded: true,
-    images: [
-      "/projects/tiemtour/image.png",
-      "/projects/tiemtour/image-1.png",
-      "/projects/tiemtour/image-2.png",
+      "/projects/mbbank/image.webp",
+      "/projects/mbbank/image-1.webp",
+      "/projects/mbbank/image-2.webp",
     ],
   },
   {
@@ -87,9 +87,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Collaborated with marketing team to quickly iterate on content and visuals for different campaigns.`,
     logo: "/projects/inno/logo.jpeg",
     images: [
-      "/projects/inno/image.png",
-      "/projects/inno/image-1.png",
-      "/projects/inno/image-2.png",
+      "/projects/inno/image.webp",
+      "/projects/inno/image-1.webp",
+      "/projects/inno/image-2.webp",
     ],
     isExpanded: true,
   },
@@ -117,9 +117,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Collaborated with marketing team to quickly iterate on content and visuals for different campaigns.`,
     logo: "/projects/ava/logo.jpeg",
     images: [
-      "/projects/ava/image.png",
-      "/projects/ava/image-1.png",
-      "/projects/ava/image-2.png",
+      "/projects/ava/image.webp",
+      "/projects/ava/image-1.webp",
+      "/projects/ava/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -150,11 +150,11 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Integrated payment gateways and booking forms for e-commerce platforms.
 - Ensured cross-browser compatibility and mobile responsiveness.
 - Implemented security measures: file permissions, **reCAPTCHA**, and login rate limiting.`,
-    logo: "/company.jpg",
+    logo: "/company.webp",
     images: [
-      "/projects/okhub/image-1.png",
-      "/projects/okhub/image-2.png",
-      "/projects/okhub/image-3.png",
+      "/projects/okhub/image-1.webp",
+      "/projects/okhub/image-2.webp",
+      "/projects/okhub/image-3.webp",
     ],
     isExpanded: false,
   },
@@ -187,9 +187,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Implemented security measures: file permissions, **reCAPTCHA**, and login rate limiting.`,
     logo: "/projects/antho/logo.png",
     images: [
-      "/projects/antho/image.png",
-      "/projects/antho/image-1.png",
-      "/projects/antho/image-2.png",
+      "/projects/antho/image.webp",
+      "/projects/antho/image-1.webp",
+      "/projects/antho/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -217,9 +217,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Created admin dashboard to manage appointments, services, and products.`,
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiileH9YX6r57Y87qrMOBjgre2Eyxm-YkBSw&s",
     images: [
-      "/projects/zio/image.png",
-      "/projects/zio/image-1.png",
-      "/projects/zio/image-2.png",
+      "/projects/zio/image.webp",
+      "/projects/zio/image-1.webp",
+      "/projects/zio/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -241,9 +241,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Ensured SEO best practices and multilingual functionality for international visitors.`,
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2VtSbipILgZ2kG-372MiAbom0460gO_Vhg&s",
     images: [
-      "/projects/lotus/image.png",
-      "/projects/lotus/image-1.png",
-      "/projects/lotus/image-2.png",
+      "/projects/lotus/image.webp",
+      "/projects/lotus/image-1.webp",
+      "/projects/lotus/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -271,9 +271,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Delivered smooth UX with GSAP/Swiper and optimized performance across devices.`,
     logo: "/projects/homesworld/logo.png",
     images: [
-      "/projects/homesworld/image.png",
-      "/projects/homesworld/image-1.png",
-      "/projects/homesworld/image-2.png",
+      "/projects/homesworld/image.webp",
+      "/projects/homesworld/image-1.webp",
+      "/projects/homesworld/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -293,9 +293,9 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Optimized imagery and performance to keep storytelling pages fast across devices.`,
     logo: "/projects/avian/logo.png",
     images: [
-      "/projects/avian/image.png",
-      "/projects/avian/image-1.png",
-      "/projects/avian/image-2.png",
+      "/projects/avian/image.webp",
+      "/projects/avian/image-1.webp",
+      "/projects/avian/image-2.webp",
     ],
     isExpanded: false,
   },
@@ -315,13 +315,18 @@ It also supports custom tour requests where users can personalize itineraries ba
 - Optimized media and performance so hero visuals and content pages stay fast on all devices.`,
     logo: "/projects/vova/logo.png",
     images: [
-      "/projects/vova/image.png",
-      "/projects/vova/image-1.png",
-      "/projects/vova/image-2.png",
+      "/projects/vova/image.webp",
+      "/projects/vova/image-1.webp",
+      "/projects/vova/image-2.webp",
     ],
     isExpanded: false,
   },
 ]
+
+export const PROJECTS_EN: Project[] = PROJECTS_EN_SOURCE.map((project) => ({
+  ...project,
+  caseStudySlug: project.id,
+}))
 
 type ProjectViOverride = Pick<Project, "title" | "description"> & {
   period?: Partial<Project["period"]>
@@ -383,7 +388,7 @@ const PROJECT_VI_OVERRIDES: Record<string, ProjectViOverride> = {
 - Triển khai một số biện pháp bảo mật: phân quyền file, **reCAPTCHA**, giới hạn tần suất đăng nhập.`,
   },
   "tiem-tour": {
-    title: "Tiem Tour",
+    title: "Tiệm Tour",
     description: `Website đặt tour cho phép người dùng tìm kiếm và lọc tour theo điểm đến, ngày, thời lượng và giá.
 Hỗ trợ yêu cầu tour tuỳ chỉnh giúp người dùng cá nhân hoá lịch trình theo nhu cầu. Nền tảng cung cấp tình trạng chỗ và giá theo thời gian thực, đảm bảo trải nghiệm đặt tour mượt và trực quan.
 - Dựng base dự án, UI và animation theo thiết kế.

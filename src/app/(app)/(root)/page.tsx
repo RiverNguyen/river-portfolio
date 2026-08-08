@@ -3,9 +3,10 @@ import type { ProfilePage as PageSchema, WithContext } from "schema-dts"
 import { SITE_INFO } from "@/config/site"
 import { About } from "@/features/portfolio/components/about"
 import { Blog } from "@/features/portfolio/components/blog"
-import { Contact } from "@/features/portfolio/components/contact"
+import { ContactCta } from "@/features/portfolio/components/contact-cta"
 import { Experiences } from "@/features/portfolio/components/experiences"
 import { GitHubContributions } from "@/features/portfolio/components/github-contributions"
+import { Now } from "@/features/portfolio/components/now"
 import { Overview } from "@/features/portfolio/components/overview"
 import { ProfileCover } from "@/features/portfolio/components/profile-cover"
 import { ProfileHeader } from "@/features/portfolio/components/profile-header"
@@ -14,6 +15,7 @@ import { SocialLinks } from "@/features/portfolio/components/social-links"
 import { TechStack } from "@/features/portfolio/components/tech-stack"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 import { USER } from "@/features/portfolio/data/user"
+import { Visitors } from "@/features/visitors/components/visitors"
 import { getAbsoluteUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -39,10 +41,10 @@ export default function Page() {
         <Separator />
 
         <About />
-        <div className="flex h-4 w-full border-x border-edge" />
+        <Separator />
 
-        {/* <TestimonialsMarquee /> */}
-        <div className="flex h-4 w-full border-x border-edge" />
+        <Now />
+        <Separator />
 
         <GitHubContributions />
         <Separator />
@@ -62,7 +64,10 @@ export default function Page() {
         <Blog />
         <Separator />
 
-        <Contact />
+        <ContactCta />
+        <Separator />
+
+        <Visitors />
         <Separator />
 
         {/* <Awards />

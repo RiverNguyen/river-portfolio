@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { getLocale } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import {
   Tooltip,
@@ -11,17 +11,20 @@ import { getUserByLocale } from "@/features/portfolio/data/user"
 import { FlipSentences } from "@/registry/components/flip-sentences"
 import { addQueryParams } from "@/utils/url"
 
+import { PronounceMyName } from "./pronounce-my-name"
 import { VerifiedIcon } from "./verified-icon"
 
 export async function ProfileHeader() {
   const locale = await getLocale()
+  const t = await getTranslations("Portfolio")
   const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+  const affiliateUrl = user.affiliateBadge
+    ? addQueryParams(user.affiliateBadge.url, UTM_PARAMS)
+    : null
+  const spokenName = locale === "vi" ? "Nguyễn Đình Giang" : "Nguyen Dinh Giang"
 
   return (
     <div className="screen-line-after flex border-x border-edge">
-      {/* <div className="absolute top-[-3.5px] left-[-4.5px] size-2 rounded-xs border bg-popover" /> */}
-      {/* <div className="absolute top-[-3.5px] right-[-4.5px] size-2 rounded-xs border bg-popover" /> */}
-
       <div className="shrink-0 border-r border-edge">
         <div className="mx-0.5 my-0.75">
           <img
@@ -34,17 +37,10 @@ export async function ProfileHeader() {
       </div>
 
       <div className="flex flex-1 flex-col">
-        <div className="flex grow items-end pb-1 pl-4">
-          <div className="line-clamp-1 font-mono text-xs text-zinc-300 select-none max-sm:hidden dark:text-zinc-800">
-            {"text-3xl "}
-            <span className="inline dark:hidden">text-zinc-950</span>
-            <span className="hidden dark:inline">text-zinc-50</span>
-            {" font-medium"}
-          </div>
-        </div>
+        <div className="min-h-0 flex-1" aria-hidden />
 
-        <div className="border-t border-edge">
-          <div className="flex items-center gap-2 pl-4">
+        <div className="border-y border-edge">
+          <div className="flex items-center gap-2 py-1 pl-4">
             <h1 className="-translate-y-px text-3xl font-semibold tracking-tight">
               {user.displayName}
             </h1>
@@ -54,13 +50,19 @@ export async function ProfileHeader() {
               aria-label="Verified"
             />
 
-            {user.affiliateBadge && (
+            <PronounceMyName
+              spokenName={spokenName}
+              locale={locale === "vi" ? "vi" : "en"}
+              namePronunciationUrl={user.namePronunciationUrl || undefined}
+            />
+
+            {user.affiliateBadge && affiliateUrl && (
               <Tooltip>
                 <TooltipTrigger
                   render={
                     <a
                       className="relative flex after:absolute after:inset-0 after:rounded-sm after:ring after:ring-black/10 after:ring-inset dark:after:ring-white/15"
-                      href={addQueryParams(user.affiliateBadge.url, UTM_PARAMS)}
+                      href={affiliateUrl}
                       target="_blank"
                       rel="noopener"
                     />
@@ -76,31 +78,28 @@ export async function ProfileHeader() {
                     unoptimized
                   />
                 </TooltipTrigger>
-
                 <TooltipContent>
                   <p>
-                    An affiliate of{" "}
-                    <a
-                      className="font-medium underline-offset-4 hover:underline"
-                      href={addQueryParams(user.affiliateBadge.url, UTM_PARAMS)}
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      {user.affiliateBadge.name}
-                    </a>
+                    {t.rich("affiliateOf", {
+                      name: user.affiliateBadge.name,
+                      link: (chunks) => (
+                        <a
+                          className="font-medium underline-offset-4 hover:underline"
+                          href={affiliateUrl}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {chunks}
+                        </a>
+                      ),
+                    })}
                   </p>
                 </TooltipContent>
               </Tooltip>
             )}
-
-            {/* {USER.namePronunciationUrl && (
-              <PronounceMyName
-                namePronunciationUrl={USER.namePronunciationUrl}
-              />
-            )} */}
           </div>
 
-          <div className="h-12.5 border-t border-edge py-1 pl-4 sm:h-9">
+          <div className="h-9 border-t border-edge py-1 pl-4">
             <FlipSentences
               className="font-pixel-square text-sm text-balance text-muted-foreground"
               variants={{
@@ -113,6 +112,8 @@ export async function ProfileHeader() {
             </FlipSentences>
           </div>
         </div>
+
+        <div className="min-h-0 flex-1" aria-hidden />
       </div>
     </div>
   )

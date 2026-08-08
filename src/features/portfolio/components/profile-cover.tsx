@@ -1,8 +1,25 @@
+import { getLocale } from "next-intl/server"
+
 import { BrandContextMenu } from "@/components/brand-context-menu"
-import { SpotlightLogo } from "@/components/spotlight-logo"
 import { cn } from "@/lib/utils"
 
-export function ProfileCover() {
+import { CoverEasterEgg } from "./cover-easter-egg"
+
+export async function ProfileCover() {
+  const locale = await getLocale()
+  const lines =
+    locale === "vi"
+      ? ([
+          "river@hanoi ~",
+          "> Me, Myself & I",
+          "Nguyễn Đình Giang — Frontend Developer",
+        ] as [string, string, string])
+      : ([
+          "river@hanoi ~",
+          "> Me, Myself & I",
+          "Nguyễn Đình Giang — Frontend Developer",
+        ] as [string, string, string])
+
   return (
     <BrandContextMenu>
       <div
@@ -13,9 +30,7 @@ export function ProfileCover() {
           "bg-black/0.75 bg-[radial-gradient(var(--pattern-foreground)_1px,transparent_0)] bg-size-[10px_10px] bg-center [--pattern-foreground:var(--color-zinc-950)]/5 dark:bg-white/0.75 dark:[--pattern-foreground:var(--color-white)]/5"
         )}
       >
-        <div id="js-cover-mark" className="w-full max-w-sm px-6 sm:max-w-md">
-          <SpotlightLogo />
-        </div>
+        <CoverEasterEgg lines={lines} />
       </div>
     </BrandContextMenu>
   )

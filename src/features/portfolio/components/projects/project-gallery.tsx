@@ -75,10 +75,11 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     src={src}
                     alt={`${title} screenshot ${index + 1}`}
                     fill
+                    quality={90}
+                    priority={index === 0}
                     className="h-full w-full object-cover transition-opacity duration-300 will-change-transform"
                     style={{ opacity: loadedIndices.has(index) ? 1 : 0 }}
-                    sizes="(min-width: 768px) 600px, 100vw"
-                    unoptimized
+                    sizes="(min-width: 768px) 720px, 100vw"
                     onLoad={() => handleImageLoad(index)}
                   />
                 </div>

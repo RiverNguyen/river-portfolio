@@ -28,9 +28,9 @@ export function PostItem({
             alt={post.metadata.title}
             width={1200}
             height={630}
-            quality={100}
+            quality={90}
             priority={shouldPreloadImage}
-            unoptimized
+            sizes="(max-width: 768px) 100vw, 384px"
             className="object-cover"
           />
 

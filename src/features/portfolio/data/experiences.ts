@@ -4,7 +4,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "bateco",
     companyName: "Bateco Group",
-    companyLogo: "/bateco.png",
+    companyLogo: "/bateco.webp",
     companyWebsite: "https://bateco.vn",
     positions: [
       {
@@ -41,7 +41,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "okhub",
     companyName: "OKHub Agency",
-    companyLogo: "/company.jpg",
+    companyLogo: "/company.webp",
     companyWebsite: "https://okhub.vn",
     positions: [
       {
@@ -83,8 +83,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "f8-technology-and-education-jsc",
     companyName: "F8 - Technology and Education JSC",
-    companyLogo:
-      "https://khoahochatde.com/wp-content/uploads/2025/01/channels4_profile-2.jpg",
+    companyLogo: "/education/f8.webp",
     positions: [
       {
         id: "3e831244-8d8c-41e2-b2ce-7f3946956afd",
@@ -123,8 +122,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "education-utc",
     companyName: "University of Transport and Communications",
-    companyLogo:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fa/LogoUTC.jpg",
+    companyLogo: "/education/utc.webp",
     companyWebsite: "https://www.utc.edu.vn",
     positions: [
       {
@@ -150,7 +148,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "education-fpt",
     companyName: "FPT Polytechnic",
-    companyLogo: "/education/fpt-polytechnic.jpg",
+    companyLogo: "/education/fpt-polytechnic.webp",
     companyWebsite: "https://caodang.fpt.edu.vn",
     positions: [
       {

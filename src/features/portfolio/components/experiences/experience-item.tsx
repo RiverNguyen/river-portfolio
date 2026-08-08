@@ -17,13 +17,13 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
               src={experience.companyLogo}
               alt={`${experience.companyName} logo`}
               fill
-              quality={100}
+              sizes="24px"
+              quality={90}
               className={
                 experience.companyLogo.endsWith(".svg")
                   ? "rounded-full object-contain p-0.5"
                   : "rounded-full object-cover"
               }
-              unoptimized
               aria-hidden
             />
           ) : (

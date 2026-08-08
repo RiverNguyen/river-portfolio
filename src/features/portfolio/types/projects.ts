@@ -24,4 +24,6 @@ export type Project = {
   images?: string[]
   /** Whether the project card is expanded by default in the UI. */
   isExpanded?: boolean
+  /** Optional case study slug under /projects/[slug]. */
+  caseStudySlug?: string
 }
