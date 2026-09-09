@@ -2,24 +2,23 @@
 
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Area, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from "recharts"
 
+import Grid from "@/components/charts/grid"
+import LineChart, { Line } from "@/components/charts/line-chart"
+import { ChartTooltip } from "@/components/charts/tooltip"
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart"
-import { cn } from "@/lib/utils"
+  Metric,
+  MetricChange,
+  MetricLabel,
+  MetricValue,
+} from "@/components/metric"
 
 import type { InsightsPayload } from "../types"
 
 const TRACK_KEY = "rv_visit_tracked"
 
 function formatCount(value: number, locale: string) {
-  return new Intl.NumberFormat(locale === "vi" ? "vi-VN" : "en-US").format(
-    value
-  )
+  return new Intl.NumberFormat(locale === "vi" ? "vi-VN" : "en-US").format(value)
 }
 
 function formatDuration(ms: number, locale: string) {
@@ -27,19 +26,11 @@ function formatDuration(ms: number, locale: string) {
   const totalSec = Math.round(ms / 1000)
   const minutes = Math.floor(totalSec / 60)
   const seconds = totalSec % 60
+  if (minutes <= 0) return `${seconds}s`
   if (locale === "vi") {
-    if (minutes <= 0) return `${seconds}s`
     return `${minutes}p ${seconds.toString().padStart(2, "0")}s`
   }
-  if (minutes <= 0) return `${seconds}s`
   return `${minutes}m ${seconds.toString().padStart(2, "0")}s`
-}
-
-function formatChange(change: number | null) {
-  if (change == null || Number.isNaN(change)) return null
-  const abs = Math.abs(change)
-  const formatted = abs >= 10 ? abs.toFixed(0) : abs.toFixed(1)
-  return `${change >= 0 ? "↑" : "↓"} ${formatted}%`
 }
 
 export function VisitorsInsights({
@@ -50,8 +41,12 @@ export function VisitorsInsights({
   const t = useTranslations("Visitors")
   const locale = useLocale()
   const [insights, setInsights] = useState(initialInsights)
-  const startedAt = useRef<number>(Date.now())
+  const startedAt = useRef<number>(0)
   const durationSent = useRef(false)
+
+  useEffect(() => {
+    startedAt.current = Date.now()
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -112,17 +107,6 @@ export function VisitorsInsights({
     }
   }, [])
 
-  const chartConfig = {
-    visitors: {
-      label: t("uniqueVisitors"),
-      color: "var(--foreground)",
-    },
-    views: {
-      label: t("views"),
-      color: "var(--muted-foreground)",
-    },
-  } satisfies ChartConfig
-
   const metrics = useMemo(
     () => [
       {
@@ -153,104 +137,71 @@ export function VisitorsInsights({
     [insights, locale, t]
   )
 
+  const numberFmt = useMemo(
+    () => new Intl.NumberFormat(locale === "vi" ? "vi-VN" : "en-US"),
+    [locale]
+  )
+
   return (
     <div>
-      <div className="grid grid-cols-2 divide-x divide-y divide-edge sm:grid-cols-4 sm:divide-y-0">
-        {metrics.map((metric) => {
-          const changeLabel = formatChange(metric.change)
-          const isUp = (metric.change ?? 0) >= 0
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-0 -z-1 grid grid-cols-2 md:grid-cols-4">
+          <div className="border-r border-edge" />
+          <div className="border-r border-edge max-md:hidden" />
+          <div className="border-r border-edge max-md:hidden" />
+        </div>
 
-          return (
-            <div key={metric.key} className="space-y-3 px-4 py-4 sm:px-5">
-              <div className="flex items-start justify-between gap-2">
-                <p className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-                  {metric.label}
-                </p>
-                {changeLabel ? (
-                  <span
-                    className={cn(
-                      "font-mono text-[11px] tabular-nums",
-                      isUp ? "text-success" : "text-destructive"
-                    )}
-                  >
-                    {changeLabel}
-                  </span>
-                ) : null}
-              </div>
-              <p className="text-2xl font-semibold tracking-tight tabular-nums sm:text-[1.75rem]">
-                {metric.value}
-              </p>
-            </div>
-          )
-        })}
+        <dl className="grid grid-cols-2 md:grid-cols-4">
+          {metrics.map((metric) => (
+            <Metric key={metric.key}>
+              <MetricLabel>
+                {metric.label}
+                <MetricChange value={metric.change} />
+              </MetricLabel>
+              <MetricValue>{metric.value}</MetricValue>
+            </Metric>
+          ))}
+        </dl>
       </div>
 
-      <div className="border-t border-edge px-2 pt-2 pb-3 sm:px-3">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-44 w-full sm:h-52"
-          initialDimension={{ width: 640, height: 208 }}
-        >
-          <ComposedChart
+      <div className="border-t border-edge px-2 pt-3 pb-2 sm:px-3">
+        {insights.series.length > 0 ? (
+          <LineChart
+            className="md:aspect-3/1!"
             data={insights.series}
-            margin={{ top: 12, right: 8, left: 8, bottom: 4 }}
+            margin={{ top: 16, right: 24, bottom: 16, left: 24 }}
           >
-            <defs>
-              <linearGradient id="fillViews" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-views)"
-                  stopOpacity={0.16}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="var(--color-views)"
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid
-              vertical={false}
-              strokeDasharray="3 6"
-              className="stroke-edge"
-            />
-            <XAxis dataKey="date" hide />
-            <YAxis hide domain={[0, "auto"]} />
-            <ChartTooltip
-              cursor={{ stroke: "var(--color-edge)", strokeDasharray: "4 4" }}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    if (typeof value !== "string") return value
-                    return new Intl.DateTimeFormat(
-                      locale === "vi" ? "vi-VN" : "en-US",
-                      { month: "short", day: "numeric" }
-                    ).format(new Date(`${value}T00:00:00Z`))
-                  }}
-                />
-              }
-            />
-            <Area
-              type="monotone"
+            <Grid horizontal />
+            <Line
               dataKey="views"
-              stroke="var(--color-views)"
-              strokeWidth={1.5}
-              fill="url(#fillViews)"
-              fillOpacity={1}
-              strokeOpacity={0.55}
-              dot={false}
-              activeDot={{ r: 3 }}
+              stroke="var(--chart-line-secondary)"
+              strokeWidth={2}
             />
             <Line
-              type="monotone"
               dataKey="visitors"
-              stroke="var(--color-visitors)"
+              stroke="var(--chart-line-primary)"
               strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 3.5 }}
             />
-          </ComposedChart>
-        </ChartContainer>
+            <ChartTooltip
+              rows={(point) => [
+                {
+                  color: "var(--chart-line-primary)",
+                  label: t("uniqueVisitors"),
+                  value: numberFmt.format(Number(point.visitors ?? 0)),
+                },
+                {
+                  color: "var(--chart-line-secondary)",
+                  label: t("views"),
+                  value: numberFmt.format(Number(point.views ?? 0)),
+                },
+              ]}
+            />
+          </LineChart>
+        ) : (
+          <div className="grid aspect-2/1 w-full place-content-center md:aspect-3/1">
+            <p className="text-sm text-muted-foreground">{t("empty")}</p>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -22,8 +22,8 @@ export type CaseStudy = {
   tagline: string
   role: string
   period: string
-  liveUrl: string
-  coverImage: string
+  liveUrl?: string
+  coverImage?: string
   images: string[]
   skills: string[]
   summary: string
@@ -49,7 +49,7 @@ type MetricSource = {
 
 /** Shared shipping / lab metrics — values stay locale-agnostic. */
 const CASE_METRICS: Record<string, MetricSource[]> = {
-  "tiem-tour": [
+  "tour-booking-platform": [
     {
       value: "1.4s",
       label: { en: "LCP", vi: "LCP" },
@@ -68,10 +68,10 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
     {
       value: "1",
       label: { en: "Checkout rail", vi: "Luồng thanh toán" },
-      note: { en: "OnePay wired", vi: "OnePay" },
+      note: { en: "Payment wired", vi: "Đã nối thanh toán" },
     },
   ],
-  "inno-jsc": [
+  "corporate-landing-page": [
     {
       value: "95",
       label: { en: "Performance", vi: "Performance" },
@@ -93,7 +93,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Reusable UI", vi: "UI tái sử dụng" },
     },
   ],
-  "ama-corp": [
+  "corporate-website-auth": [
     {
       value: "94",
       label: { en: "Performance", vi: "Performance" },
@@ -115,7 +115,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Crawl-friendly", vi: "Thân thiện SEO" },
     },
   ],
-  "okhub-agency": [
+  "agency-website": [
     {
       value: "97",
       label: { en: "Performance", vi: "Performance" },
@@ -137,7 +137,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Scroll storytelling", vi: "Scroll storytelling" },
     },
   ],
-  antho: [
+  "industrial-corporate-site": [
     {
       value: "93",
       label: { en: "Performance", vi: "Performance" },
@@ -159,7 +159,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "WP → Next.js", vi: "WP → Next.js" },
     },
   ],
-  "zio-hair": [
+  "salon-booking-platform": [
     {
       value: "3",
       label: { en: "Booking steps", vi: "Bước đặt lịch" },
@@ -181,7 +181,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Appointments + SKUs", vi: "Lịch + sản phẩm" },
     },
   ],
-  "lotus-charm-travel": [
+  "multilingual-tour-platform": [
     {
       value: "EN/ZH",
       label: { en: "Locales", vi: "Ngôn ngữ" },
@@ -198,12 +198,12 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Mobile lab", vi: "Lab mobile" },
     },
     {
-      value: "Megapay",
+      value: "1",
       label: { en: "Checkout", vi: "Checkout" },
       note: { en: "Payment wired", vi: "Đã nối thanh toán" },
     },
   ],
-  "avian-odyssey": [
+  "luxury-travel-brand": [
     {
       value: "95",
       label: { en: "Performance", vi: "Performance" },
@@ -225,7 +225,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Ops-friendly", vi: "Dễ vận hành" },
     },
   ],
-  homesworld: [
+  "travel-combo-platform": [
     {
       value: "4",
       label: { en: "Island combos", vi: "Combo đảo" },
@@ -247,7 +247,7 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "Lighthouse", vi: "Lighthouse" },
     },
   ],
-  vova: [
+  "ai-product-brand": [
     {
       value: "Hero",
       label: { en: "Brand entry", vi: "Lối vào brand" },
@@ -272,18 +272,18 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
 }
 
 const COPY_EN: Record<string, CaseStudyCopy> = {
-  "tiem-tour": {
+  "tour-booking-platform": {
     tagline:
       "Tour search, filters, and custom itineraries — built to book without friction.",
     role: "Frontend Developer",
     summary:
-      "Tiem Tour is a tour booking site for travelers exploring Ha Giang and nearby routes. Guests need to find trips fast, filter by real constraints, request custom itineraries, and pay with confidence — mostly on mobile.",
+      "A tour booking site for travelers exploring northern Vietnam's mountain routes. Guests need to find trips fast, filter by real constraints, request custom itineraries, and pay with confidence — mostly on mobile.",
     sections: [
       {
         title: "The problem",
         body: `Tour operators often juggle Facebook inbox, spreadsheets, and a brochure-style site. Travelers bounce when they can't answer three questions quickly: **where can I go, when is it available, and how do I book?**
 
-Tiem Tour needed a customer-facing experience that felt modern, while ops still managed content in a familiar CMS.`,
+The client needed a customer-facing experience that felt modern, while ops still managed content in a familiar CMS.`,
       },
       {
         title: "Approach",
@@ -292,7 +292,7 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
 - Custom post types + **ACF** for tours, pricing fields, and availability metadata
 - **REST API** feeding listing, detail, and filter UIs
 - Booking + inquiry forms with admin notifications
-- **OnePay** for payment checkout`,
+- A payment gateway wired for checkout`,
       },
       {
         title: "Key decisions",
@@ -309,16 +309,16 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Reusable headless booking pattern for later travel projects",
     ],
   },
-  "inno-jsc": {
+  "corporate-landing-page": {
     tagline:
-      "Corporate presence for Inno JSC — values, services, and credibility in one scroll.",
+      "Corporate presence — values, services, and credibility in one scroll.",
     role: "Frontend Developer",
     summary:
-      "Inno needed a corporate website that introduces products, services, and achievements with a professional brand feel and room for marketing to iterate quickly.",
+      "The client needed a corporate website that introduces products, services, and achievements with a professional brand feel and room for marketing to iterate quickly.",
     sections: [
       {
         title: "The problem",
-        body: `Many company sites bury the value proposition under dense copy. Inno needed a clear narrative: who they are, what they offer, and why it matters — without feeling like a PDF converted to HTML.`,
+        body: `Many company sites bury the value proposition under dense copy. The client needed a clear narrative: who they are, what they offer, and why it matters — without feeling like a PDF converted to HTML.`,
       },
       {
         title: "Approach",
@@ -340,16 +340,16 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Performance/SEO foundations for ongoing campaigns",
     ],
   },
-  "ama-corp": {
+  "corporate-website-auth": {
     tagline:
       "Corporate site with secure access — brand presence plus authenticated user flows.",
     role: "Frontend Developer",
     summary:
-      "AMA Corp needed more than a brochure: a professional brand site with authentication and OAuth so the right users can access protected areas securely.",
+      "The client needed more than a brochure: a professional brand site with authentication and OAuth so the right users can access protected areas securely.",
     sections: [
       {
         title: "The problem",
-        body: `Public marketing pages and private access often live in separate systems. AMA needed both: a credible public face and authenticated entry without fracturing the brand.`,
+        body: `Public marketing pages and private access often live in separate systems. The client needed both: a credible public face and authenticated entry without fracturing the brand.`,
       },
       {
         title: "Approach",
@@ -371,12 +371,12 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Campaign-friendly content structure",
     ],
   },
-  "okhub-agency": {
+  "agency-website": {
     tagline:
       "Agency site stack — Next.js frontends, WordPress content, and production hardening.",
     role: "Frontend Developer",
     summary:
-      "OKHub Agency work spanned headless WordPress + Next.js delivery: custom themes, CPT/ACF APIs, animation, payments/booking patterns, and practical security measures.",
+      "Agency work spanning headless WordPress + Next.js delivery: custom themes, CPT/ACF APIs, animation, payments/booking patterns, and practical security measures.",
     sections: [
       {
         title: "The problem",
@@ -403,13 +403,12 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Booking/payment-ready flows with practical safeguards",
     ],
   },
-  antho: {
-    title: "An Tho IC",
+  "industrial-corporate-site": {
     tagline:
-      "Corporate + commerce-ready presence for An Tho IC on a headless stack.",
+      "Corporate + commerce-ready presence for an industrial company on a headless stack.",
     role: "Frontend Developer",
     summary:
-      "An Tho IC needed a site that presents products and services while supporting dynamic content and commerce-related flows through WordPress + Next.js.",
+      "The client needed a site that presents products and services while supporting dynamic content and commerce-related flows through WordPress + Next.js.",
     sections: [
       {
         title: "The problem",
@@ -435,16 +434,16 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Commerce/booking-ready integrations where needed",
     ],
   },
-  "zio-hair": {
+  "salon-booking-platform": {
     tagline:
       "Salon booking + retail in one flow — pick stylist, time, products, pay online.",
     role: "Frontend Developer",
     summary:
-      "Zio Hair combines appointment booking (date, time, stylist) with a product cart and online payment — a dual-purpose platform for salon services and retail.",
+      "The platform combines appointment booking (date, time, stylist) with a product cart and online payment — a dual-purpose platform for salon services and retail.",
     sections: [
       {
         title: "The problem",
-        body: `Salons lose bookings to phone tag and no-shows. Selling products separately from appointments also splits the customer journey. Zio needed one place to book **and** buy.`,
+        body: `Salons lose bookings to phone tag and no-shows. Selling products separately from appointments also splits the customer journey. The client needed one place to book **and** buy.`,
       },
       {
         title: "Approach",
@@ -467,12 +466,12 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Clearer confirmation path for customers",
     ],
   },
-  "lotus-charm-travel": {
+  "multilingual-tour-platform": {
     tagline:
       "Multilingual tour booking for international travelers — filter, request, pay.",
     role: "Frontend Developer",
     summary:
-      "Lotus Charm Travel is a personalized tour platform with destination/date/duration/budget filters, custom tour requests, Megapay checkout, and EN/ZH support for international guests.",
+      "A personalized tour platform with destination/date/duration/budget filters, custom tour requests, payment-gateway checkout, and EN/ZH support for international guests.",
     sections: [
       {
         title: "The problem",
@@ -483,28 +482,28 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
         body: `- Next.js UI from Figma with motion
 - Headless WordPress CPT/ACF → REST
 - Tour filters + custom request flows
-- **Megapay** payment + booking forms
+- Payment gateway + booking forms
 - Performance (CWV-minded) and multilingual support`,
       },
       {
         title: "Key decisions",
         body: `- Multilingual as a product requirement, not a plugin afterthought
-- Reuse the Tiem Tour booking lessons with payment gateway differences
+- Reuse the earlier tour-booking lessons with payment gateway differences
 - Optimize for mobile networks common to traveling users`,
       },
     ],
     outcomes: [
       "Filterable tour discovery with custom request support",
-      "Megapay-integrated booking path",
+      "Payment-gateway-integrated booking path",
       "EN/ZH experience with stronger performance baselines",
     ],
   },
-  homesworld: {
+  "travel-combo-platform": {
     tagline:
       "Island combo booking — hotels, transport, maps, and weather in one plan.",
     role: "Frontend Developer",
     summary:
-      "HomesWorld helps travelers book Vietnamese island combos (Cô Tô, Cát Bà, Quan Lạn, Minh Châu) with lodging + transport, interactive maps, filters, room details, and destination weather.",
+      "The platform helps travelers book Vietnamese island combos with lodging + transport, interactive maps, filters, room details, and destination weather.",
     sections: [
       {
         title: "The problem",
@@ -531,12 +530,12 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Polished motion without sacrificing performance",
     ],
   },
-  "avian-odyssey": {
+  "luxury-travel-brand": {
     tagline:
       "A premium Indochina travel brand site — guides, resorts, and curated tours.",
     role: "Frontend Developer",
     summary:
-      "Avian Odyssey is a bespoke travel brand experience: destination guides, a signature hotels & resorts collection, curated tours, and inspiration pages with a premium feel.",
+      "A bespoke travel brand experience: destination guides, a signature hotels & resorts collection, curated tours, and inspiration pages with a premium feel.",
     sections: [
       {
         title: "The problem",
@@ -562,16 +561,16 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Fast, cinematic pages across devices",
     ],
   },
-  vova: {
+  "ai-product-brand": {
     tagline:
       "AI product storytelling — cinematic hero, manifesto, and knowledge hub.",
     role: "Frontend Developer",
     summary:
-      "Vova (Netten) is an AI & Creativity brand site with a space-themed immersive hero, company manifesto, and a knowledge hub of articles, podcasts, and videos.",
+      "An AI & creativity brand site with a space-themed immersive hero, a company manifesto, and a knowledge hub of articles, podcasts, and videos.",
     sections: [
       {
         title: "The problem",
-        body: `AI products need narrative, not just feature lists. Vova needed a brand surface that feels inventive while still organizing long-form knowledge content.`,
+        body: `AI products need narrative, not just feature lists. The client needed a brand surface that feels inventive while still organizing long-form knowledge content.`,
       },
       {
         title: "Approach",
@@ -596,13 +595,12 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
 }
 
 const COPY_VI: Record<string, CaseStudyCopy> = {
-  "tiem-tour": {
-    title: "Tiệm Tour",
+  "tour-booking-platform": {
     tagline:
       "Tìm tour, lọc theo nhu cầu và yêu cầu lịch trình riêng — đặt chỗ không ma sát.",
     role: "Lập trình viên Frontend",
     summary:
-      "Tiệm Tour là website đặt tour cho khách khám phá Hà Giang và cung đường lân cận. Khách cần tìm chuyến nhanh, lọc theo ràng buộc thật, gửi yêu cầu lịch trình riêng và thanh toán yên tâm — chủ yếu trên mobile.",
+      "Website đặt tour cho khách khám phá cung đường núi phía Bắc Việt Nam. Khách cần tìm chuyến nhanh, lọc theo ràng buộc thật, gửi yêu cầu lịch trình riêng và thanh toán yên tâm — chủ yếu trên mobile.",
     sections: [
       {
         title: "Vấn đề",
@@ -615,7 +613,7 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
         body: `- Frontend **Next.js** trên **WordPress** headless
 - CPT + **ACF** cho tour, giá, metadata
 - **REST API** nuôi listing/detail/filter
-- Form đặt tour/inquiry + **OnePay**`,
+- Form đặt tour/inquiry + cổng thanh toán`,
       },
       {
         title: "Quyết định quan trọng",
@@ -632,17 +630,16 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Pattern booking headless tái dùng được",
     ],
   },
-  "inno-jsc": {
-    title: "Công ty Cổ phần Inno",
+  "corporate-landing-page": {
     tagline:
-      "Hiện diện doanh nghiệp cho Inno — giá trị, dịch vụ và uy tín trong một dòng kể.",
+      "Hiện diện doanh nghiệp — giá trị, dịch vụ và uy tín trong một dòng kể.",
     role: "Lập trình viên Frontend",
     summary:
-      "Inno cần website giới thiệu sản phẩm, dịch vụ và thành tựu với cảm giác chuyên nghiệp, đồng thời để marketing cập nhật nhanh.",
+      "Khách cần website giới thiệu sản phẩm, dịch vụ và thành tựu với cảm giác chuyên nghiệp, đồng thời để marketing cập nhật nhanh.",
     sections: [
       {
         title: "Vấn đề",
-        body: `Nhiều site công ty làm chìm value proposition dưới copy dày. Inno cần narrative rõ: là ai, làm gì, vì sao đáng tin.`,
+        body: `Nhiều site công ty làm chìm value proposition dưới copy dày. Khách cần narrative rõ: là ai, làm gì, vì sao đáng tin.`,
       },
       {
         title: "Hướng tiếp cận",
@@ -664,16 +661,16 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Nền tảng cho chiến dịch tiếp theo",
     ],
   },
-  "ama-corp": {
+  "corporate-website-auth": {
     tagline:
       "Website doanh nghiệp có truy cập bảo mật — brand public kèm auth/OAuth.",
     role: "Lập trình viên Frontend",
     summary:
-      "AMA Corp cần vừa brochure chuyên nghiệp vừa cổng truy cập có xác thực/OAuth cho đúng đối tượng.",
+      "Khách cần vừa brochure chuyên nghiệp vừa cổng truy cập có xác thực/OAuth cho đúng đối tượng.",
     sections: [
       {
         title: "Vấn đề",
-        body: `Marketing public và khu vực private thường tách hệ thống. AMA cần cả hai mà không vỡ brand.`,
+        body: `Marketing public và khu vực private thường tách hệ thống. Khách cần cả hai mà không vỡ brand.`,
       },
       {
         title: "Hướng tiếp cận",
@@ -695,12 +692,12 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Cấu trúc nội dung phục vụ campaign",
     ],
   },
-  "okhub-agency": {
+  "agency-website": {
     tagline:
       "Stack agency — frontend Next.js, nội dung WordPress, và hardening khi ship.",
     role: "Lập trình viên Frontend",
     summary:
-      "Công việc OKHub trải dài headless WordPress + Next.js: theme, CPT/ACF API, animation, payment/booking và biện pháp bảo mật thực dụng.",
+      "Công việc agency trải dài headless WordPress + Next.js: theme, CPT/ACF API, animation, payment/booking và biện pháp bảo mật thực dụng.",
     sections: [
       {
         title: "Vấn đề",
@@ -727,13 +724,12 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Flow booking/payment có lớp bảo vệ",
     ],
   },
-  antho: {
-    title: "An Thọ IC",
+  "industrial-corporate-site": {
     tagline:
-      "Hiện diện doanh nghiệp sẵn sàng commerce trên stack headless cho An Thọ IC.",
+      "Hiện diện doanh nghiệp sẵn sàng commerce trên stack headless cho một công ty ngành công nghiệp.",
     role: "Lập trình viên Frontend",
     summary:
-      "An Thọ IC cần site giới thiệu sản phẩm/dịch vụ, nội dung động và các flow liên quan commerce qua WordPress + Next.js.",
+      "Khách cần site giới thiệu sản phẩm/dịch vụ, nội dung động và các flow liên quan commerce qua WordPress + Next.js.",
     sections: [
       {
         title: "Vấn đề",
@@ -759,16 +755,16 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Sẵn sàng tích hợp commerce/booking",
     ],
   },
-  "zio-hair": {
+  "salon-booking-platform": {
     tagline:
       "Đặt lịch salon + bán sản phẩm một mạch — chọn stylist, giờ, giỏ hàng, thanh toán.",
     role: "Lập trình viên Frontend",
     summary:
-      "Zio Hair gộp đặt lịch (ngày, giờ, stylist) với giỏ dịch vụ/sản phẩm và thanh toán online — một nền tảng cho salon và retail.",
+      "Nền tảng gộp đặt lịch (ngày, giờ, stylist) với giỏ dịch vụ/sản phẩm và thanh toán online — một nền tảng cho salon và retail.",
     sections: [
       {
         title: "Vấn đề",
-        body: `Salon mất booking vì gọi điện qua lại. Bán sản phẩm tách khỏi lịch hẹn làm gãy hành trình. Zio cần một chỗ vừa đặt vừa mua.`,
+        body: `Salon mất booking vì gọi điện qua lại. Bán sản phẩm tách khỏi lịch hẹn làm gãy hành trình. Khách cần một chỗ vừa đặt vừa mua.`,
       },
       {
         title: "Hướng tiếp cận",
@@ -791,12 +787,12 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Xác nhận rõ ràng cho khách",
     ],
   },
-  "lotus-charm-travel": {
+  "multilingual-tour-platform": {
     tagline:
       "Đặt tour đa ngôn ngữ cho khách quốc tế — lọc, yêu cầu riêng, thanh toán.",
     role: "Lập trình viên Frontend",
     summary:
-      "Lotus Charm Travel là nền tảng tour cá nhân hoá với lọc điểm đến/ngày/thời lượng/ngân sách, yêu cầu tour riêng, Megapay và hỗ trợ EN/ZH.",
+      "Nền tảng tour cá nhân hoá với lọc điểm đến/ngày/thời lượng/ngân sách, yêu cầu tour riêng, cổng thanh toán và hỗ trợ EN/ZH.",
     sections: [
       {
         title: "Vấn đề",
@@ -807,28 +803,28 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
         body: `- UI Next.js từ Figma + motion
 - WordPress headless CPT/ACF → REST
 - Filter tour + custom request
-- **Megapay** + form booking
+- Cổng thanh toán + form booking
 - Performance và đa ngôn ngữ`,
       },
       {
         title: "Quyết định quan trọng",
         body: `- Đa ngôn ngữ là requirement sản phẩm
-- Tái dụng bài học Tiệm Tour, đổi cổng thanh toán
+- Tái dụng bài học tour trước đó, đổi cổng thanh toán
 - Tối ưu cho mạng mobile khi đi tour`,
       },
     ],
     outcomes: [
       "Khám phá tour có filter và custom request",
-      "Booking gắn Megapay",
+      "Booking gắn cổng thanh toán",
       "Trải nghiệm EN/ZH với nền tảng hiệu năng tốt hơn",
     ],
   },
-  homesworld: {
+  "travel-combo-platform": {
     tagline:
       "Đặt combo đảo — khách sạn, di chuyển, bản đồ và thời tiết trong một kế hoạch.",
     role: "Lập trình viên Frontend",
     summary:
-      "HomesWorld giúp đặt combo đảo Việt Nam (Cô Tô, Cát Bà, Quan Lạn, Minh Châu) gồm nghỉ dưỡng + di chuyển, bản đồ tương tác, lọc, chi tiết phòng và widget thời tiết.",
+      "Nền tảng giúp đặt combo đảo Việt Nam gồm nghỉ dưỡng + di chuyển, bản đồ tương tác, lọc, chi tiết phòng và widget thời tiết.",
     sections: [
       {
         title: "Vấn đề",
@@ -855,12 +851,12 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Motion gọn, hiệu năng ổn",
     ],
   },
-  "avian-odyssey": {
+  "luxury-travel-brand": {
     tagline:
       "Brand du lịch Indochina cao cấp — guides, resort và tour biên tập.",
     role: "Lập trình viên Frontend",
     summary:
-      "Avian Odyssey là trải nghiệm brand travel: cẩm nang điểm đến, bộ sưu tập hotels & resorts, tour chọn lọc và trang cảm hứng với cảm giác premium.",
+      "Trải nghiệm brand travel: cẩm nang điểm đến, bộ sưu tập hotels & resorts, tour chọn lọc và trang cảm hứng với cảm giác premium.",
     sections: [
       {
         title: "Vấn đề",
@@ -886,16 +882,16 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Trang cinematic nhưng vẫn nhanh",
     ],
   },
-  vova: {
+  "ai-product-brand": {
     tagline:
       "Kể chuyện sản phẩm AI — hero cinematic, manifesto và knowledge hub.",
     role: "Lập trình viên Frontend",
     summary:
-      "Vova (Netten) là site AI & Creativity với hero chủ đề không gian, manifesto công ty và hub kiến thức (bài viết, podcast, video).",
+      "Site AI & sáng tạo với hero chủ đề không gian, manifesto công ty và hub kiến thức (bài viết, podcast, video).",
     sections: [
       {
         title: "Vấn đề",
-        body: `Sản phẩm AI cần narrative, không chỉ feature list. Vova cần bề mặt brand sáng tạo nhưng vẫn tổ chức được nội dung dài.`,
+        body: `Sản phẩm AI cần narrative, không chỉ feature list. Khách cần bề mặt brand sáng tạo nhưng vẫn tổ chức được nội dung dài.`,
       },
       {
         title: "Hướng tiếp cận",
@@ -946,7 +942,7 @@ function buildCaseStudy(
     role: copy.role,
     period: formatPeriod(project.period.start, project.period.end, locale),
     liveUrl: project.link,
-    coverImage: project.images?.[0] ?? project.logo ?? "/image.png",
+    coverImage: project.images?.[0],
     images: project.images ?? [],
     skills: project.skills,
     summary: copy.summary,

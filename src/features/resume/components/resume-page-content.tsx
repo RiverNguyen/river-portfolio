@@ -230,21 +230,25 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
           <ResumeSection title={labels.projects}>
             <div className="space-y-6">
               {resume.projects.map((project) => (
-                <div key={project.url} className="space-y-2">
+                <div key={project.name} className="space-y-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                     <h3 className="text-base font-semibold">
-                      <a
-                        className="inline-flex items-center gap-1 underline-offset-4 hover:underline"
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {project.name}
-                        <ExternalLinkIcon
-                          className="size-3.5 opacity-60"
-                          aria-hidden
-                        />
-                      </a>
+                      {project.url ? (
+                        <a
+                          className="inline-flex items-center gap-1 underline-offset-4 hover:underline"
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {project.name}
+                          <ExternalLinkIcon
+                            className="size-3.5 opacity-60"
+                            aria-hidden
+                          />
+                        </a>
+                      ) : (
+                        project.name
+                      )}
                     </h3>
                     <time className="font-mono text-xs text-muted-foreground">
                       {project.period}

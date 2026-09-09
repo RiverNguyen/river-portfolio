@@ -6,8 +6,8 @@ import {
   PanelTitle,
 } from "@/features/portfolio/components/panel"
 
-import { getInsights } from "../lib/store"
 import { formatInsightsRange } from "../lib/format"
+import { getInsights } from "../lib/store"
 import { VisitorsInsights } from "./visitors-insights"
 
 export async function Visitors() {

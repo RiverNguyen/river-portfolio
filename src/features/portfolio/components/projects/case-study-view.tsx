@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { addQueryParams } from "@/utils/url"
 
+import { PrivateProjectNotice } from "./private-project-notice"
 import { ProjectGallery } from "./project-gallery"
 
 export async function CaseStudyView({ study }: { study: CaseStudy }) {
@@ -27,15 +28,17 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
           </Link>
         </Button>
 
-        <a
-          href={addQueryParams(study.liveUrl, UTM_PARAMS)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {t("viewLive")}
-          <ArrowUpRightIcon className="size-3.5" />
-        </a>
+        {study.liveUrl ? (
+          <a
+            href={addQueryParams(study.liveUrl, UTM_PARAMS)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("viewLive")}
+            <ArrowUpRightIcon className="size-3.5" />
+          </a>
+        ) : null}
       </div>
 
       <header className="space-y-4 px-4 py-6 sm:py-8">
@@ -73,21 +76,31 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
         </dl>
       </header>
 
-      <div className="screen-line-before screen-line-after border-x-0">
-        <div className="relative aspect-16/10 overflow-hidden bg-muted sm:aspect-2/1">
-          <Image
-            src={study.coverImage}
-            alt={study.title}
-            fill
-            priority
-            quality={90}
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, 768px"
-          />
+      {study.coverImage ? (
+        <div className="screen-line-before border-x-0">
+          <div className="relative aspect-16/10 overflow-hidden bg-muted sm:aspect-2/1">
+            <Image
+              src={study.coverImage}
+              alt={study.title}
+              fill
+              priority
+              quality={90}
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+          </div>
         </div>
+      ) : null}
+
+      <div className="screen-line-before px-4 py-6">
+        <PrivateProjectNotice
+          title={t("privateTitle")}
+          description={t("privateDesc")}
+          cta={t("privateCta")}
+        />
       </div>
 
-      <section className="space-y-3 px-4 py-6">
+      <section className="screen-line-before space-y-3 px-4 py-6">
         <h2 className="font-mono text-[11px] tracking-[0.28em] text-muted-foreground uppercase">
           {t("summary")}
         </h2>

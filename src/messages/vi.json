@@ -34,7 +34,10 @@
     "featured": "Dự án nổi bật",
     "viewDetails": "Chi tiết",
     "viewProject": "Mở trang live",
-    "caseStudy": "Case study"
+    "caseStudy": "Case study",
+    "privateTitle": "Dự án bảo mật",
+    "privateDesc": "Tên khách hàng, đường link và hình ảnh dự án đều thuộc thỏa thuận bảo mật (NDA). Liên hệ để mình trao đổi chi tiết về cách làm, quyết định và kết quả.",
+    "privateCta": "Liên hệ để trao đổi"
   },
   "CaseStudy": {
     "label": "Case study",
@@ -50,7 +53,10 @@
     "gallery": "Thư viện ảnh",
     "tech": "Công nghệ dùng",
     "ctaNote": "Bạn cần kiểu này — booking, headless CMS, hay storefront du lịch?",
-    "ctaContact": "Nhắn mình"
+    "ctaContact": "Nhắn mình",
+    "privateTitle": "Dự án bảo mật",
+    "privateDesc": "Đây là dự án khách hàng đã được ẩn danh. Thương hiệu, trang live và hình ảnh thuộc thỏa thuận bảo mật (NDA) — liên hệ để mình trao đổi chi tiết về cách làm, quyết định và kết quả.",
+    "privateCta": "Liên hệ để trao đổi về dự án"
   },
   "Components": {
     "title": "Components",
@@ -128,7 +134,8 @@
     "sessions": "Phiên",
     "views": "Lượt xem",
     "sessionDuration": "Thời lượng phiên",
-    "visitors": "Khách"
+    "visitors": "Khách",
+    "empty": "Chưa có dữ liệu insights."
   },
   "Resume": {
     "title": "CV",

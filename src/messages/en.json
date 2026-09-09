@@ -34,7 +34,10 @@
     "featured": "Featured Projects",
     "viewDetails": "Details",
     "viewProject": "Open live site",
-    "caseStudy": "Case study"
+    "caseStudy": "Case study",
+    "privateTitle": "Private client project",
+    "privateDesc": "The client, live URL, and screenshots are covered by an NDA. Get in touch and I'll walk you through the work, the decisions, and the results.",
+    "privateCta": "Contact to discuss"
   },
   "CaseStudy": {
     "label": "Case study",
@@ -50,7 +53,10 @@
     "gallery": "Gallery",
     "tech": "Technologies",
     "ctaNote": "Want something in this vein — booking, headless CMS, or a travel storefront?",
-    "ctaContact": "Talk to me"
+    "ctaContact": "Talk to me",
+    "privateTitle": "Private client project",
+    "privateDesc": "This is anonymized client work. The brand, live site, and visuals are covered by an NDA — reach out and I'll walk you through the details, the decisions, and the results.",
+    "privateCta": "Contact to discuss this project"
   },
   "Components": {
     "title": "Components",
@@ -128,7 +134,8 @@
     "sessions": "Sessions",
     "views": "Views",
     "sessionDuration": "Session duration",
-    "visitors": "Visitors"
+    "visitors": "Visitors",
+    "empty": "No insights available yet."
   },
   "Resume": {
     "title": "Resume",

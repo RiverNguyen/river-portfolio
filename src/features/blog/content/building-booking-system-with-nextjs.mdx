@@ -8,14 +8,14 @@ updatedAt: 2026-02-10
 
 Booking flows look simple on the surface: pick a date, pick a slot, pay, done. In practice, they touch authentication, inventory, payments, notifications, and admin dashboards.
 
-I've shipped this pattern on **Zio Hair** (salon appointments + e-commerce) and **Tiem Tour** (tour search, filters, and custom requests).
+I've shipped this pattern on a salon booking platform (appointments + e-commerce) and a tour-booking platform (search, filters, and custom requests).
 
 ## Core user flow
 
 1. Browse services or tours
 2. Filter by date, time, stylist, or destination
 3. Add to cart or book directly
-4. Pay via **OnePay** or **Megapay**
+4. Pay via an integrated payment gateway
 5. Receive confirmation (email / admin notification)
 
 The goal is zero confusion between steps. Every screen should answer: _where am I, what did I pick, and what's next?_

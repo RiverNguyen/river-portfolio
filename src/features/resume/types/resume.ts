@@ -21,7 +21,7 @@ export type ResumeSkillGroup = {
 
 export type ResumeProject = {
   name: string
-  url: string
+  url?: string
   period: string
   role: string
   description: string

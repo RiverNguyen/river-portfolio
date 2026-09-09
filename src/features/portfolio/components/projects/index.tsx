@@ -28,7 +28,15 @@ export async function Projects() {
 
       {preview.map((item) => (
         <div key={item.id} className="border-b border-edge">
-          <ProjectItem project={item} caseStudyLabel={tPage("caseStudy")} />
+          <ProjectItem
+            project={item}
+            caseStudyLabel={tPage("caseStudy")}
+            privateNotice={{
+              title: tPage("privateTitle"),
+              description: tPage("privateDesc"),
+              cta: tPage("privateCta"),
+            }}
+          />
         </div>
       ))}
 

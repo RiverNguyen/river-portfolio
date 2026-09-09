@@ -9,7 +9,6 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
 import { useLenis } from "@/components/lenis-provider"
-
 import {
   Dialog,
   DialogContent,
@@ -30,11 +29,12 @@ import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { addQueryParams } from "@/utils/url"
 
-import { ProjectGallery } from "./project-gallery"
 import {
   FeaturedProjectsSlider,
   pickFeaturedProjects,
 } from "./featured-projects-slider"
+import { PrivateProjectNotice } from "./private-project-notice"
+import { ProjectGallery } from "./project-gallery"
 
 function getProjectSummary(description?: string) {
   if (!description) return ""
@@ -240,7 +240,9 @@ function ProjectDetailDialog({
   if (!activeProject) return null
 
   const summary = getProjectSummary(activeProject.description)
-  const href = addQueryParams(activeProject.link, UTM_PARAMS)
+  const href = activeProject.link
+    ? addQueryParams(activeProject.link, UTM_PARAMS)
+    : null
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -293,21 +295,25 @@ function ProjectDetailDialog({
                 </div>
 
                 <DialogTitle className="text-xl text-balance sm:text-2xl">
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/title inline-flex items-center gap-1.5"
-                  >
-                    <span className="bg-gradient-to-r from-foreground to-foreground bg-[length:0%_1.5px] bg-left-bottom bg-no-repeat transition-[background-size] duration-300 group-hover/title:bg-[length:100%_1.5px]">
-                      {activeProject.title}
-                    </span>
-                    <ArrowUpRightIcon
-                      className="size-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 group-hover/title:text-foreground sm:size-5"
-                      aria-hidden
-                    />
-                    <span className="sr-only">{t("viewProject")}</span>
-                  </a>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/title inline-flex items-center gap-1.5"
+                    >
+                      <span className="bg-gradient-to-r from-foreground to-foreground bg-[length:0%_1.5px] bg-left-bottom bg-no-repeat transition-[background-size] duration-300 group-hover/title:bg-[length:100%_1.5px]">
+                        {activeProject.title}
+                      </span>
+                      <ArrowUpRightIcon
+                        className="size-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 group-hover/title:text-foreground sm:size-5"
+                        aria-hidden
+                      />
+                      <span className="sr-only">{t("viewProject")}</span>
+                    </a>
+                  ) : (
+                    activeProject.title
+                  )}
                 </DialogTitle>
                 {summary ? (
                   <DialogDescription className="text-pretty wrap-break-word">
@@ -332,6 +338,13 @@ function ProjectDetailDialog({
           ) : null}
 
           <div className="min-w-0 space-y-5 overflow-x-hidden p-5 sm:p-6">
+            <PrivateProjectNotice
+              title={t("privateTitle")}
+              description={t("privateDesc")}
+              cta={t("privateCta")}
+              onNavigate={() => onOpenChange(false)}
+            />
+
             {activeProject.description ? (
               <ProseMono className="max-w-full wrap-break-word [&_img]:h-auto [&_img]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>

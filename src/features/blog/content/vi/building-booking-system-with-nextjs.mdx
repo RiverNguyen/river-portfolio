@@ -8,14 +8,14 @@ updatedAt: 2026-02-10
 
 Flow đặt lịch nhìn bề ngoài đơn giản: chọn ngày, chọn giờ, thanh toán, xong. Thực tế nó đụng tới auth, inventory, payment, notification và dashboard admin.
 
-Mình đã triển khai pattern này ở **Zio Hair** (đặt lịch salon + e-commerce) và **Tiem Tour** (tìm tour, lọc và yêu cầu tour tuỳ chỉnh).
+Mình đã triển khai pattern này ở một nền tảng đặt lịch salon (đặt lịch + e-commerce) và một nền tảng đặt tour (tìm tour, lọc và yêu cầu tuỳ chỉnh).
 
 ## Luồng người dùng cốt lõi
 
 1. Duyệt dịch vụ hoặc tour
 2. Lọc theo ngày, giờ, stylist hoặc điểm đến
 3. Thêm vào giỏ hoặc đặt trực tiếp
-4. Thanh toán qua **OnePay** hoặc **Megapay**
+4. Thanh toán qua cổng thanh toán tích hợp
 5. Nhận xác nhận (email / thông báo admin)
 
 Mục tiêu là không gây nhầm lẫn giữa các bước. Mỗi màn hình phải trả lời: _mình đang ở đâu, đã chọn gì, bước tiếp theo là gì?_

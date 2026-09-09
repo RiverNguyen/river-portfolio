@@ -1,5 +1,7 @@
 import "@/styles/globals.css"
 
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
 import { getLocale } from "next-intl/server"
@@ -182,6 +184,8 @@ export default async function RootLayout({
             </NuqsAdapter>
           </Providers>
         </LenisProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

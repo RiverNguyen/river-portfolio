@@ -20,16 +20,19 @@ import { Link } from "@/i18n/navigation"
 import { addQueryParams } from "@/utils/url"
 
 import type { Project } from "../../types/projects"
+import { PrivateProjectNotice } from "./private-project-notice"
 import { ProjectGallery } from "./project-gallery"
 
 export function ProjectItem({
   className,
   project,
   caseStudyLabel = "Case study",
+  privateNotice,
 }: {
   className?: string
   project: Project
   caseStudyLabel?: string
+  privateNotice?: { title: string; description: string; cta: string }
 }) {
   const { start, end } = project.period
   const isOngoing = !end
@@ -125,22 +128,24 @@ export function ProjectItem({
                 </Tooltip>
               ) : null}
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <a
-                    className="relative flex size-6 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
-                    href={addQueryParams(project.link, UTM_PARAMS)}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <LinkIcon className="pointer-events-none size-4" />
-                    <span className="sr-only">Open Project Link</span>
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Open Project Link</p>
-                </TooltipContent>
-              </Tooltip>
+              {project.link ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a
+                      className="relative flex size-6 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
+                      href={addQueryParams(project.link, UTM_PARAMS)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <LinkIcon className="pointer-events-none size-4" />
+                      <span className="sr-only">Open Project Link</span>
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Open Project Link</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : null}
             </div>
           </div>
         </div>
@@ -152,6 +157,15 @@ export function ProjectItem({
                 <ProseMono>
                   <Markdown>{project.description}</Markdown>
                 </ProseMono>
+              )}
+
+              {privateNotice && (
+                <PrivateProjectNotice
+                  title={privateNotice.title}
+                  description={privateNotice.description}
+                  cta={privateNotice.cta}
+                  compact
+                />
               )}
 
               {project.images && project.images.length > 0 && (
