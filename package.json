@@ -53,6 +53,7 @@
     "@openpanel/web": "^1.0.7",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.6",
+    "@upstash/redis": "^1.38.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "@visx/curve": "4.0.1-alpha.0",

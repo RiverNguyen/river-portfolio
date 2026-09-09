@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
+import { Redis } from "@upstash/redis"
+
 import type {
   DayStat,
   InsightsPayload,
@@ -21,21 +23,40 @@ const DEFAULT_STORE: VisitorsStore = {
   daily: [],
 }
 
+function freshStore(): VisitorsStore {
+  return { ...DEFAULT_STORE, updatedAt: new Date().toISOString() }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Storage backend                                                           */
+/*                                                                            */
+/*  Serverless platforms (Vercel, Netlify, …) have a read-only filesystem, so */
+/*  the JSON-file store below only works on a long-lived server (Docker/VPS    */
+/*  with a mounted volume). When Upstash Redis credentials are present we use  */
+/*  Redis instead, which works everywhere.                                    */
+/* -------------------------------------------------------------------------- */
+
+const REDIS_KEY = "visitors:store"
+
+let redisClient: Redis | null | undefined
+
+function getRedis(): Redis | null {
+  if (redisClient !== undefined) return redisClient
+
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN
+
+  redisClient = url && token ? new Redis({ url, token }) : null
+  return redisClient
+}
+
 function getDataPath() {
   return (
     process.env.VISITORS_DATA_PATH ??
     path.join(process.cwd(), "data", "visitors.json")
   )
-}
-
-function todayKey(date = new Date()) {
-  return date.toISOString().slice(0, 10)
-}
-
-function addDays(dateKey: string, delta: number) {
-  const date = new Date(`${dateKey}T00:00:00.000Z`)
-  date.setUTCDate(date.getUTCDate() + delta)
-  return date.toISOString().slice(0, 10)
 }
 
 async function ensureDataFile() {
@@ -47,7 +68,7 @@ async function ensureDataFile() {
   } catch {
     await writeFile(
       filePath,
-      `${JSON.stringify({ ...DEFAULT_STORE, updatedAt: new Date().toISOString() }, null, 2)}\n`,
+      `${JSON.stringify(freshStore(), null, 2)}\n`,
       "utf8"
     )
   }
@@ -55,9 +76,30 @@ async function ensureDataFile() {
   return filePath
 }
 
+async function readFromFile(): Promise<VisitorsStore> {
+  const filePath = await ensureDataFile()
+  const raw = await readFile(filePath, "utf8")
+  return normalizeStore(JSON.parse(raw) as unknown)
+}
+
+async function writeToFile(store: VisitorsStore) {
+  const filePath = await ensureDataFile()
+  await writeFile(filePath, `${JSON.stringify(store, null, 2)}\n`, "utf8")
+}
+
+async function readFromRedis(redis: Redis): Promise<VisitorsStore> {
+  const raw = await redis.get<unknown>(REDIS_KEY)
+  if (raw == null) return freshStore()
+  return normalizeStore(raw)
+}
+
+async function writeToRedis(redis: Redis, store: VisitorsStore) {
+  await redis.set(REDIS_KEY, store)
+}
+
 function normalizeStore(raw: unknown): VisitorsStore {
   if (typeof raw !== "object" || raw === null) {
-    return { ...DEFAULT_STORE, updatedAt: new Date().toISOString() }
+    return freshStore()
   }
 
   const data = raw as Partial<VisitorsStore> & {
@@ -111,18 +153,37 @@ function normalizeStore(raw: unknown): VisitorsStore {
 
 export async function readVisitorsStore(): Promise<VisitorsStore> {
   try {
-    const filePath = await ensureDataFile()
-    const raw = await readFile(filePath, "utf8")
-    return normalizeStore(JSON.parse(raw) as unknown)
+    const redis = getRedis()
+    return redis ? await readFromRedis(redis) : await readFromFile()
   } catch (error) {
     console.error("[Visitors] Failed to read store:", error)
-    return { ...DEFAULT_STORE, updatedAt: new Date().toISOString() }
+    return freshStore()
   }
 }
 
 async function writeVisitorsStore(store: VisitorsStore) {
-  const filePath = await ensureDataFile()
-  await writeFile(filePath, `${JSON.stringify(store, null, 2)}\n`, "utf8")
+  try {
+    const redis = getRedis()
+    if (redis) {
+      await writeToRedis(redis, store)
+    } else {
+      await writeToFile(store)
+    }
+  } catch (error) {
+    // Never fail the request over an analytics write (e.g. read-only FS on a
+    // serverless host without Redis configured). The counter just won't move.
+    console.error("[Visitors] Failed to persist store:", error)
+  }
+}
+
+function todayKey(date = new Date()) {
+  return date.toISOString().slice(0, 10)
+}
+
+function addDays(dateKey: string, delta: number) {
+  const date = new Date(`${dateKey}T00:00:00.000Z`)
+  date.setUTCDate(date.getUTCDate() + delta)
+  return date.toISOString().slice(0, 10)
 }
 
 function bumpDay(
