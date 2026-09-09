@@ -31,38 +31,6 @@ It also supports custom tour requests where users can personalize itineraries ba
     ],
   },
   {
-    id: "mbbank-brand-site",
-    title: "MBBank Brand Website",
-    period: {
-      start: "10.2025",
-      end: "Now",
-    },
-    logo: "https://rubicmarketing.com/wp-content/uploads/2022/11/y-nghia-logo-mb-bank-2.jpg",
-    link: "https://mb-web-fe.vercel.app",
-    skills: [
-      "NextJS",
-      "Brand Marketing",
-      "Landing Page",
-      "Animation",
-      "GSAP",
-      "Tailwind CSS",
-      "ShadCn UI",
-      "Motion UI",
-    ],
-    description: `A marketing website for MBBank focusing on brand presence, product highlights, and customer acquisition.
-- Designed and implemented multi-section landing pages to communicate core banking products and brand messages.
-- Built responsive layouts and smooth scrolling/animation effects for a premium brand feel.
-- Optimized content structure, SEO, and performance to support marketing campaigns and traffic spikes.
-- Collaborated with marketing team to quickly iterate on content and visuals for different campaigns.
-- Password to enroll in the website is: "66668888"`,
-    isExpanded: true,
-    images: [
-      "/projects/mbbank/image.webp",
-      "/projects/mbbank/image-1.webp",
-      "/projects/mbbank/image-2.webp",
-    ],
-  },
-  {
     id: "inno-jsc",
     title: "Inno Joint Stock Company",
     period: {
@@ -333,16 +301,6 @@ type ProjectViOverride = Pick<Project, "title" | "description"> & {
 }
 
 const PROJECT_VI_OVERRIDES: Record<string, ProjectViOverride> = {
-  "mbbank-brand-site": {
-    title: "Website thương hiệu MBBank",
-    period: { end: "Hiện tại" },
-    description: `Website marketing cho MBBank, tập trung vào nhận diện thương hiệu, điểm nổi bật sản phẩm và thu hút khách hàng.
-- Thiết kế và triển khai các landing page nhiều section để truyền tải thông điệp thương hiệu và sản phẩm cốt lõi.
-- Xây dựng layout responsive và hiệu ứng cuộn/animation mượt để tạo cảm giác “premium”.
-- Tối ưu cấu trúc nội dung, SEO và hiệu năng để hỗ trợ chiến dịch marketing và những thời điểm tăng traffic.
-- Phối hợp chặt chẽ với team marketing để cập nhật nội dung và hình ảnh nhanh theo từng chiến dịch.
-- Mật khẩu truy cập website: "66668888"`,
-  },
   "inno-jsc": {
     title: "Công ty Cổ phần Inno",
     description: `Website doanh nghiệp cho Công ty Cổ phần Inno, giới thiệu sản phẩm, dịch vụ và thành tựu của công ty.

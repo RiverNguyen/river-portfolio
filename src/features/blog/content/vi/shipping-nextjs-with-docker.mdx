@@ -1,0 +1,65 @@
+---
+title: Ship Next.js bằng Docker mà không lộ secret
+description: Setup Docker thiên production cho Next.js standalone — build arg vs env runtime, .dockerignore, và vì sao API key không bao giờ được bake vào image.
+image: /blogs/next.webp
+new: true
+createdAt: 2026-04-22
+updatedAt: 2026-04-22
+---
+
+Docker giúp deploy lặp lại được. Nó cũng khiến việc bake **API key** vào image rồi push lên registry trở nên dễ đến mức nguy hiểm.
+
+Mình đã siết phần này trên portfolio: **Next.js standalone**, Dockerfile multi-stage, Compose cho config runtime, và một quy tắc cứng — secret không bao giờ vào giai build.
+
+## Hình dạng image
+
+1. **Builder** — cài deps, chạy `next build` với `output: "standalone"`
+2. **Runner** — copy standalone output, static asset, chạy bằng user non-root
+
+Chỉ config không phải secret mới thuộc `ARG` / `ENV` lúc build. Với mình đó là thứ như `APP_URL` cho link tuyệt đối và metadata — không phải key Gmail, Resend hay OpenAI.
+
+```dockerfile
+# Build stage — chỉ config public
+ARG APP_URL
+ENV APP_URL=${APP_URL}
+
+# Runner — inject secret lúc start container, không bake
+# Compose: env_file: .env
+```
+
+## Vì sao secret lúc build là cái bẫy
+
+Nếu truyền `RESEND_API_KEY` qua Docker `ARG`, nó có thể nằm trong image history dù bạn “không dùng” ở stage cuối. Ai pull được image là inspect được layer.
+
+Cách sửa nhàm chán nhưng đúng:
+
+- Cho `.env` vào **`.dockerignore`**
+- Chỉ truyền secret lúc **runtime** (`env_file` / secret của orchestrator)
+- Không gắn prefix `NEXT_PUBLIC_*` cho key server để chúng không bao giờ ra browser
+
+## Việc của Compose
+
+```yaml
+services:
+  next-app:
+    build:
+      context: .
+      args:
+        APP_URL: ${APP_URL}
+    env_file:
+      - .env
+```
+
+Build nhận URL public. Container đang chạy nhận key email và AI. Image publish được tái dùng giữa các môi trường.
+
+## Checklist trước `docker compose up --build`
+
+- [ ] `.env` đã gitignore **và** dockerignore
+- [ ] Dockerfile không còn secret `ARG`/`ENV`
+- [ ] API route đọc `process.env` lúc request
+- [ ] Tag registry cũ được rebuild sau khi gỡ secret đã bake
+- [ ] Rotate key nếu image cũ từng public
+
+## Kết
+
+Docker không chỉ là đóng gói — nó là ranh giới bảo mật. Coi image như thứ bạn có thể vô tình publish. Nếu một key khiến bạn xấu hổ khi bị dump từ registry, nó không thuộc về bước build.

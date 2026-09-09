@@ -26,21 +26,9 @@ COPY . .
 # Ensure .next/cache directory exists and has the correct permissions
 RUN mkdir -p /app/.next/cache/images && chmod -R 755 /app/.next/cache
 
-# Environment variables must be present at build time
-ARG RESEND_API_KEY
-ENV RESEND_API_KEY=${RESEND_API_KEY}
-ARG RESEND_FROM
-ENV RESEND_FROM=${RESEND_FROM}
-ARG GMAIL_USER
-ENV GMAIL_USER=${GMAIL_USER}
-ARG GMAIL_APP_PASSWORD
-ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+# Non-secret build-time config only (never bake API keys into the image)
 ARG APP_URL
 ENV APP_URL=${APP_URL}
-ARG ANTHROPIC_API_KEY
-ENV ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-ARG AI_CHAT_MODEL
-ENV AI_CHAT_MODEL=${AI_CHAT_MODEL}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
@@ -78,21 +66,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Environment variables must be redefined at run time
-ARG RESEND_API_KEY
-ENV RESEND_API_KEY=${RESEND_API_KEY}
-ARG RESEND_FROM
-ENV RESEND_FROM=${RESEND_FROM}
-ARG GMAIL_USER
-ENV GMAIL_USER=${GMAIL_USER}
-ARG GMAIL_APP_PASSWORD
-ENV GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
-ARG APP_URL
-ENV APP_URL=${APP_URL}
-ARG ANTHROPIC_API_KEY
-ENV ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-ARG AI_CHAT_MODEL
-ENV AI_CHAT_MODEL=${AI_CHAT_MODEL}
+# Secrets are injected at runtime via compose/env_file — do not ARG/ENV them here
 ENV VISITORS_DATA_PATH=/app/data/visitors.json
 
 # Note: Don't expose ports here, Compose will handle that for us

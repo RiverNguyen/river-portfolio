@@ -1,0 +1,62 @@
+---
+title: Building Bilingual Next.js Sites with next-intl
+description: Practical EN/VI i18n for marketing and portfolio sites — routing, messages, MDX content, and what to localize vs leave alone.
+image: /blogs/next.webp
+createdAt: 2026-04-05
+updatedAt: 2026-04-05
+---
+
+Shipping one language is easy. Shipping **English and Vietnamese** without duplicating your whole app is where most marketing sites get messy.
+
+I use **next-intl** on my portfolio and the same mental model on client work when content needs both locales: shared UI structure, localized copy, and locale-aware metadata.
+
+## Routing that doesn’t fight SEO
+
+I prefer `localePrefix: "as-needed"` — English at `/`, Vietnamese at `/vi/...`. That keeps the default locale clean for sharing while still giving crawlers clear language URLs and `hreflang`.
+
+```ts
+// i18n/routing.ts (simplified)
+export const routing = {
+  locales: ["en", "vi"],
+  defaultLocale: "en",
+  localePrefix: "as-needed",
+}
+```
+
+Every public page should set locale-specific `title`, `description`, and Open Graph tags. A Vietnamese visitor sharing a link should see Vietnamese previews.
+
+## Split “chrome” copy from “content”
+
+I keep two layers:
+
+1. **UI strings** — nav, buttons, empty states → `messages/en.json` + `messages/vi.json`
+2. **Long-form content** — blog MDX, project descriptions, case studies → separate files or locale overrides
+
+```tsx
+const t = useTranslations("Nav")
+return <Link href="/projects">{t("projects")}</Link>
+```
+
+Don’t dump entire blog posts into JSON. JSON is for short, reusable strings. MDX is for articles.
+
+## What I actually translate
+
+| Translate | Often leave as-is |
+| --------- | ----------------- |
+| Headlines, CTAs, form labels | Brand names, product names |
+| Meta titles/descriptions | Code samples |
+| Case study narrative | Tech stack labels (Next.js, GSAP) |
+| Dates / “Present” wording | Logo alt text if brand-locked |
+
+Vietnamese isn’t English with different words — sentence length changes layout. Always re-check wrapping on buttons and hero lines after translation.
+
+## Gotchas I’ve hit
+
+- Hard-coded English in components bypasses the message files — search for string literals before launch
+- Images with burned-in text need locale variants or redesign
+- Dates and phone formatting differ; don’t assume `en-US` everywhere
+- Client components that read messages still need the right provider tree
+
+## Final thought
+
+i18n is a product decision, not just a library install. Decide early what must be bilingual, keep messages small, and treat Vietnamese QA as part of design review — not a last-day dump into Google Translate.

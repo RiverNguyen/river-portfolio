@@ -18,7 +18,10 @@ export function ScrollToHash() {
     const target = document.querySelector(hash)
     if (!target) return
 
-    lenis.scrollTo(hash, { duration: 1.2 })
+    lenis.scrollTo(hash, {
+      duration: 1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    })
   }, [pathname, lenis])
 
   return null

@@ -71,28 +71,6 @@ const CASE_METRICS: Record<string, MetricSource[]> = {
       note: { en: "OnePay wired", vi: "OnePay" },
     },
   ],
-  "mbbank-brand-site": [
-    {
-      value: "98",
-      label: { en: "Performance", vi: "Performance" },
-      note: { en: "Lighthouse", vi: "Lighthouse" },
-    },
-    {
-      value: "0.02",
-      label: { en: "CLS", vi: "CLS" },
-      note: { en: "Stable layout", vi: "Layout ổn định" },
-    },
-    {
-      value: "6+",
-      label: { en: "Story sections", vi: "Section kể chuyện" },
-      note: { en: "Campaign-ready", vi: "Sẵn sàng campaign" },
-    },
-    {
-      value: "60fps",
-      label: { en: "Scroll motion", vi: "Scroll motion" },
-      note: { en: "Compositor path", vi: "Compositor path" },
-    },
-  ],
   "inno-jsc": [
     {
       value: "95",
@@ -329,38 +307,6 @@ Tiem Tour needed a customer-facing experience that felt modern, while ops still 
       "Ops update tours in WordPress without touching the frontend",
       "Payment and inquiry paths wired for admin follow-up",
       "Reusable headless booking pattern for later travel projects",
-    ],
-  },
-  "mbbank-brand-site": {
-    tagline:
-      "A premium brand marketing site for banking products — built for campaigns and conversion.",
-    role: "Frontend Developer",
-    summary:
-      "MBBank needed a marketing presence that could communicate products clearly, feel premium on scroll, and survive campaign traffic spikes — with fast content iteration from marketing.",
-    sections: [
-      {
-        title: "The problem",
-        body: `Bank marketing sites often feel either too corporate-static or too heavy. The brief asked for a site that sells brand trust **and** product clarity, with animation that elevates rather than distracts.`,
-      },
-      {
-        title: "Approach",
-        body: `- Multi-section landing pages for core products and brand messages
-- Responsive layouts with GSAP / Motion scroll storytelling
-- SEO-friendly structure and performance work for campaign peaks
-- Tight collaboration with marketing for rapid visual/content swaps`,
-      },
-      {
-        title: "Key decisions",
-        body: `- Prioritize **readable hierarchy** over gimmicks — banking audiences need clarity
-- Keep animation on the compositor path so mobile stays smooth
-- Password-gated staging for campaign previews before public push`,
-      },
-    ],
-    outcomes: [
-      "A campaign-ready brand site with polished motion",
-      "Responsive layouts that hold up across devices",
-      "Content structure marketing can iterate without rebuilds",
-      "Staging access gated for review (password: 66668888)",
     ],
   },
   "inno-jsc": {
@@ -684,39 +630,6 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
       "Ops cập nhật tour trong WordPress không đụng frontend",
       "Luồng thanh toán và inquiry nối follow-up admin",
       "Pattern booking headless tái dùng được",
-    ],
-  },
-  "mbbank-brand-site": {
-    title: "Website thương hiệu MBBank",
-    tagline:
-      "Site marketing thương hiệu ngân hàng — phục vụ chiến dịch và chuyển đổi.",
-    role: "Lập trình viên Frontend",
-    summary:
-      "MBBank cần hiện diện marketing rõ sản phẩm, cảm giác premium khi cuộn, chịu được traffic chiến dịch, và cho team marketing iterate nội dung nhanh.",
-    sections: [
-      {
-        title: "Vấn đề",
-        body: `Site ngân hàng dễ rơi vào hai thái cực: cứng nhắc hoặc nặng hiệu ứng. Brief yêu cầu vừa xây niềm tin thương hiệu vừa làm rõ sản phẩm.`,
-      },
-      {
-        title: "Hướng tiếp cận",
-        body: `- Landing nhiều section cho sản phẩm và thông điệp
-- Layout responsive + storytelling GSAP/Motion
-- SEO và hiệu năng cho peak chiến dịch
-- Phối hợp marketing để đổi nội dung/visual nhanh`,
-      },
-      {
-        title: "Quyết định quan trọng",
-        body: `- Hierarchy dễ đọc quan trọng hơn gimmick
-- Animation trên compositor path để mobile mượt
-- Staging có mật khẩu để review trước khi public`,
-      },
-    ],
-    outcomes: [
-      "Brand site sẵn sàng chiến dịch với motion gọn",
-      "Layout responsive ổn định",
-      "Cấu trúc nội dung marketing iterate được",
-      "Staging có mật khẩu (66668888)",
     ],
   },
   "inno-jsc": {

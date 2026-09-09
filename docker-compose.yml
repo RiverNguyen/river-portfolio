@@ -5,32 +5,30 @@ services:
     container_name: portfolio
     platform: linux/amd64
     image: rivernguyen1309/portfolio:latest
+
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        RESEND_API_KEY: ${RESEND_API_KEY}
-        RESEND_FROM: ${RESEND_FROM}
-        GMAIL_USER: ${GMAIL_USER}
-        GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
         APP_URL: ${APP_URL}
-        ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-        AI_CHAT_MODEL: ${AI_CHAT_MODEL}
 
     restart: always
+
     ports:
-      - 3000:3000
+      - "127.0.0.1:3001:3000"
+
+    env_file:
+      - .env
+
     environment:
       VISITORS_DATA_PATH: /app/data/visitors.json
+
     volumes:
       - app-data:/app/data
+
     networks:
       - portfolio
 
-  # Add more containers below (nginx, postgres, etc.)
-
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
 networks:
   portfolio:
     external: true

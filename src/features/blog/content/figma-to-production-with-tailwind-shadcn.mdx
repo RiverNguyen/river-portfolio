@@ -1,0 +1,53 @@
+---
+title: From Figma to Production with Tailwind and shadcn/ui
+description: How I turn client designs into responsive Next.js UIs — spacing systems, component reuse, and the details that make “pixel-perfect” hold up on real devices.
+image: /blogs/portfolio.webp
+createdAt: 2026-03-18
+updatedAt: 2026-03-18
+---
+
+Clients rarely hand over a perfect design system. What I usually get is a polished Figma file, a few mobile frames, and a deadline. My job is to make that design feel intentional in the browser — not “close enough.”
+
+On projects like **Inno JSC**, **AMA Corp**, and **OKHub**, the stack that keeps me fast is consistent: **Next.js**, **Tailwind CSS**, and **shadcn/ui**.
+
+## My translation workflow
+
+1. Scan the Figma file for **repeated patterns** — cards, nav, buttons, section spacing
+2. Map colors, radii, and type sizes into CSS variables / Tailwind tokens
+3. Build layout sections as server components first
+4. Extract interactive pieces into small client components
+5. Check mobile early — most traffic is phones
+
+I don’t recreate every Figma auto-layout literally. I recreate the **visual rhythm**: consistent gaps, aligned columns, and typography that still reads when content is longer than the mock.
+
+## shadcn/ui as a starting point, not the final look
+
+shadcn gives accessible primitives — Dialog, Dropdown, Form controls — without locking you into a generic UI kit look.
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export function CtaRow() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>Book now</Button>
+      <Button variant="outline">View details</Button>
+    </div>
+  )
+}
+```
+
+I restyle aggressively: brand fonts, corner treatments, hover motion. The value is the behavior and accessibility, not the default gray theme.
+
+## Details that separate “built” from “finished”
+
+- Match **focus states** to the brand, don’t leave browser defaults
+- Keep hover/active states subtle — marketing sites shouldn’t feel like dashboards
+- Prefer CSS for simple reveals; reserve GSAP for moments that need timelines
+- Watch line length on large screens — Figma desktop frames often look sparse if you stretch copy too wide
+
+## What I tell new frontend devs
+
+Pixel-perfect doesn’t mean copying every absolute position. It means the live site feels like the same product when a client opens it on their phone next to the Figma preview.
+
+Build tokens first. Reuse second. Polish last.

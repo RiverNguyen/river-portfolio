@@ -1,4 +1,4 @@
-import { anthropic } from "@ai-sdk/anthropic"
+import { openai } from "@ai-sdk/openai"
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -60,15 +60,15 @@ function truncateMessages(messages: UIMessage[]): UIMessage[] {
 }
 
 function getChatModel() {
-  if (!process.env.ANTHROPIC_API_KEY) return null
-  return anthropic(process.env.AI_CHAT_MODEL || "claude-haiku-4-5")
+  if (!process.env.OPENAI_API_KEY) return null
+  return openai(process.env.AI_CHAT_MODEL || "gpt-4o-mini")
 }
 
 export async function POST(req: Request) {
   const model = getChatModel()
   if (!model) {
     return Response.json(
-      { error: "Chat is not configured. Missing ANTHROPIC_API_KEY." },
+      { error: "Chat is not configured. Missing OPENAI_API_KEY." },
       { status: 503 }
     )
   }

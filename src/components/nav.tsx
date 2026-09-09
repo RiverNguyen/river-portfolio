@@ -55,7 +55,10 @@ export function Nav({
               )}
               onClick={(e) => {
                 e.preventDefault()
-                lenis?.scrollTo(target, { duration: 1.2 })
+                  lenis?.scrollTo(target, {
+                    duration: 1,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                  })
               }}
             >
               {title}

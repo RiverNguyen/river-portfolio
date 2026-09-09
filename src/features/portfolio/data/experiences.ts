@@ -53,7 +53,7 @@ export const EXPERIENCES_EN: Experience[] = [
         },
         employmentType: "Full-time",
         icon: "code",
-        description: `- **NextJS & WordPress Developer** at **OKHub Agency** (Dec 2024 - Present)  
+        description: `- **NextJS & WordPress Developer** at **OKHub Agency** (Dec 2024 - May 2026)  
   - Build and maintain responsive **Next.js**, **React.js** and **WordPress** websites optimized for performance, SEO and accessibility.
   - Integrate **RESTful APIs**, **Custom Post Types** and **ACF fields** to deliver dynamic, data‑driven experiences in Next.js frontends.
   - Use **GSAP** and modern UI libraries to create smooth, engaging animations and interactions across projects.

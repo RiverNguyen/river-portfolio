@@ -57,7 +57,10 @@ export function MobileNav({ items }: { items: NavItem[] }) {
                 key={link.href}
                 onSelect={(e) => {
                   e.preventDefault()
-                  lenis?.scrollTo(target, { duration: 1.2 })
+                  lenis?.scrollTo(target, {
+                    duration: 1,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                  })
                 }}
               >
                 {link.title}

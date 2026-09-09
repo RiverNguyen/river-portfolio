@@ -22,7 +22,7 @@ export function PostItem({
       )}
     >
       {post.metadata.image && (
-        <div className="relative select-none [&_img]:aspect-1200/630 [&_img]:rounded-xl">
+        <div className="relative overflow-hidden rounded-xl select-none [&_img]:aspect-1200/630 [&_img]:rounded-xl">
           <Image
             src={post.metadata.image}
             alt={post.metadata.title}
@@ -31,7 +31,14 @@ export function PostItem({
             quality={90}
             priority={shouldPreloadImage}
             sizes="(max-width: 768px) 100vw, 384px"
-            className="object-cover"
+            className={cn(
+              "object-cover",
+              "grayscale brightness-90 contrast-[1.05]",
+              "transition-[filter,scale] duration-500 ease-out",
+              "will-change-[filter,transform]",
+              "group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100",
+              "motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            )}
           />
 
           <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset dark:ring-white/10" />

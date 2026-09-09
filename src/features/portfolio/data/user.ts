@@ -35,7 +35,7 @@ export const USER_EN = {
 - Integrate **REST** and **GraphQL** APIs, and collaborate smoothly with teams via **Git**, **GitHub**, and **GitLab**.
 - Care about speed: lazy loading, code splitting, image optimization, and clean component architecture.
 - Use **Docker** for consistent local and deployment environments, and keep learning to sharpen both craft and delivery.`,
-  avatar: "/avatar.webp",
+  avatar: "/avatar.jpeg",
   ogImage: "/image.png",
   namePronunciationUrl: "/audio/ui-sounds/voice.mp3",
   affiliateBadge: {

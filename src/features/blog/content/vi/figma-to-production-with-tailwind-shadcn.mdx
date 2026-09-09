@@ -1,0 +1,53 @@
+---
+title: Từ Figma ra Production với Tailwind và shadcn/ui
+description: Cách mình biến design khách hàng thành UI Next.js responsive — hệ spacing, tái sử dụng component, và chi tiết khiến “pixel-perfect” đứng vững trên thiết bị thật.
+image: /blogs/portfolio.webp
+createdAt: 2026-03-18
+updatedAt: 2026-03-18
+---
+
+Khách hàng hiếm khi giao một design system hoàn chỉnh. Thường mình nhận file Figma khá đẹp, vài frame mobile, và một deadline. Việc của mình là làm design đó cảm giác có chủ đích trên browser — không chỉ “na ná”.
+
+Ở các dự án như **Inno JSC**, **AMA Corp** và **OKHub**, stack giúp mình chạy nhanh luôn nhất quán: **Next.js**, **Tailwind CSS** và **shadcn/ui**.
+
+## Workflow chuyển từ Figma
+
+1. Quét file Figma tìm **pattern lặp** — card, nav, button, khoảng cách section
+2. Map màu, radius, cỡ chữ vào CSS variable / token Tailwind
+3. Dựng layout bằng server component trước
+4. Tách phần tương tác thành client component nhỏ
+5. Check mobile sớm — phần lớn traffic là điện thoại
+
+Mình không copy từng auto-layout trong Figma một cách máy móc. Mình tái tạo **nhịp thị giác**: gap đều, cột thẳng hàng, typography vẫn đọc được khi copy dài hơn mock.
+
+## shadcn/ui là điểm bắt đầu, không phải diện mạo cuối
+
+shadcn cho primitive có accessibility — Dialog, Dropdown, Form — mà không khóa bạn vào một UI kit generic.
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export function CtaRow() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>Đặt ngay</Button>
+      <Button variant="outline">Xem chi tiết</Button>
+    </div>
+  )
+}
+```
+
+Mình restyle mạnh: font thương hiệu, bo góc, hover motion. Giá trị nằm ở hành vi và a11y, không phải theme xám mặc định.
+
+## Chi tiết tách “làm xong” với “làm kỹ”
+
+- Match **focus state** theo brand, đừng để mặc định trình duyệt
+- Hover/active nhẹ — site marketing không nên cảm giác như dashboard
+- Ưu tiên CSS cho reveal đơn giản; để GSAP cho khoảnh khắc cần timeline
+- Để ý độ dài dòng trên màn lớn — frame desktop Figma dễ trông trống nếu copy bị kéo quá rộng
+
+## Điều mình hay nói với frontend mới
+
+Pixel-perfect không phải copy từng vị trí absolute. Nghĩa là site live cảm giác cùng một sản phẩm khi khách mở điện thoại cạnh preview Figma.
+
+Làm token trước. Tái sử dụng sau. Polish cuối cùng.

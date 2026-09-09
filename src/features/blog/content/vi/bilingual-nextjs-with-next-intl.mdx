@@ -1,0 +1,62 @@
+---
+title: Xây site Next.js song ngữ với next-intl
+description: i18n EN/VI thực tế cho site marketing và portfolio — routing, messages, nội dung MDX, và cái gì nên dịch / cái gì nên giữ nguyên.
+image: /blogs/next.webp
+createdAt: 2026-04-05
+updatedAt: 2026-04-05
+---
+
+Ship một ngôn ngữ thì dễ. Ship **tiếng Anh và tiếng Việt** mà không nhân đôi cả app mới là chỗ hầu hết site marketing bị rối.
+
+Mình dùng **next-intl** trên portfolio và cùng một mental model khi dự án khách cần hai locale: cấu trúc UI chung, copy theo ngôn ngữ, metadata nhận locale.
+
+## Routing không đối đầu SEO
+
+Mình thích `localePrefix: "as-needed"` — English ở `/`, tiếng Việt ở `/vi/...`. Locale mặc định sạch khi share, crawler vẫn có URL ngôn ngữ rõ và `hreflang`.
+
+```ts
+// i18n/routing.ts (rút gọn)
+export const routing = {
+  locales: ["en", "vi"],
+  defaultLocale: "en",
+  localePrefix: "as-needed",
+}
+```
+
+Mỗi trang public nên set `title`, `description` và Open Graph theo locale. Người Việt share link phải thấy preview tiếng Việt.
+
+## Tách copy “chrome” khỏi “content”
+
+Mình giữ hai lớp:
+
+1. **Chuỗi UI** — nav, nút, empty state → `messages/en.json` + `messages/vi.json`
+2. **Nội dung dài** — blog MDX, mô tả dự án, case study → file riêng hoặc override theo locale
+
+```tsx
+const t = useTranslations("Nav")
+return <Link href="/projects">{t("projects")}</Link>
+```
+
+Đừng nhét cả bài blog vào JSON. JSON dành cho chuỗi ngắn, tái dùng. MDX dành cho bài viết.
+
+## Mình dịch gì trong thực tế
+
+| Nên dịch | Thường giữ nguyên |
+| -------- | ----------------- |
+| Headline, CTA, label form | Tên brand, tên sản phẩm |
+| Meta title/description | Code sample |
+| Narrative case study | Nhãn tech stack (Next.js, GSAP) |
+| Cách viết ngày / “Hiện tại” | Alt logo nếu brand khóa cứng |
+
+Tiếng Việt không phải tiếng Anh đổi từ — độ dài câu đổi layout. Luôn check lại wrap trên nút và dòng hero sau khi dịch.
+
+## Gotcha mình từng dính
+
+- English hard-code trong component bỏ qua file message — search literal trước launch
+- Ảnh có chữ burn-in cần bản theo locale hoặc redesign
+- Format ngày và số điện thoại khác nhau; đừng mặc định `en-US` mọi nơi
+- Client component đọc message vẫn cần đúng cây provider
+
+## Kết
+
+i18n là quyết định sản phẩm, không chỉ cài thư viện. Quyết sớm phần nào phải song ngữ, giữ message gọn, và coi QA tiếng Việt là một phần design review — không phải việc dồn ngày cuối vào Google Translate.

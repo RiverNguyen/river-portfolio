@@ -1,0 +1,65 @@
+---
+title: Shipping Next.js with Docker Without Leaking Secrets
+description: A production-minded Docker setup for Next.js standalone — build args vs runtime env, .dockerignore, and why API keys should never bake into the image.
+image: /blogs/next.webp
+new: true
+createdAt: 2026-04-22
+updatedAt: 2026-04-22
+---
+
+Docker makes deploys repeatable. It also makes it dangerously easy to bake **API keys** into an image you later push to a registry.
+
+I’ve tightened this on my own portfolio: **Next.js standalone**, a multi-stage Dockerfile, Compose for runtime config, and a hard rule — secrets never enter the build stage.
+
+## The shape of the image
+
+1. **Builder** — install deps, run `next build` with `output: "standalone"`
+2. **Runner** — copy standalone output, static assets, and run as a non-root user
+
+Only non-secret build config belongs in `ARG` / `ENV` during build. For me that’s things like `APP_URL` for absolute links and metadata — not Gmail, Resend, or OpenAI keys.
+
+```dockerfile
+# Build stage — public config only
+ARG APP_URL
+ENV APP_URL=${APP_URL}
+
+# Runner — inject secrets at container start, not bake time
+# Compose: env_file: .env
+```
+
+## Why build-time secrets are a trap
+
+If you pass `RESEND_API_KEY` as a Docker `ARG`, it can end up in image history even if you “don’t use it” in the final stage. Anyone who can pull the image can inspect layers.
+
+The fix is boring and correct:
+
+- Put `.env` in **`.dockerignore`**
+- Pass secrets only at **runtime** (`env_file` / orchestrator secrets)
+- Keep server keys off the `NEXT_PUBLIC_*` prefix so they never ship to the browser
+
+## Compose responsibilities
+
+```yaml
+services:
+  next-app:
+    build:
+      context: .
+      args:
+        APP_URL: ${APP_URL}
+    env_file:
+      - .env
+```
+
+Build gets the public URL. The running container gets email and AI keys. The published image stays reusable across environments.
+
+## Checklist before `docker compose up --build`
+
+- [ ] `.env` is gitignored **and** dockerignored
+- [ ] No secret `ARG`/`ENV` in the Dockerfile
+- [ ] API routes read `process.env` at request time
+- [ ] Old registry tags rebuilt after removing baked secrets
+- [ ] Keys rotated if an old image was ever public
+
+## Final thought
+
+Docker isn’t just packaging — it’s a security boundary. Treat the image as something you might accidentally publish. If a key would embarrass you in a registry dump, it doesn’t belong in the build.
