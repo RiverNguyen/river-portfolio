@@ -577,6 +577,11 @@
     }
   } */
 
+  html.has-smooth-cursor,
+  html.has-smooth-cursor * {
+    cursor: none !important;
+  }
+
   .duck-follower {
     position: fixed;
     top: 0;

@@ -225,6 +225,8 @@
     "showMore": "Xem thêm",
     "showLess": "Xem ít hơn",
     "affiliateOf": "Thành viên của <link>{name}</link>",
+    "headerLocation": "Địa điểm",
+    "headerOpenToWork": "Nhận việc",
     "now": "Hiện tại",
     "nowUpdated": "Cập nhật {date}",
     "contactCtaStatus": "Đang nhận dự án",

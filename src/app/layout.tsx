@@ -12,6 +12,7 @@ import { DuckFollower } from "@/components/duck-follower"
 import { LenisProvider } from "@/components/lenis-provider"
 import { PageRevealGate } from "@/components/page-reveal-gate"
 import { Providers } from "@/components/providers"
+import { SmoothFollower } from "@/components/smooth-follower"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
 import { getUserByLocale, USER } from "@/features/portfolio/data/user"
 import { fontMono, fontPixelSquare, fontSans } from "@/lib/fonts"
@@ -201,6 +202,7 @@ export default async function RootLayout({
           <Providers>
             <NuqsAdapter>
               {children}
+              <SmoothFollower />
               <DuckFollower />
             </NuqsAdapter>
           </Providers>

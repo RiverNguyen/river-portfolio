@@ -225,6 +225,8 @@
     "showMore": "Show More",
     "showLess": "Show Less",
     "affiliateOf": "An affiliate of <link>{name}</link>",
+    "headerLocation": "Location",
+    "headerOpenToWork": "Open to work",
     "now": "Now",
     "nowUpdated": "Updated {date}",
     "contactCtaStatus": "Available for work",

@@ -20,7 +20,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
     href: "https://zalo.me/0345613090",
   },
   {
-    icon: "/icons/social/facebook.svg",
+    icon: "/icons/social/facebook.webp",
     title: "Facebook",
     description: "Giang Nguyen Dinh",
     href: "https://facebook.com/river1309",
