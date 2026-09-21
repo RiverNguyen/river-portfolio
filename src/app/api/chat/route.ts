@@ -1,23 +1,19 @@
-import { openai } from "@ai-sdk/openai"
-import {
-  convertToModelMessages,
-  createUIMessageStreamResponse,
-  streamText,
-  toUIMessageStream,
-  type UIMessage,
-} from "ai"
 import { z } from "zod"
 
-import { buildChatSystemPrompt } from "@/features/chatbot/lib/system-prompt"
+import {
+  buildLocalReply,
+  extractLatestUserText,
+} from "@/features/chatbot/lib/reply"
 
 export const runtime = "nodejs"
-export const maxDuration = 60
+export const maxDuration = 30
 
 const MAX_MESSAGES = 24
 const MAX_MESSAGE_CHARS = 2000
 
 const bodySchema = z.object({
   messages: z.array(z.unknown()).max(MAX_MESSAGES),
+  locale: z.enum(["en", "vi"]).optional(),
 })
 
 const rateBucket = new Map<string, { count: number; resetAt: number }>()
@@ -31,7 +27,7 @@ function getClientIp(req: Request) {
 function isRateLimited(ip: string) {
   const now = Date.now()
   const windowMs = 60_000
-  const limit = 20
+  const limit = 40
   const current = rateBucket.get(ip)
 
   if (!current || current.resetAt <= now) {
@@ -44,35 +40,17 @@ function isRateLimited(ip: string) {
   return false
 }
 
-function truncateMessages(messages: UIMessage[]): UIMessage[] {
-  return messages.slice(-MAX_MESSAGES).map((message) => {
-    if (!Array.isArray(message.parts)) return message
-
-    return {
-      ...message,
-      parts: message.parts.map((part) => {
-        if (part.type !== "text") return part
-        if (part.text.length <= MAX_MESSAGE_CHARS) return part
-        return { ...part, text: part.text.slice(0, MAX_MESSAGE_CHARS) }
-      }),
-    }
-  })
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-function getChatModel() {
-  if (!process.env.OPENAI_API_KEY) return null
-  return openai(process.env.AI_CHAT_MODEL || "gpt-4o-mini")
+function chunkReply(text: string): string[] {
+  const parts = text.match(/\S+\s*/g)
+  if (!parts?.length) return [text]
+  return parts
 }
 
 export async function POST(req: Request) {
-  const model = getChatModel()
-  if (!model) {
-    return Response.json(
-      { error: "Chat is not configured. Missing OPENAI_API_KEY." },
-      { status: 503 }
-    )
-  }
-
   const ip = getClientIp(req)
   if (isRateLimited(ip)) {
     return Response.json(
@@ -93,33 +71,40 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid chat payload." }, { status: 400 })
   }
 
-  const messages = truncateMessages(parsed.data.messages as UIMessage[])
+  const userText = extractLatestUserText(
+    parsed.data.messages as Array<{
+      role?: string
+      parts?: Array<{ type?: string; text?: string }>
+      content?: string
+    }>
+  ).slice(0, MAX_MESSAGE_CHARS)
 
-  try {
-    const result = streamText({
-      model,
-      system: buildChatSystemPrompt(),
-      messages: await convertToModelMessages(messages),
-      maxOutputTokens: 1024,
-    })
-
-    return createUIMessageStreamResponse({
-      stream: toUIMessageStream({
-        stream: result.stream,
-        onError: (error) => {
-          console.error("[chat stream]", error)
-          return error instanceof Error
-            ? error.message
-            : "Failed to generate a reply."
-        },
-      }),
-    })
-  } catch (error) {
-    console.error("[chat]", error)
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Failed to generate a reply. Try again shortly."
-    return Response.json({ error: message }, { status: 500 })
+  if (!userText) {
+    return Response.json({ error: "Empty message." }, { status: 400 })
   }
+
+  const { reply } = buildLocalReply(userText)
+  const encoder = new TextEncoder()
+  const chunks = chunkReply(reply)
+
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        for (const chunk of chunks) {
+          controller.enqueue(encoder.encode(chunk))
+          await sleep(10)
+        }
+      } finally {
+        controller.close()
+      }
+    },
+  })
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-River-Chat": "local",
+    },
+  })
 }

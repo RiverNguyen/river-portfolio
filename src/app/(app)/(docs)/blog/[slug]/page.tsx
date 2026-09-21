@@ -1,7 +1,6 @@
 import { getTableOfContents } from "fumadocs-core/content/toc"
 import { ArrowLeftIcon } from "lucide-react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import { notFound } from "next/navigation"
 import { getLocale, getTranslations } from "next-intl/server"
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts"
@@ -23,6 +22,7 @@ import {
   getPostBySlug,
 } from "@/features/blog/data/posts"
 import type { Post } from "@/features/blog/types/post"
+import { ProfileMascot } from "@/features/portfolio/components/profile-mascot"
 import { USER } from "@/features/portfolio/data/user"
 import { getAbsoluteUrl, getLanguageAlternates, getLocalizedPath, getLocalizedUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
@@ -50,7 +50,9 @@ export async function generateMetadata({
   const { title, description, image, createdAt, updatedAt } = post.metadata
 
   const postUrl = getPostUrl(post)
-  const ogImage = image || `/og/simple?title=${encodeURIComponent(title)}`
+  const ogImage =
+    image ||
+    `/og/share?kind=blog&title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(description)}`
   const localizedPath = getLocalizedPath(postUrl, locale)
 
   return {
@@ -97,7 +99,7 @@ function getPageJsonLd(
     description: post.metadata.description,
     image: getAbsoluteUrl(
       post.metadata.image ||
-        `/og/simple?title=${encodeURIComponent(post.metadata.title)}`
+        `/og/share?kind=blog&title=${encodeURIComponent(post.metadata.title)}&subtitle=${encodeURIComponent(post.metadata.description)}`
     ),
     url: getAbsoluteUrl(postUrl),
     mainEntityOfPage: getAbsoluteUrl(postUrl),
@@ -209,13 +211,9 @@ export default async function Page({
         <p className="text-muted-foreground">{post.metadata.description}</p>
 
         <div className="not-prose my-4 flex gap-3 border-y border-edge py-3">
-          <Image
-            src={USER.avatar}
-            alt=""
-            width={120}
-            height={120}
-            className="size-10 rounded-full object-cover"
-          />
+          <div className="size-10 shrink-0 overflow-hidden rounded-full border border-edge/60 bg-background p-0.5 ring-1 ring-border ring-offset-1 ring-offset-background">
+            <ProfileMascot size={36} label={USER.displayName} />
+          </div>
           <div className="min-w-0 font-mono text-xs leading-relaxed text-muted-foreground">
             <p className="text-sm text-foreground">{USER.displayName}</p>
             <p>

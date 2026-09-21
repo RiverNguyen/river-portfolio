@@ -1,11 +1,14 @@
 import { getLocale } from "next-intl/server"
+import { Suspense } from "react"
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts"
 
 import { About } from "@/features/portfolio/components/about"
 import { Blog } from "@/features/portfolio/components/blog"
 import { ContactCta } from "@/features/portfolio/components/contact-cta"
+import { Education } from "@/features/portfolio/components/education"
 import { Experiences } from "@/features/portfolio/components/experiences"
 import { GitHubContributions } from "@/features/portfolio/components/github-contributions"
+import { HireModeRedirect } from "@/features/portfolio/components/hire-mode-redirect"
 import { Now } from "@/features/portfolio/components/now"
 import { Overview } from "@/features/portfolio/components/overview"
 import { ProfileCover } from "@/features/portfolio/components/profile-cover"
@@ -34,6 +37,10 @@ export default async function Page() {
           ),
         }}
       />
+
+      <Suspense fallback={null}>
+        <HireModeRedirect />
+      </Suspense>
 
       <div className="mx-auto md:max-w-3xl *:[[id]]:scroll-mt-22">
         <ProfileCover />
@@ -64,6 +71,9 @@ export default async function Page() {
         <Projects />
         <Separator />
 
+        <Education />
+        <Separator />
+
         <Blog />
         <Separator />
 
@@ -77,9 +87,7 @@ export default async function Page() {
   )
 }
 
-function getPageJsonLd(
-  locale: "en" | "vi"
-): WithContext<PageSchema> {
+function getPageJsonLd(locale: "en" | "vi"): WithContext<PageSchema> {
   const user = getUserByLocale(locale)
 
   return {

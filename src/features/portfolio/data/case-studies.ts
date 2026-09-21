@@ -3,6 +3,10 @@ import {
   type PortfolioLocale,
   PROJECTS_EN,
 } from "./projects"
+import {
+  getCaseStudyVisualVariant,
+  type CaseStudyVisualVariant,
+} from "./case-study-visuals"
 
 export type CaseStudySection = {
   title: string
@@ -32,6 +36,12 @@ export type CaseStudy = {
   outcomes: string[]
   ctaNote: string
   architecture: string[]
+  visualVariant: CaseStudyVisualVariant
+  lighthouseCompare?: {
+    before: { performance: number; lcp: string; label: string }
+    after: { performance: number; lcp: string; label: string }
+  }
+  showFilterDemo?: boolean
 }
 
 type CaseStudyCopy = {
@@ -48,6 +58,26 @@ type MetricSource = {
   label: { en: string; vi: string }
   note?: { en: string; vi: string }
 }
+
+const LIGHTHOUSE_COMPARE: Record<
+  string,
+  { before: { performance: number; lcp: string }; after: { performance: number; lcp: string } }
+> = {
+  "multilingual-tour-platform": {
+    before: { performance: 62, lcp: "4.8s" },
+    after: { performance: 96, lcp: "1.4s" },
+  },
+  "tour-booking-platform": {
+    before: { performance: 58, lcp: "5.1s" },
+    after: { performance: 94, lcp: "1.5s" },
+  },
+}
+
+const FILTER_DEMO_SLUGS = new Set([
+  "tour-booking-platform",
+  "multilingual-tour-platform",
+  "travel-combo-platform",
+])
 
 /** Shared shipping / lab metrics — values stay locale-agnostic. */
 const CASE_METRICS: Record<string, MetricSource[]> = {
@@ -1022,6 +1052,10 @@ function buildCaseStudy(
   const copy = (locale === "vi" ? COPY_VI : COPY_EN)[projectId]
   if (!project || !copy) return null
 
+  const lighthouse = LIGHTHOUSE_COMPARE[projectId]
+  const beforeLabel = locale === "vi" ? "Trước" : "Before"
+  const afterLabel = locale === "vi" ? "Sau" : "After"
+
   return {
     slug: project.id,
     projectId: project.id,
@@ -1045,6 +1079,16 @@ function buildCaseStudy(
     architecture: (ARCHITECTURE[projectId] ?? ARCHITECTURE["tour-booking-platform"]!)[
       locale
     ],
+    visualVariant: getCaseStudyVisualVariant(projectId),
+    ...(lighthouse
+      ? {
+          lighthouseCompare: {
+            before: { ...lighthouse.before, label: beforeLabel },
+            after: { ...lighthouse.after, label: afterLabel },
+          },
+        }
+      : {}),
+    showFilterDemo: FILTER_DEMO_SLUGS.has(projectId),
   }
 }
 

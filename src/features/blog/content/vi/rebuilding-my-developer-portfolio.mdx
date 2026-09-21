@@ -1,42 +1,129 @@
 ---
-title: Xây dựng lại Portfolio Developer của tôi
-description: Vì sao mình rebuild portfolio với Next.js, Tailwind CSS và hướng content-first — cùng vài bài học rút ra.
+title: Xây lại portfolio developer của tôi
+description: Nhật ký rebuild rivernguyen.id.vn — Next.js App Router, routing song ngữ, case study NDA-safe, River Bot không API key, và các tradeoff Core Web Vitals thật.
 image: /blogs/portfolio.webp
 pinned: true
 new: true
 createdAt: 2026-03-01
-updatedAt: 2026-03-01
+updatedAt: 2026-09-21
 ---
 
-Sau hơn một năm làm dự án cho khách hàng, mình cuối cùng cũng dành thời gian rebuild portfolio từ đầu. Không chỉ đổi giao diện — mà nghĩ lại cách mình muốn trình bày công việc, kỹ năng và câu chuyện nghề nghiệp với tư cách frontend developer.
+Sau vài năm ship frontend cho khách, tôi mới dành thời gian rebuild lại site của mình từ đầu. Không phải đổi theme — mà là nghĩ lại cách recruiter, client và cả AI crawler hiểu mình là ai và mình đã ship gì.
 
-## Vì sao rebuild?
+Bài này là case study ngôi thứ nhất cho [rivernguyen.id.vn](https://rivernguyen.id.vn): lựa chọn stack, routing song ngữ, case study ẩn danh, “River Bot” local, và những con số lab vẫn còn phải cải thiện.
 
-Portfolio cũ chỉ làm được phần cơ bản: tên, liên hệ, danh sách dự án. Nhưng nó chưa phản ánh cách mình làm việc hiện tại — với **Next.js**, **WordPress headless CMS**, **GSAP animation** và tập trung vào hiệu năng, SEO.
+## Vì sao phải rebuild?
 
-Mình muốn một site:
+Portfolio cũ đủ dùng — tên, liên hệ, danh sách dự án phẳng. Nó không phản ánh cách tôi làm việc hôm nay: **Next.js App Router**, **WordPress headless** trên dự án khách, **GSAP / Motion** có chủ đích, và thiên hướng performance/SEO.
 
-- Load nhanh, điểm Lighthouse tốt
-- Hỗ trợ **i18n** (tiếng Anh + tiếng Việt)
-- Dễ thêm bài blog và case study dự án
-- Gọn gàng, chuyên nghiệp, không over-design
+Tôi muốn một site:
 
-## Stack kỹ thuật
+- Load ổn và đo được trung thực bằng Lighthouse / CrUX sau này
+- Hỗ trợ **Anh + Việt** mà không tự tạo duplicate content
+- Publish bài MDX và case study từ data module
+- Tinh chỉnh, không biến thành dashboard toàn card
 
-- **Next.js App Router** cho routing, metadata và static generation
-- **Tailwind CSS v4** cho design system thống nhất
-- **shadcn/ui** cho UI primitives accessible
-- **MDX** cho nội dung blog
-- **next-intl** để chuyển ngôn ngữ
+Tiêu chí đơn giản: bỏ nav đi, viewport đầu vẫn phải đọc được là *brand của tôi* — không phải template “frontend developer” generic.
 
-## Mình tự hào điều gì
+## Điểm xuất phát: fork, rồi sở hữu brand
 
-Portfolio giờ phản ánh đúng loại sản phẩm mình giao cho khách: layout responsive, micro-interaction mượt, gallery dự án có cấu trúc, và trang CV đồng bộ trực tiếp từ data kinh nghiệm.
+Codebase sớm kế thừa cấu trúc từ một portfolio open-source mạnh (registry component, MDX, layout screen-line). Cố ý — tôi muốn pattern App Router đã kiểm chứng, không phải SPA trống.
+
+Phần rebuild là về **ownership**:
+
+- Identity River (biến thể tên, timezone Hà Nội, badge affiliate, mascot)
+- Case study tôn trọng NDA mà không trống trải
+- Copy song ngữ dịch thật, không dump máy
+- Tương tác đúng craft (mascot, duck, command menu) mà không chặn LCP
+
+## Stack giữ lại
+
+- **[Next.js App Router](https://nextjs.org/docs/app)** — routing, metadata, SSG cho blog/case study
+- **[Tailwind CSS](https://tailwindcss.com/docs)** + **shadcn/ui** — primitive nhất quán
+- **[next-intl](https://next-intl.dev/docs)** — prefix `as-needed` (`/` EN, `/vi/...` tiếng Việt)
+- **MDX** — bài viết là file, không CMS cho site solo
+- **Upstash Redis** (fallback JSON local) — visitors không cần DB riêng
+- **GSAP / Motion** — motion đáng có; vẫn tốn CWV trên mobile nếu load sớm
+
+Docker cho site này nằm ở [Ship Next.js với Docker mà không lộ secrets](/blog/shipping-nextjs-with-docker).
+
+## Song ngữ mà không tự bắn vào chân
+
+Tiếng Việt với tôi không phải “nice to have” — là một nửa audience. Khó không phải dịch string; khó là **canonical + hreflang thống nhất**.
+
+Bài học quan trọng:
+
+1. `createPageMetadata()` phải đưa **locale request** vào `alternates.canonical` và `openGraph.url`. Hardcode locale mặc định khiến `/vi/*` giống bản sao tiếng Anh.
+2. Sitemap chỉ nên thêm URL `/vi` sau khi canonical đã đúng.
+3. Body đã dịch đủ mà title/description vẫn tiếng Anh — vẫn làm yếu SERP tiếng Việt.
+
+Chi tiết routing: [Xây site Next.js song ngữ với next-intl](/blog/bilingual-nextjs-with-next-intl).
+
+## Case study dưới NDA
+
+Hầu hết việc đã ship thuộc về khách. URL live và screenshot brand thường không được phép. Recruiter vẫn cần *bằng chứng craft*.
+
+Thỏa hiệp trên site:
+
+- Tiêu đề generic (loại dự án + domain), không tên khách
+- **UI mock ẩn danh** kiểu wireframe thay vì ảnh đánh cắp
+- Sơ đồ architecture, không map hệ thống có brand
+- Metric lab (LCP / Performance) ghi rõ là lab, không bịa
+- Notice dự án private + đường tới [/contact](/contact)
+
+Yếu hơn case study public có URL live — và tôi nói thẳng trên trang. Trung thực hơn logo giả.
+
+Xem cấu trúc tại [/projects](/projects).
+
+## River Bot không API key
+
+Ban đầu chat gắn AI SDK với OpenAI. Với portfolio cá nhân: key, rate limit, và failure mode trả 503.
+
+Bản ship hiện tại là **FAQ / intent bot local**: chấm keyword trên projects, stack, experience, hire, contact — lấy từ cùng data module với UI. Stream text thuần, trả lời EN/VI, từ chối off-topic.
+
+Tradeoff: không sáng tạo câu trả lời mới. Lợi: không vendor lock-in, không lộ key, bot đúng brand.
+
+## Cá tính: mascot, duck, pixel mode
+
+Portfolio chỉ liệt kê skill dễ quên. Tôi thêm:
+
+- **Mascot** theo cursor trên header profile
+- **Duck follower** tùy chọn (desktop, tôn trọng reduced-motion)
+- Konami mở **pixel mode**
+- Phòng bí mật [/pond](/pond) nếu cứ chọc duck
+
+Đó là tín hiệu brand — và cũng là chi phí JS/CSS. Trên lab mobile chúng cạnh tranh analytics/motion trên main thread. Tôi coi là progressive enhancement, không phải nội dung chính.
+
+## Con số lab (nói thẳng)
+
+Audit SEO/performance domain này (Lighthouse lab, chưa cấu hình CrUX) báo homepage mobile khoảng **44/100**, **LCP ~5.1s**, TBT cao — chủ yếu do analytics SDK nặng và chunk motion trên critical path. Desktop ổn (~90).
+
+Câu khó đăng trên site của chính mình. Đó cũng là ý của nhật ký rebuild: đo rồi cắt.
+
+Hướng remediation (đang làm):
+
+- Defer / tree-shake module analytics không dùng
+- Code-split motion khỏi first paint
+- Bớt preload font trang trí
+- Avatar đúng kích thước hiển thị, không 400×400 cho box ~120px
+
+CWV sâu hơn: [Tối ưu Next.js cho Core Web Vitals](/blog/optimizing-nextjs-for-core-web-vitals).
+
+## Recruiter mode
+
+Không phải ai cũng muốn scroll hết. `/hire` (và `/?mode=hire`) là snapshot một màn: availability, stack, ba case study, CTA contact/resume. Command menu nhảy tới nhanh.
+
+## Làm lại thì tôi sẽ khác
+
+1. **Ship visual proof sớm hơn** — mock ẩn danh nên đi cùng case study đầu, không đợi audit gọi “projects chỉ chữ.”
+2. **Coi locale metadata là feature**, không phải helper viết sau.
+3. **Budget JS cho personality** như budget ảnh — mascot vui thật; TBT cũng thật.
+4. **Ít bài nhưng sâu** thay vì stub mỏng không rank / không được cite.
 
 ## Tiếp theo
 
-Mình sẽ viết thêm về pattern frontend dùng trong production — [WordPress + Next.js](/blog/wordpress-headless-cms-with-nextjs), [workflow GSAP](/blog/gsap-animations-in-production), [Docker không lộ secret](/blog/shipping-nextjs-with-docker), và [Core Web Vitals](/blog/optimizing-nextjs-for-core-web-vitals) từ dự án thật. Routing song ngữ trên site này nằm ở [Xây site Next.js song ngữ với next-intl](/blog/bilingual-nextjs-with-next-intl).
+Site này là lab sống: đào sâu vài bài kỹ thuật, giữ case study trung thực với NDA, và hạ CWV mobile đến khi có field data (CrUX) thay lab-only.
 
-Nếu bạn đang làm portfolio, hãy bắt đầu đơn giản: một [case study dự án](/projects) thật tốt còn hơn mười card chung chung. Hoặc [liên hệ](/contact) nếu muốn nói về một lần rebuild.
+Nếu bạn đang rebuild portfolio, bắt đầu bằng một case study sắc và canonical đúng — không phải hero animation nữa. Hoặc [liên hệ](/contact) nếu muốn trao đổi rebuild frontend Next.js / WordPress.
 
-Tham khảo stack cho lần rebuild này: [Next.js App Router](https://nextjs.org/docs/app), [next-intl](https://next-intl.dev/docs), và [Tailwind CSS](https://tailwindcss.com/docs).
+Tham chiếu: [Next.js App Router](https://nextjs.org/docs/app), [next-intl](https://next-intl.dev/docs), [Tailwind CSS](https://tailwindcss.com/docs), [web.dev vitals](https://web.dev/articles/vitals).

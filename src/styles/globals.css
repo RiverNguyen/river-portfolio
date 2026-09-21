@@ -591,6 +591,18 @@
     will-change: transform;
     transition: none;
   }
+
+  .duck-follower[role="presentation"] {
+    pointer-events: auto;
+  }
+
+  html.pixel-mode body {
+    font-family: var(--font-pixel-square), var(--font-sans), system-ui, sans-serif;
+  }
+
+  html.pixel-mode .font-mono {
+    font-family: var(--font-pixel-square), ui-monospace, monospace;
+  }
 }
 
 @layer components {

@@ -1,6 +1,9 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { Mascot } from "page-mascot"
+import { useCallback, useRef } from "react"
+import { toast } from "sonner"
 
 import { useSoundLazy } from "@/hooks/use-sound"
 import { cn } from "@/lib/utils"
@@ -23,6 +26,22 @@ export function ProfileMascot({
   wrapperClassName,
 }: ProfileMascotProps) {
   const { play: playClick } = useSoundLazy("/audio/ui-sounds/click.wav")
+  const t = useTranslations("EasterEggs")
+  const clicksRef = useRef(0)
+
+  const onMascotClick = useCallback(() => {
+    playClick(0.42)
+    clicksRef.current += 1
+    const count = clicksRef.current
+    if (count === 3) {
+      toast(t("mascotStage1"))
+    } else if (count === 6) {
+      toast(t("mascotStage2"))
+    } else if (count >= 9) {
+      clicksRef.current = 0
+      toast(t("mascotStage3"))
+    }
+  }, [playClick, t])
 
   return (
     <div
@@ -34,7 +53,7 @@ export function ProfileMascot({
         "after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:bg-[radial-gradient(circle_at_50%_18%,white_0,transparent_18%)] after:opacity-8",
         wrapperClassName
       )}
-      onClickCapture={() => playClick(0.42)}
+      onClickCapture={onMascotClick}
     >
       <div className="pointer-events-none absolute inset-x-5 bottom-5 h-4 rounded-full bg-foreground/12 blur-md transition-opacity group-hover/avatar:opacity-80" />
       <Mascot

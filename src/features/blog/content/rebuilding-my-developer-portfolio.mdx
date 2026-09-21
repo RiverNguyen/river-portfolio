@@ -1,42 +1,129 @@
 ---
 title: Rebuilding My Developer Portfolio
-description: Why I rebuilt my portfolio with Next.js, Tailwind CSS, and a content-first approach — and what I learned along the way.
+description: A measured rebuild of rivernguyen.id.vn — Next.js App Router, bilingual routing, NDA-safe case studies, a keyless portfolio bot, and the Core Web Vitals tradeoffs I actually hit.
 image: /blogs/portfolio.webp
 pinned: true
 new: true
 createdAt: 2026-03-01
-updatedAt: 2026-03-01
+updatedAt: 2026-09-21
 ---
 
-After working on client projects for over a year, I finally took the time to rebuild my own portfolio from scratch. Not just a visual refresh — a rethink of how I want to present my work, skills, and story as a frontend developer.
+After shipping client frontends for a couple of years, I finally rebuilt my own site from scratch. Not a theme swap — a rethink of how I want recruiters, clients, and (increasingly) AI crawlers to understand who I am and what I ship.
 
-## Why rebuild?
+This post is the first-person case study for [rivernguyen.id.vn](https://rivernguyen.id.vn): stack choices, bilingual routing, anonymized case studies, a local “River Bot,” and the lab numbers that still need work.
 
-My old portfolio did the basics: name, contact, a list of projects. But it didn't reflect how I actually work today — with **Next.js**, **WordPress as a headless CMS**, **GSAP animations**, and a focus on performance and SEO.
+## Why rebuild at all?
+
+My old portfolio did the basics — name, contact, a flat project list. It did not reflect how I work today: **Next.js App Router**, **WordPress as a headless CMS** on client work, **GSAP / Motion** for intentional motion, and a bias toward performance and SEO.
 
 I wanted a site that:
 
-- Loads fast and scores well on Lighthouse
-- Supports **i18n** (English + Vietnamese)
-- Lets me add blog posts and project case studies easily
-- Feels polished without being over-designed
+- Loads reasonably fast and can be measured honestly with Lighthouse / CrUX later
+- Supports **English + Vietnamese** without duplicate-content traps
+- Lets me publish MDX blog posts and project case studies from data modules
+- Feels polished without turning into a dashboard of cards
 
-## Tech choices
+The bar was simple: if I removed the nav, the first viewport should still read as *my* brand — not a generic “frontend developer” template.
 
-- **Next.js App Router** for routing, metadata, and static generation
-- **Tailwind CSS v4** for styling with a consistent design system
-- **shadcn/ui** for accessible UI primitives
-- **MDX** for blog content
-- **next-intl** for locale switching
+## Starting point: fork, then own the brand
 
-## What I'm proud of
+The early codebase borrowed structure from a strong open-source portfolio shell (component registry patterns, MDX blog plumbing, screen-line layout). That was intentional — I wanted proven App Router patterns, not a blank Vite SPA.
 
-The portfolio now mirrors the kind of work I deliver for clients: responsive layouts, smooth micro-interactions, structured project galleries, and a resume page synced directly from my experience data.
+The rebuild work was about **ownership**:
 
-## What's next
+- River identity (name variants, Ha Noi timezone, affiliate badge, mascot)
+- Case studies that respect NDAs without looking empty
+- Bilingual copy that is actually translated, not machine-dumped
+- Interaction that matches my craft (mascot, duck follower, command menu) without blocking LCP
 
-I'll keep writing here about frontend patterns I use in production — [WordPress + Next.js](/blog/wordpress-headless-cms-with-nextjs), [GSAP workflows](/blog/gsap-animations-in-production), [Docker without leaking secrets](/blog/shipping-nextjs-with-docker), and [Core Web Vitals](/blog/optimizing-nextjs-for-core-web-vitals) from real projects. The bilingual routing on this site is covered in [Building bilingual Next.js sites with next-intl](/blog/bilingual-nextjs-with-next-intl).
+## Tech choices that stuck
 
-If you're building your own portfolio, start simple: one great [project case study](/projects) beats ten generic cards. Or [get in touch](/contact) if you want to talk through a rebuild.
+- **[Next.js App Router](https://nextjs.org/docs/app)** — routing, metadata APIs, static generation for blog/case studies
+- **[Tailwind CSS](https://tailwindcss.com/docs)** + **shadcn/ui** — consistent primitives without inventing a design system twice
+- **[next-intl](https://next-intl.dev/docs)** — `as-needed` locale prefix (`/` for EN, `/vi/...` for Vietnamese)
+- **MDX** via fumadocs-style helpers — posts as files, not a CMS for a solo site
+- **Upstash Redis** (with a local JSON fallback) — visitors insights without standing up a database
+- **GSAP / Motion** — motion where it earns its place; still a CWV cost on mobile if loaded eagerly
 
-Stack references for this rebuild: [Next.js App Router](https://nextjs.org/docs/app), [next-intl](https://next-intl.dev/docs), and [Tailwind CSS](https://tailwindcss.com/docs).
+Docker packaging for this site is covered separately in [Shipping Next.js with Docker without leaking secrets](/blog/shipping-nextjs-with-docker).
+
+## Bilingual routing without shooting myself in the foot
+
+Vietnamese is not a “nice to have” for me — it is half the audience. The hard part is not translating strings; it is **canonical + hreflang consistency**.
+
+Lessons that mattered:
+
+1. `createPageMetadata()` must resolve the **request locale** into `alternates.canonical` and `openGraph.url`. Hardcoding the default locale makes `/vi/*` look like duplicates of English.
+2. Sitemap entries should include both locales only after canonicals are correct.
+3. Page bodies can be fully translated while titles/descriptions stay English by accident — that still weakens Vietnamese SERPs.
+
+I wrote the routing patterns up in [Building bilingual Next.js sites with next-intl](/blog/bilingual-nextjs-with-next-intl).
+
+## Case studies under NDA
+
+Most of my shipped work is client-owned. Showing live URLs and branded screenshots is often not allowed. Recruiters still need *proof of craft*.
+
+The compromise on this site:
+
+- Generic titles (project type + domain), no client names
+- Wireframe-style **anonymized UI mocks** (filters, auth shell, locale toggle) instead of stolen screenshots
+- Architecture flows as diagrams, not branded system maps
+- Lab metrics (LCP / Performance) stated as lab numbers, not marketing fiction
+- A clear private-project notice with a path to [/contact](/contact)
+
+That is not as strong as a public case study with a live URL — and I say so on the page. Honesty beats fake logos.
+
+Browse the structure at [/projects](/projects).
+
+## River Bot without an API key
+
+I originally wired an AI SDK chat against OpenAI. For a personal portfolio, that meant keys, rate limits, and a failure mode that just returned 503.
+
+The version that shipped is a **local FAQ / intent bot**: keyword scoring over projects, stack, experience, hire, and contact copy pulled from the same data modules the UI uses. It streams plain text, answers EN/VI, and refuses off-topic prompts.
+
+Tradeoff: it will not invent novel answers. Benefit: zero vendor lock-in, zero leaked keys, and the bot stays on-brand.
+
+## Personality: mascot, duck, pixel mode
+
+Portfolios that only list skills are forgettable. I added:
+
+- A cursor-tracking **mascot** on the profile header
+- An optional **duck follower** (desktop, motion-safe)
+- A Konami unlock for **pixel mode**
+- A tiny secret [/pond](/pond) room if you keep poking the duck
+
+These are deliberate brand signals — and also JS/CSS cost. On mobile lab runs they compete with analytics and motion for main-thread time. I treat them as progressive enhancement, not the content.
+
+## What the lab numbers said (honestly)
+
+A full SEO/performance audit of this domain (lab Lighthouse, no CrUX credentials configured yet) flagged the homepage mobile score around **44/100**, with **LCP ~5.1s** and high TBT — driven largely by analytics SDK weight and motion chunks on the critical path. Desktop was fine (~90).
+
+That is an awkward sentence to publish on my own site. It is also the point of a rebuild journal: measure, then cut.
+
+Remediation direction (tracked as ongoing work):
+
+- Defer / tree-shake analytics modules that are not used (surveys, toolbars)
+- Code-split motion off the first paint
+- Stop over-preloading decorative fonts
+- Serve the avatar at display size, not 400×400 for a ~120px box
+
+Deeper CWV notes: [Optimizing Next.js for Core Web Vitals](/blog/optimizing-nextjs-for-core-web-vitals).
+
+## Recruiter mode
+
+Not every visitor wants the full scroll. `/hire` (also `/?mode=hire`) is a one-screen snapshot: availability, stack, three case studies, CTAs to contact and resume. The command menu jumps there quickly.
+
+## What I would do differently next time
+
+1. **Ship visual proof earlier** — anonymized mocks should have landed with the first case study, not after an audit called out “text-only projects.”
+2. **Treat locale metadata as a feature**, not a helper afterthought.
+3. **Budget JS for personality** the same way I budget images — mascot joy is real; so is TBT.
+4. **Write fewer, deeper posts** instead of thin stubs that cannot rank or get cited.
+
+## What’s next
+
+I will keep this site as a living lab: deepen a few technical posts, keep case studies NDA-honest, and chip away at the mobile CWV gap until field data (CrUX) can replace lab-only numbers.
+
+If you are rebuilding your own portfolio, start with one sharp case study and correct canonicals — not another hero animation. Or [get in touch](/contact) if you want to talk through a Next.js / WordPress frontend rebuild.
+
+Stack references: [Next.js App Router](https://nextjs.org/docs/app), [next-intl](https://next-intl.dev/docs), [Tailwind CSS](https://tailwindcss.com/docs), [web.dev vitals](https://web.dev/articles/vitals).

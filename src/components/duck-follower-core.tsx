@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 
+import { useRouter } from "@/i18n/navigation"
+
 type Position = {
   x: number
   y: number
@@ -366,6 +368,16 @@ const KEYFRAMES_CSS = (() => {
 
 export default function DuckFollowerCore() {
   const { position, animation, direction, onAnimationEnd } = useDuckState()
+  const tapCountRef = useRef(0)
+  const router = useRouter()
+
+  const onSecretTap = useCallback(() => {
+    tapCountRef.current += 1
+    if (tapCountRef.current >= 5) {
+      tapCountRef.current = 0
+      router.push("/pond")
+    }
+  }, [router])
 
   const animationStyle = ANIMATION_STYLES[animation]
   const transform =
@@ -377,10 +389,11 @@ export default function DuckFollowerCore() {
     <>
       <style>{KEYFRAMES_CSS}</style>
       <div
-        className="duck-follower dark:drop-shadow-sm dark:drop-shadow-amber-300"
+        className="duck-follower cursor-pointer dark:drop-shadow-sm dark:drop-shadow-amber-300"
         style={{ ...animationStyle, transform }}
         onAnimationEnd={onAnimationEnd}
-        aria-hidden="true"
+        onPointerDown={onSecretTap}
+        role="presentation"
       />
     </>
   )

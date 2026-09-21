@@ -1,7 +1,9 @@
 import dynamic from "next/dynamic"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { DesktopNav } from "@/components/desktop-nav"
+import { getAllPosts } from "@/features/blog/data/posts"
+import type { PostPreview } from "@/features/blog/types/post"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
@@ -13,15 +15,21 @@ const MobileNav = dynamic(() =>
   import("@/components/mobile-nav").then((mod) => mod.MobileNav)
 )
 
+const CommandMenu = dynamic(() =>
+  import("@/components/command-menu").then((mod) => mod.CommandMenu)
+)
+
 export async function SiteHeader() {
+  const locale = await getLocale()
+  const portfolioLocale = locale === "vi" ? "vi" : "en"
   const t = await getTranslations("Nav")
-  // const posts = getAllPosts()
-  // const postPreviews: PostPreview[] = posts.map((post) => ({
-  //   slug: post.slug,
-  //   title: post.metadata.title,
-  //   category: post.metadata.category,
-  //   icon: post.metadata.icon,
-  // }))
+  const posts = getAllPosts(portfolioLocale)
+  const postPreviews: PostPreview[] = posts.map((post) => ({
+    slug: post.slug,
+    title: post.metadata.title,
+    category: post.metadata.category,
+    icon: post.metadata.icon,
+  }))
 
   const navItems = [
     { title: t("portfolio"), href: "/" },
@@ -35,9 +43,6 @@ export async function SiteHeader() {
     <header
       className={cn(
         "sticky top-0 z-50 max-w-screen overflow-x-hidden bg-background px-2 pt-2"
-        // "data-[affix=true]:shadow-[0_0_16px_0_black]/8 dark:data-[affix=true]:shadow-[0_0_16px_0_black]",
-        // "not-dark:data-[affix=true]:**:data-header-container:after:bg-border",
-        // "transition-shadow duration-300"
       )}
     >
       <div
@@ -45,24 +50,21 @@ export async function SiteHeader() {
         data-header-container
       >
         <Link
-          className="transition-[scale] ease-out active:scale-[0.98] has-data-[visible=false]:pointer-events-none [&_svg]:h-8"
+          className="shrink-0 transition-[scale] ease-out active:scale-[0.98] has-data-[visible=false]:pointer-events-none [&_svg]:h-8"
           href="/"
           aria-label="Home"
         >
           <SiteHeaderMark />
         </Link>
 
-        <div className="flex-1" />
-
-        <DesktopNav items={navItems} />
-
-        <div className="flex items-center *:first:mr-2">
-          {/* <CommandMenu posts={postPreviews} /> */}
-          {/* <NavItemGitHub /> */}
-          {/* <span className="mx-2 flex h-4 w-px bg-border" /> */}
-          <ThemeToggle />
-          <LanguageSwitcher />
-          <MobileNav items={navItems} />
+        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+          <DesktopNav items={navItems} />
+          <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+            <CommandMenu posts={postPreviews} />
+            <ThemeToggle />
+            <LanguageSwitcher />
+            <MobileNav items={navItems} />
+          </div>
         </div>
       </div>
     </header>

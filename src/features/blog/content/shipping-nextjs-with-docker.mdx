@@ -140,6 +140,8 @@ If an old tag was public, or history shows a key, rotating the app without rotat
 
 I treat the image as something I might push to the wrong registry. That is the same rule on client Dockerfiles and on this portfolio's standalone output.
 
+On [this site](https://rivernguyen.id.vn) the production path is still Vercel-first, but the same Dockerfile is what I use for local parity and for clients who want Compose. The rule does not change with the host: **public config may bake; secrets may not.**
+
 The booking builds that sit next to this setup are written up as case studies, starting with the [multilingual tour platform](/projects/multilingual-tour-platform). Docker docs for the mount syntax live at [Build secrets](https://docs.docker.com/build/building/secrets/). Next.js standalone output is documented under [output: standalone](https://nextjs.org/docs/app/api-reference/config/next-config-js/output).
 
 ## Final thought

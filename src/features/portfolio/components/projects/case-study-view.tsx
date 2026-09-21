@@ -8,15 +8,35 @@ import { Tag } from "@/components/ui/tag"
 import { ProseMono } from "@/components/ui/typography"
 import { UTM_PARAMS } from "@/config/site"
 import type { CaseStudy } from "@/features/portfolio/data/case-studies"
+import type { CaseStudyVisualVariant } from "@/features/portfolio/data/case-study-visuals"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { addQueryParams } from "@/utils/url"
 
+import { CaseStudyArchitectureDiagram } from "./case-study-architecture-diagram"
+import { CaseStudyLighthousePanel } from "./case-study-lighthouse-panel"
+import { CaseStudyVisualMock } from "./case-study-visual-mock"
+import { LighthouseCompare } from "./lighthouse-compare"
 import { PrivateProjectNotice } from "./private-project-notice"
 import { ProjectGallery } from "./project-gallery"
+import { TourFilterDemo } from "./tour-filter-demo"
+
+const VISUAL_MESSAGE_ROOT: Record<CaseStudyVisualVariant, string> = {
+  "tour-filters": "visualTourFilters",
+  "corporate-sections": "visualCorporateSections",
+  "auth-shell": "visualAuthShell",
+  "agency-showcase": "visualAgencyShowcase",
+  "catalog-grid": "visualCatalogGrid",
+  "salon-steps": "visualSalonSteps",
+  "locale-toggle": "visualLocaleToggle",
+  "combo-map": "visualComboMap",
+  "luxury-scroll": "visualLuxuryScroll",
+  "ai-cinematic": "visualAiCinematic",
+}
 
 export async function CaseStudyView({ study }: { study: CaseStudy }) {
   const t = await getTranslations("CaseStudy")
+  const visualRoot = VISUAL_MESSAGE_ROOT[study.visualVariant]
 
   return (
     <article className="min-h-svh">
@@ -100,6 +120,15 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
         />
       </div>
 
+      {study.showFilterDemo ? (
+        <section className="screen-line-before space-y-4 px-4 py-6">
+          <h2 className="text-xl font-semibold tracking-tight">
+            {t("interactiveDemo")}
+          </h2>
+          <TourFilterDemo />
+        </section>
+      ) : null}
+
       <section className="screen-line-before space-y-3 px-4 py-6">
         <h2 className="font-mono text-[11px] tracking-[0.28em] text-muted-foreground uppercase">
           {t("summary")}
@@ -107,6 +136,21 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
         <ProseMono>
           <p>{study.summary}</p>
         </ProseMono>
+      </section>
+
+      <section className="screen-line-before space-y-3 px-4 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">
+          {t("visualProof")}
+        </h2>
+        <CaseStudyVisualMock
+          variant={study.visualVariant}
+          caption={t("visualProof")}
+          note={t("visualNote")}
+          callouts={{
+            primary: t(`${visualRoot}.primary`),
+            secondary: t(`${visualRoot}.secondary`),
+          }}
+        />
       </section>
 
       {study.sections.map((section, index) => (
@@ -129,8 +173,8 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
       ))}
 
       {study.metrics.length > 0 ? (
-        <section className="screen-line-before px-4 py-6">
-          <div className="mb-4 flex items-end justify-between gap-3">
+        <section className="screen-line-before space-y-4 px-4 py-6">
+          <div className="flex items-end justify-between gap-3">
             <h2 className="text-xl font-semibold tracking-tight">
               {t("metrics")}
             </h2>
@@ -138,6 +182,12 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
               {t("metricsNote")}
             </p>
           </div>
+
+          <CaseStudyLighthousePanel
+            metrics={study.metrics}
+            title={t("lighthouseTitle")}
+            labNote={t("lighthouseLab")}
+          />
 
           <div className="grid grid-cols-2 divide-x divide-y divide-edge border border-edge sm:grid-cols-4 sm:divide-y-0">
             {study.metrics.map((metric) => (
@@ -156,6 +206,21 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
               </div>
             ))}
           </div>
+        </section>
+      ) : null}
+
+      {study.lighthouseCompare ? (
+        <section className="screen-line-before space-y-4 px-4 py-6">
+          <h2 className="text-xl font-semibold tracking-tight">
+            {t("lighthouseCompare")}
+          </h2>
+          <p className="max-w-xl font-mono text-xs text-muted-foreground">
+            {t("lighthouseNote")}
+          </p>
+          <LighthouseCompare
+            before={study.lighthouseCompare.before}
+            after={study.lighthouseCompare.after}
+          />
         </section>
       ) : null}
 
@@ -207,20 +272,7 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
         <p className="max-w-xl font-mono text-xs leading-relaxed text-muted-foreground">
           {t("architectureNote")}
         </p>
-        <ol className="flex flex-wrap items-center gap-2">
-          {study.architecture.map((step, index) => (
-            <li key={step} className="flex items-center gap-2">
-              <span className="border border-edge px-2 py-1 font-mono text-xs text-foreground">
-                {step}
-              </span>
-              {index < study.architecture.length - 1 ? (
-                <span aria-hidden className="font-mono text-xs text-muted-foreground">
-                  →
-                </span>
-              ) : null}
-            </li>
-          ))}
-        </ol>
+        <CaseStudyArchitectureDiagram steps={study.architecture} />
       </section>
 
       <div className="screen-line-before flex flex-col gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">

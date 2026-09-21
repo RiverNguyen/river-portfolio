@@ -9,6 +9,7 @@ import {
   getCaseStudyBySlug,
 } from "@/features/portfolio/data/case-studies"
 import { USER } from "@/features/portfolio/data/user"
+import { getCaseStudyOgImagePath } from "@/lib/case-study-og"
 import { createPageMetadata, getAbsoluteUrl, getLocalizedUrl } from "@/lib/seo"
 
 type PageProps = {
@@ -24,7 +25,9 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const locale = await getLocale()
-  const study = getCaseStudyBySlug(slug, locale === "vi" ? "vi" : "en")
+  const portfolioLocale = locale === "vi" ? "vi" : "en"
+  const study = getCaseStudyBySlug(slug, portfolioLocale)
+  const t = await getTranslations("CaseStudy")
 
   if (!study) {
     return {}
@@ -34,8 +37,9 @@ export async function generateMetadata({
     path: `/projects/${study.slug}`,
     title: study.title,
     description: study.tagline,
-    image: study.coverImage,
+    image: getCaseStudyOgImagePath(study, { label: t("label") }),
     type: "article",
+    locale,
   })
 }
 
@@ -43,6 +47,7 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params
   const locale = await getLocale()
   const t = await getTranslations("ProjectsPage")
+  const caseStudyT = await getTranslations("CaseStudy")
   const study = getCaseStudyBySlug(slug, locale === "vi" ? "vi" : "en")
 
   if (!study) {
@@ -66,7 +71,9 @@ export default async function Page({ params }: PageProps) {
       name: USER.displayName,
     },
     keywords: study.skills.join(", "),
-    ...(study.coverImage ? { image: getAbsoluteUrl(study.coverImage) } : {}),
+    image: getAbsoluteUrl(
+      getCaseStudyOgImagePath(study, { label: caseStudyT("label") })
+    ),
     isAccessibleForFree: true,
   }
   const breadcrumb: WithContext<BreadcrumbList> = {

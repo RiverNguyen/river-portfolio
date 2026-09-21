@@ -1,31 +1,27 @@
 "use client"
 
-import { useChat } from "@ai-sdk/react"
 import {
   Loader2Icon,
-  MessageCircleIcon,
   RefreshCwIcon,
   SendHorizonalIcon,
   SquareIcon,
   XIcon,
 } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
+import { useEffect, useId, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
 import { Button } from "@/components/ui/button"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { ChatMascotAvatar } from "@/features/chatbot/components/chat-mascot-avatar"
 import { cn } from "@/lib/utils"
 
-function messageText(message: {
-  parts?: Array<{ type: string; text?: string }>
-}) {
-  if (!message.parts?.length) return ""
-  return message.parts
-    .filter((part) => part.type === "text" && part.text)
-    .map((part) => part.text)
-    .join("")
+type ChatMessage = {
+  id: string
+  role: "user" | "assistant"
+  text: string
 }
 
 function ChatMarkdown({ text, isUser }: { text: string; isUser?: boolean }) {
@@ -79,32 +75,28 @@ function ChatMarkdown({ text, isUser }: { text: string; isUser?: boolean }) {
 
 export function AiChat() {
   const t = useTranslations("Chat")
+  const locale = useLocale()
+  const idPrefix = useId()
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState("")
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const abortRef = useRef<AbortController | null>(null)
+  const counterRef = useRef(0)
 
-  const {
-    messages,
-    sendMessage,
-    status,
-    stop,
-    setMessages,
-    error,
-    clearError,
-  } = useChat({
-    onError: (err) => {
-      console.error("[AiChat]", err)
-    },
-  })
-
-  const busy = status === "submitted" || status === "streaming"
+  function nextId(role: string) {
+    counterRef.current += 1
+    return `${idPrefix}-${role}-${counterRef.current}`
+  }
 
   useEffect(() => {
     if (!open) return
     const node = listRef.current
     if (!node) return
     node.scrollTop = node.scrollHeight
-  }, [messages, open, status])
+  }, [messages, open, busy])
 
   useEffect(() => {
     if (!open) return
@@ -117,19 +109,128 @@ export function AiChat() {
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [open])
 
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort()
+    }
+  }, [])
+
+  async function send(text: string) {
+    const trimmed = text.trim()
+    if (!trimmed || busy) return
+
+    setError(null)
+    setInput("")
+
+    const userMessage: ChatMessage = {
+      id: nextId("user"),
+      role: "user",
+      text: trimmed,
+    }
+    const assistantId = nextId("assistant")
+
+    setMessages((prev) => [
+      ...prev,
+      userMessage,
+      { id: assistantId, role: "assistant", text: "" },
+    ])
+    setBusy(true)
+
+    const controller = new AbortController()
+    abortRef.current = controller
+
+    try {
+      const history = [...messages, userMessage].map((message) => ({
+        role: message.role,
+        parts: [{ type: "text" as const, text: message.text }],
+      }))
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history, locale }),
+        signal: controller.signal,
+      })
+
+      if (!response.ok) {
+        let message = t("error")
+        try {
+          const data = (await response.json()) as { error?: string }
+          if (data.error) message = data.error
+        } catch {
+          // keep default
+        }
+        throw new Error(message)
+      }
+
+      if (!response.body) {
+        throw new Error(t("error"))
+      }
+
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let assembled = ""
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        assembled += decoder.decode(value, { stream: true })
+        const snapshot = assembled
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === assistantId
+              ? { ...message, text: snapshot }
+              : message
+          )
+        )
+      }
+
+      assembled += decoder.decode()
+      if (!assembled.trim()) {
+        throw new Error(t("error"))
+      }
+
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === assistantId
+            ? { ...message, text: assembled.trim() }
+            : message
+        )
+      )
+    } catch (err) {
+      if (controller.signal.aborted) {
+        setMessages((prev) =>
+          prev.filter(
+            (message) =>
+              !(message.id === assistantId && message.text.trim() === "")
+          )
+        )
+      } else {
+        console.error("[AiChat]", err)
+        setError(err instanceof Error ? err.message : t("error"))
+        setMessages((prev) =>
+          prev.filter((message) => message.id !== assistantId)
+        )
+      }
+    } finally {
+      if (abortRef.current === controller) abortRef.current = null
+      setBusy(false)
+    }
+  }
+
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
-    const text = input.trim()
-    if (!text || busy) return
-    clearError()
-    setInput("")
-    await sendMessage({ text })
+    await send(input)
+  }
+
+  function onStop() {
+    abortRef.current?.abort()
   }
 
   function onReset() {
-    stop()
+    onStop()
     setMessages([])
-    clearError()
+    setError(null)
     setInput("")
   }
 
@@ -152,9 +253,7 @@ export function AiChat() {
             aria-label={t("title")}
           >
             <div className="flex shrink-0 items-center gap-3 border-b border-edge px-3 py-2.5">
-              <div className="flex size-8 items-center justify-center rounded-lg border border-edge bg-muted/40">
-                <MessageCircleIcon className="size-4" />
-              </div>
+              <ChatMascotAvatar className="size-9" size={28} />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{t("title")}</p>
                 <p className="truncate font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
@@ -199,8 +298,7 @@ export function AiChat() {
                           type="button"
                           disabled={busy}
                           onClick={() => {
-                            clearError()
-                            void sendMessage({ text: suggestion })
+                            void send(suggestion)
                           }}
                           className="rounded-md border border-edge bg-background px-2 py-1 text-left font-mono text-[11px] text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
                         >
@@ -213,8 +311,10 @@ export function AiChat() {
               ) : null}
 
               {messages.map((message) => {
-                const text = messageText(message)
-                if (!text) return null
+                if (!message.text && message.role === "assistant" && busy) {
+                  return null
+                }
+                if (!message.text) return null
                 const isUser = message.role === "user"
 
                 return (
@@ -232,12 +332,15 @@ export function AiChat() {
                         {t("assistantLabel")}
                       </p>
                     ) : null}
-                    <ChatMarkdown text={text} isUser={isUser} />
+                    <ChatMarkdown text={message.text} isUser={isUser} />
                   </div>
                 )
               })}
 
-              {busy ? (
+              {busy &&
+              !messages.some(
+                (message) => message.role === "assistant" && message.text
+              ) ? (
                 <Marker variant="separator" className="py-1" role="status">
                   <MarkerIcon>
                     <Loader2Icon className="animate-spin" />
@@ -250,7 +353,7 @@ export function AiChat() {
 
               {error ? (
                 <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                  {error.message || t("error")}
+                  {error}
                 </p>
               ) : null}
             </div>
@@ -278,7 +381,7 @@ export function AiChat() {
                   type="button"
                   size="icon-lg"
                   variant="secondary"
-                  onClick={() => stop()}
+                  onClick={onStop}
                   aria-label={t("stop")}
                 >
                   <SquareIcon className="size-4" />
@@ -297,21 +400,57 @@ export function AiChat() {
           </div>
         ) : null}
 
-        <Button
-          type="button"
-          size="icon-lg"
-          variant={open ? "secondary" : "default"}
-          className="shadow-lg"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-label={open ? t("close") : t("open")}
-        >
-          {open ? (
-            <XIcon className="size-5" />
-          ) : (
-            <MessageCircleIcon className="size-5" />
-          )}
-        </Button>
+        <div className="flex items-end gap-2">
+          <ScrollToTop docked />
+
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-label={open ? t("close") : t("open")}
+            title={open ? t("close") : t("launcherHint")}
+            className={cn(
+              "group/chat-fab relative flex items-center outline-none select-none",
+              "transition-[box-shadow,background-color,border-color,color] duration-200 ease-out",
+              "focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              open
+                ? "size-11 justify-center rounded-xl border border-edge bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                : cn(
+                    "h-12 gap-2.5 rounded-2xl border border-edge bg-background pr-3.5 pl-1.5",
+                    "shadow-[0_12px_36px_rgba(0,0,0,0.22)]",
+                    "hover:border-foreground/25 hover:bg-muted/40 hover:shadow-[0_16px_40px_rgba(0,0,0,0.28)]",
+                    "dark:bg-background/95"
+                  )
+            )}
+          >
+            {open ? (
+              <XIcon className="size-5" />
+            ) : (
+              <>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-1 -z-1 rounded-[1.15rem] border border-foreground/10 opacity-60 transition-opacity duration-300 group-hover/chat-fab:opacity-100"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-1 -z-1 animate-pulse rounded-[1.15rem] bg-foreground/[0.03]"
+                />
+                <span className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[radial-gradient(circle_at_50%_40%,color-mix(in_oklab,var(--primary)_16%,transparent),transparent_55%),linear-gradient(180deg,color-mix(in_oklab,var(--muted)_70%,transparent),transparent)] ring-1 ring-foreground/8">
+                  <ChatMascotAvatar size={34} className="size-full" />
+                  <span className="absolute top-1 right-1 size-2 rounded-full bg-emerald-500 ring-2 ring-background" />
+                </span>
+                <span className="flex min-w-0 flex-col items-start pr-0.5">
+                  <span className="font-mono text-[10px] leading-none tracking-[0.22em] text-muted-foreground uppercase">
+                    {t("assistantLabel")}
+                  </span>
+                  <span className="mt-1 text-sm leading-none font-medium text-foreground">
+                    {t("launcherCta")}
+                  </span>
+                </span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   )

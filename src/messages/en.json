@@ -54,6 +54,50 @@
     "outcomes": "Outcomes",
     "metrics": "Impact",
     "metricsNote": "Lab / shipping",
+    "visualProof": "Interface sketch",
+    "visualNote": "Wireframe · NDA-safe",
+    "lighthouseTitle": "Lighthouse snapshot",
+    "lighthouseLab": "Mobile lab on a production-like build — client URL stays private.",
+    "visualTourFilters": {
+      "primary": "Live filter rail",
+      "secondary": "Tour result cards"
+    },
+    "visualCorporateSections": {
+      "primary": "Hero narrative",
+      "secondary": "Service proof blocks"
+    },
+    "visualAuthShell": {
+      "primary": "Public marketing",
+      "secondary": "Sign-in surface"
+    },
+    "visualAgencyShowcase": {
+      "primary": "Case tile grid",
+      "secondary": "Featured work slot"
+    },
+    "visualCatalogGrid": {
+      "primary": "Catalog navigation",
+      "secondary": "Product tiles"
+    },
+    "visualSalonSteps": {
+      "primary": "Booking steps",
+      "secondary": "Cart + pay rail"
+    },
+    "visualLocaleToggle": {
+      "primary": "Locale switch",
+      "secondary": "Filter + detail"
+    },
+    "visualComboMap": {
+      "primary": "Destination map",
+      "secondary": "Combo sidebar"
+    },
+    "visualLuxuryScroll": {
+      "primary": "Editorial hero",
+      "secondary": "Resort / tour rails"
+    },
+    "visualAiCinematic": {
+      "primary": "Cinematic entry",
+      "secondary": "Knowledge hub tiles"
+    },
     "gallery": "Gallery",
     "tech": "Technologies",
     "architecture": "Architecture",
@@ -62,7 +106,60 @@
     "ctaContact": "Talk to me",
     "privateTitle": "Private client project",
     "privateDesc": "This is anonymized client work. The brand, live site, and visuals are covered by an NDA — reach out and I'll walk you through the details, the decisions, and the results.",
-    "privateCta": "Contact to discuss this project"
+    "privateCta": "Contact to discuss this project",
+    "interactiveDemo": "Filter UI demo",
+    "lighthouseCompare": "Before / after",
+    "lighthouseNote": "Lab mobile scores from a production-like build — client URL stays private."
+  },
+  "CaseStudyDemo": {
+    "filterLabel": "Try the filter rail",
+    "maxPrice": "Max price",
+    "noResults": "No tours match — tighten filters.",
+    "demoNote": "Anonymized demo — no client branding or live inventory.",
+    "performance": "Performance",
+    "lcp": "LCP",
+    "destination": {
+      "all": "All",
+      "north": "North",
+      "central": "Central",
+      "south": "South"
+    }
+  },
+  "NowStrip": {
+    "open": "Open to work",
+    "hanoi": "Hanoi",
+    "building": "Building",
+    "hireCta": "Hire mode"
+  },
+  "Hire": {
+    "metaTitle": "Hire River — Frontend (Next.js / React)",
+    "metaDescription": "Recruiter snapshot: availability, stack, and three shipped case studies.",
+    "label": "Recruiter mode",
+    "headline": "Frontend engineer for product UI and brand sites.",
+    "subtitle": "Next.js, React, TypeScript, motion, and WordPress headless — shipped under NDA with metrics to back it up.",
+    "ctaContact": "Start a conversation",
+    "ctaResume": "Full resume",
+    "availabilityTitle": "Availability",
+    "availabilityStatus": "Open to contract and full-time frontend roles",
+    "availabilityNote": "Typical reply within 1–2 business days. Remote-friendly from Hanoi (UTC+7).",
+    "stackTitle": "Core stack",
+    "projectsTitle": "Selected work",
+    "caseStudy": "Read case study"
+  },
+  "Pond": {
+    "metaTitle": "Secret pond",
+    "metaDescription": "You found the duck trail.",
+    "label": "Easter egg",
+    "title": "The duck made it here first.",
+    "body": "Thanks for following the mascot quest. Say hi on the contact page if you want to talk shop — or try Konami code on the homepage for pixel mode.",
+    "back": "Back home"
+  },
+  "EasterEggs": {
+    "pixelOn": "Pixel mode on",
+    "pixelOff": "Pixel mode off",
+    "mascotStage1": "River noticed you 👀",
+    "mascotStage2": "Keep going — the duck is watching.",
+    "mascotStage3": "Quest complete. Konami unlocks pixel mode."
   },
   "Components": {
     "title": "Components",
@@ -118,6 +215,7 @@
     "about": "About",
     "projects": "Projects",
     "experience": "Experience",
+    "education": "Education",
     "sameTime": "Same time",
     "ahead": "Ahead",
     "behind": "Behind",
@@ -158,7 +256,7 @@
   },
   "Chat": {
     "title": "Ask River",
-    "subtitle": "Portfolio assistant",
+    "subtitle": "Local portfolio Q&A",
     "open": "Open chat",
     "close": "Close chat",
     "reset": "Reset chat",
@@ -170,6 +268,8 @@
     "suggestion2": "What's River's stack?",
     "suggestion3": "How can I hire River?",
     "assistantLabel": "River Bot",
+    "launcherCta": "Ask me",
+    "launcherHint": "Projects, stack, hire — ask away.",
     "thinking": "Thinking…",
     "error": "Something went wrong. Try again."
   },

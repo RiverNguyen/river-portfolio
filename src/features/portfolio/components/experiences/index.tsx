@@ -1,14 +1,15 @@
-import React from "react"
 import { getLocale, getTranslations } from "next-intl/server"
 
-import { getExperiencesByLocale } from "../../data/experiences"
+import { getWorkExperiencesByLocale } from "../../data/experiences"
 import { Panel, PanelHeader, PanelTitle } from "../panel"
 import { ExperienceItem } from "./experience-item"
 
 export async function Experiences() {
   const locale = await getLocale()
   const t = await getTranslations("Portfolio")
-  const experiences = getExperiencesByLocale(locale === "vi" ? "vi" : "en")
+  const experiences = getWorkExperiencesByLocale(
+    locale === "vi" ? "vi" : "en"
+  )
 
   return (
     <Panel id="experience">

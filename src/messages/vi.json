@@ -54,6 +54,50 @@
     "outcomes": "Kết quả",
     "metrics": "Tác động",
     "metricsNote": "Lab / shipping",
+    "visualProof": "Phác thảo giao diện",
+    "visualNote": "Wireframe · an toàn NDA",
+    "lighthouseTitle": "Ảnh chụp Lighthouse",
+    "lighthouseLab": "Lab mobile trên bản build giống production — URL khách vẫn riêng tư.",
+    "visualTourFilters": {
+      "primary": "Thanh lọc trực tiếp",
+      "secondary": "Thẻ kết quả tour"
+    },
+    "visualCorporateSections": {
+      "primary": "Hero kể chuyện",
+      "secondary": "Khối dịch vụ / proof"
+    },
+    "visualAuthShell": {
+      "primary": "Marketing public",
+      "secondary": "Màn hình đăng nhập"
+    },
+    "visualAgencyShowcase": {
+      "primary": "Lưới case study",
+      "secondary": "Ô work nổi bật"
+    },
+    "visualCatalogGrid": {
+      "primary": "Điều hướng catalog",
+      "secondary": "Ô sản phẩm"
+    },
+    "visualSalonSteps": {
+      "primary": "Các bước đặt lịch",
+      "secondary": "Giỏ + thanh toán"
+    },
+    "visualLocaleToggle": {
+      "primary": "Chuyển ngôn ngữ",
+      "secondary": "Lọc + chi tiết"
+    },
+    "visualComboMap": {
+      "primary": "Bản đồ điểm đến",
+      "secondary": "Sidebar combo"
+    },
+    "visualLuxuryScroll": {
+      "primary": "Hero editorial",
+      "secondary": "Rail resort / tour"
+    },
+    "visualAiCinematic": {
+      "primary": "Lối vào cinematic",
+      "secondary": "Ô knowledge hub"
+    },
     "gallery": "Thư viện ảnh",
     "tech": "Công nghệ dùng",
     "architecture": "Kiến trúc",
@@ -62,7 +106,60 @@
     "ctaContact": "Nhắn mình",
     "privateTitle": "Dự án bảo mật",
     "privateDesc": "Đây là dự án khách hàng đã được ẩn danh. Thương hiệu, trang live và hình ảnh thuộc thỏa thuận bảo mật (NDA) — liên hệ để mình trao đổi chi tiết về cách làm, quyết định và kết quả.",
-    "privateCta": "Liên hệ để trao đổi về dự án"
+    "privateCta": "Liên hệ để trao đổi về dự án",
+    "interactiveDemo": "Demo bộ lọc",
+    "lighthouseCompare": "Trước / sau",
+    "lighthouseNote": "Điểm lab mobile trên bản build giống production — URL khách vẫn riêng tư."
+  },
+  "CaseStudyDemo": {
+    "filterLabel": "Thử thanh lọc",
+    "maxPrice": "Giá tối đa",
+    "noResults": "Không có tour — thử nới bộ lọc.",
+    "demoNote": "Demo ẩn danh — không brand khách hay inventory live.",
+    "performance": "Performance",
+    "lcp": "LCP",
+    "destination": {
+      "all": "Tất cả",
+      "north": "Bắc",
+      "central": "Trung",
+      "south": "Nam"
+    }
+  },
+  "NowStrip": {
+    "open": "Nhận việc",
+    "hanoi": "Hà Nội",
+    "building": "Đang làm",
+    "hireCta": "Chế độ hire"
+  },
+  "Hire": {
+    "metaTitle": "Thuê River — Frontend (Next.js / React)",
+    "metaDescription": "Bản rút gọn cho recruiter: availability, stack và 3 case study.",
+    "label": "Recruiter mode",
+    "headline": "Frontend cho product UI và brand site.",
+    "subtitle": "Next.js, React, TypeScript, motion và WordPress headless — đã ship dưới NDA, có số đo kèm theo.",
+    "ctaContact": "Bắt đầu trao đổi",
+    "ctaResume": "CV đầy đủ",
+    "availabilityTitle": "Availability",
+    "availabilityStatus": "Mở hợp tác freelance và full-time frontend",
+    "availabilityNote": "Thường phản hồi trong 1–2 ngày làm việc. Remote từ Hà Nội (UTC+7).",
+    "stackTitle": "Stack chính",
+    "projectsTitle": "Dự án chọn lọc",
+    "caseStudy": "Đọc case study"
+  },
+  "Pond": {
+    "metaTitle": "Ao bí mật",
+    "metaDescription": "Bạn đi theo vịt tới đây.",
+    "label": "Easter egg",
+    "title": "Vịt tới đây trước bạn.",
+    "body": "Cảm ơn vì chơi mascot quest. Nhắn qua trang liên hệ nếu muốn trao đổi — hoặc thử Konami trên homepage để bật pixel mode.",
+    "back": "Về trang chủ"
+  },
+  "EasterEggs": {
+    "pixelOn": "Bật pixel mode",
+    "pixelOff": "Tắt pixel mode",
+    "mascotStage1": "River thấy bạn rồi 👀",
+    "mascotStage2": "Tiếp đi — vịt đang nhìn.",
+    "mascotStage3": "Quest xong. Konami mở pixel mode."
   },
   "Components": {
     "title": "Components",
@@ -118,6 +215,7 @@
     "about": "Giới thiệu",
     "projects": "Dự án",
     "experience": "Kinh nghiệm",
+    "education": "Học vấn",
     "sameTime": "Cùng giờ",
     "ahead": "Sớm hơn",
     "behind": "Trễ hơn",
@@ -158,7 +256,7 @@
   },
   "Chat": {
     "title": "Hỏi River",
-    "subtitle": "Trợ lý portfolio",
+    "subtitle": "Hỏi đáp portfolio (local)",
     "open": "Mở chat",
     "close": "Đóng chat",
     "reset": "Xóa hội thoại",
@@ -170,6 +268,8 @@
     "suggestion2": "River dùng stack gì?",
     "suggestion3": "Làm sao để thuê River?",
     "assistantLabel": "River Bot",
+    "launcherCta": "Hỏi tôi",
+    "launcherHint": "Dự án, stack, thuê — hỏi thoải mái.",
     "thinking": "Đang nghĩ…",
     "error": "Có lỗi xảy ra. Thử lại nhé."
   },

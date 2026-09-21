@@ -286,3 +286,17 @@ export type PortfolioLocale = "en" | "vi"
 export function getExperiencesByLocale(locale: PortfolioLocale): Experience[] {
   return locale === "vi" ? EXPERIENCES_VI : EXPERIENCES_EN
 }
+
+export function isEducationExperience(experience: Experience) {
+  return experience.id.startsWith("education")
+}
+
+export function getWorkExperiencesByLocale(locale: PortfolioLocale): Experience[] {
+  return getExperiencesByLocale(locale).filter(
+    (experience) => !isEducationExperience(experience)
+  )
+}
+
+export function getEducationByLocale(locale: PortfolioLocale): Experience[] {
+  return getExperiencesByLocale(locale).filter(isEducationExperience)
+}

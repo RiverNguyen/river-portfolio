@@ -5,7 +5,14 @@ import { getAllCaseStudySlugs } from "@/features/portfolio/data/case-studies"
 import { routing } from "@/i18n/routing"
 import { getLanguageAlternates, getLocalizedUrl } from "@/lib/seo"
 
-const STATIC_ROUTES = ["", "/projects", "/resume", "/blog", "/contact"] as const
+const STATIC_ROUTES = [
+  "",
+  "/projects",
+  "/resume",
+  "/blog",
+  "/contact",
+  "/hire",
+] as const
 
 function localizedEntries(
   path: string,

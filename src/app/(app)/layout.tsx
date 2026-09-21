@@ -7,12 +7,8 @@ import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { routing } from "@/i18n/routing"
 
-// const AiChat = dynamic(() =>
-//   import("@/features/chatbot/components/ai-chat").then((mod) => mod.AiChat)
-// )
-
-const ScrollToTop = dynamic(() =>
-  import("@/components/scroll-to-top").then((mod) => mod.ScrollToTop)
+const AiChat = dynamic(() =>
+  import("@/features/chatbot/components/ai-chat").then((mod) => mod.AiChat)
 )
 
 export default async function AppLayout({
@@ -31,8 +27,7 @@ export default async function AppLayout({
       <SiteHeader />
       <main className="max-w-screen overflow-x-hidden px-2">{children}</main>
       <SiteFooter />
-      <ScrollToTop />
-      {/* <AiChat /> */}
+      <AiChat />
     </NextIntlClientProvider>
   )
 }

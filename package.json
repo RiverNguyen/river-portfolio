@@ -40,9 +40,6 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^4.0.36",
-    "@ai-sdk/openai-compatible": "^3.0.27",
-    "@ai-sdk/react": "^4.0.61",
     "@base-ui/react": "^1.1.0",
     "@bprogress/next": "^3.2.12",
     "@c15t/nextjs": "^1.8.1",
@@ -62,7 +59,6 @@
     "@visx/responsive": "4.0.1-alpha.0",
     "@visx/scale": "4.0.1-alpha.0",
     "@visx/shape": "4.0.1-alpha.0",
-    "ai": "^7.0.58",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

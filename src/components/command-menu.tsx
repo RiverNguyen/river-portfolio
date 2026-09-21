@@ -11,6 +11,7 @@ import {
   CornerDownLeftIcon,
   DownloadIcon,
   FileTextIcon,
+  GraduationCapIcon,
   HeartIcon,
   LayersIcon,
   MoonStarIcon,
@@ -49,6 +50,7 @@ import { copyText } from "@/utils/copy"
 import { ChanhDaiMark, getMarkSVG } from "./chanhdai-mark"
 import { getWordmarkSVG } from "./chanhdai-wordmark"
 import { ComponentIcon, Icons } from "./icons"
+import { useLenis } from "./lenis-provider"
 import { Button } from "./ui/button"
 import { Kbd, KbdGroup } from "./ui/kbd"
 import { Separator } from "./ui/separator"
@@ -88,10 +90,12 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     icon: TextInitialIcon,
   },
   {
-    title: "Testimonials",
-    href: "/testimonials",
-    icon: QuoteIcon,
+    title: "Hire River",
+    href: "/hire",
+    icon: BriefcaseBusinessIcon,
+    keywords: ["recruiter", "available", "freelance", "contact"],
   },
+
   {
     title: "Tech Stack",
     href: "/#stack",
@@ -108,19 +112,10 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     icon: BoxIcon,
   },
   {
-    title: "Honors & Awards",
-    href: "/#awards",
-    icon: AwardIcon,
-  },
-  {
-    title: "Certifications",
-    href: "/#certs",
-    icon: CircleCheckBigIcon,
-  },
-  {
-    title: "Bookmarks",
-    href: "/#bookmarks",
-    icon: BookmarkIcon,
+    title: "Education",
+    href: "/#education",
+    icon: GraduationCapIcon,
+    keywords: ["school", "university", "degree"],
   },
   {
     title: "Download vCard",
@@ -138,20 +133,9 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
 
 const OTHER_LINK_ITEMS: CommandLinkItem[] = [
   {
-    title: "Sponsors",
-    href: "/sponsors",
-    icon: HeartIcon,
-  },
-  {
     title: "llms.txt",
     href: "/llms.txt",
     icon: FileTextIcon,
-    openInNewTab: true,
-  },
-  {
-    title: "RSS Feed",
-    href: "/rss",
-    icon: RssIcon,
     openInNewTab: true,
   },
 ]
@@ -166,6 +150,18 @@ export function CommandMenu({ posts }: { posts: PostPreview[] }) {
   const { play: playClick } = useSoundLazy("/audio/ui-sounds/click.wav")
 
   const [, setIsDuckFollowerVisible] = useDuckFollowerVisibility()
+  const lenis = useLenis()
+
+  useEffect(() => {
+    if (!lenis) return
+    if (open) {
+      lenis.stop()
+      return () => {
+        lenis.start()
+      }
+    }
+    lenis.start()
+  }, [lenis, open])
 
   useHotkeys("mod+k, slash", (e) => {
     e.preventDefault()
@@ -313,7 +309,10 @@ export function CommandMenu({ posts }: { posts: PostPreview[] }) {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandMenuInput />
 
-        <CommandList className="min-h-80 supports-timeline-scroll:scroll-fade-effect-y">
+        <CommandList
+          data-lenis-prevent
+          className="supports-timeline-scroll:scroll-fade-effect-y"
+        >
           <CommandEmpty>No results found.</CommandEmpty>
 
           <CommandLinkGroup
@@ -371,20 +370,6 @@ export function CommandMenu({ posts }: { posts: PostPreview[] }) {
             >
               <TypeIcon />
               Copy Logotype as SVG
-            </CommandItem>
-
-            <CommandItem
-              onSelect={() => handleOpenLink("/blog/chanhdai-brand")}
-            >
-              <TriangleDashedIcon />
-              Brand Guidelines
-            </CommandItem>
-
-            <CommandItem asChild>
-              <a href="https://assets.chanhdai.com/chanhdai-brand.zip" download>
-                <DownloadIcon />
-                Download Brand Assets
-              </a>
             </CommandItem>
           </CommandGroup>
 

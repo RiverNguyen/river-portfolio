@@ -7,10 +7,16 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+type ScrollToTopProps = React.ComponentProps<"button"> & {
+  /** Sit in the chat dock instead of a separate fixed corner. */
+  docked?: boolean
+}
+
 export function ScrollToTop({
   className,
+  docked = false,
   ...props
-}: React.ComponentProps<"button">) {
+}: ScrollToTopProps) {
   const { scrollY } = useScroll()
 
   const [visible, setVisible] = useState(false)
@@ -29,11 +35,20 @@ export function ScrollToTop({
       data-visible={visible}
       data-scroll-direction={scrollDirection}
       className={cn(
-        "[--bottom:1rem] lg:[--bottom:2rem]",
-        // Sit left of the AI chat FAB (bottom-right).
-        "fixed right-16 bottom-[calc(var(--bottom,1rem)+env(safe-area-inset-bottom,0px))] z-50 lg:right-20",
-        "transition-[background-color,opacity] duration-300 data-[scroll-direction=down]:opacity-30 data-[scroll-direction=up]:opacity-100 data-[visible=false]:opacity-0",
+        "z-50 transition-[background-color,opacity,width,padding,margin] duration-300",
+        "data-[scroll-direction=down]:opacity-30 data-[scroll-direction=up]:opacity-100",
         "data-[scroll-direction=down]:hover:opacity-100",
+        "active:scale-100",
+        docked
+          ? cn(
+              "relative shrink-0",
+              "data-[visible=false]:pointer-events-none data-[visible=false]:mr-0 data-[visible=false]:w-0 data-[visible=false]:overflow-hidden data-[visible=false]:border-0 data-[visible=false]:p-0 data-[visible=false]:opacity-0"
+            )
+          : cn(
+              "[--bottom:1rem] lg:[--bottom:2rem]",
+              "fixed right-4 bottom-[calc(var(--bottom,1rem)+env(safe-area-inset-bottom,0px))] lg:right-8",
+              "data-[visible=false]:opacity-0"
+            ),
         className
       )}
       variant="secondary"
