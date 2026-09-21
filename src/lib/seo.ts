@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { getLocale } from "next-intl/server"
 
 import { SITE_INFO } from "@/config/site"
 import { routing } from "@/i18n/routing"
@@ -42,33 +43,39 @@ export function getLanguageAlternates(path: string) {
   }
 }
 
-export function createPageMetadata({
+export async function createPageMetadata({
   path,
   title,
   description,
   image,
   type = "website",
+  locale: localeProp,
 }: {
   path: string
   title: string
   description: string
   image?: string
   type?: "website" | "article" | "profile"
-}): Metadata {
+  locale?: string
+}): Promise<Metadata> {
+  const locale = localeProp ?? (await getLocale())
+  const localizedPath = getLocalizedPath(path, locale)
   const ogImage = image || SITE_INFO.ogImage
 
   return {
     title,
     description,
     alternates: {
-      canonical: path,
+      canonical: localizedPath,
       languages: getLanguageAlternates(path),
     },
     openGraph: {
       title,
       description,
-      url: getLocalizedUrl(path, routing.defaultLocale),
+      url: getLocalizedUrl(path, locale),
       type,
+      locale: locale === "vi" ? "vi_VN" : "en_US",
+      alternateLocale: locale === "vi" ? ["en_US"] : ["vi_VN"],
       images: [
         {
           url: ogImage,

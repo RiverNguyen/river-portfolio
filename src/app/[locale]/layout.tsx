@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
 import { getMessages, setRequestLocale } from "next-intl/server"
 
@@ -17,7 +18,7 @@ export default async function LocaleLayout({
   const { locale } = await params
 
   if (!hasLocale(routing.locales, locale)) {
-    return null
+    notFound()
   }
 
   // Enable static rendering for next-intl usage.

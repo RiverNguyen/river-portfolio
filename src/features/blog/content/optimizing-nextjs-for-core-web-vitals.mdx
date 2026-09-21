@@ -3,7 +3,7 @@ title: Optimizing Next.js for Core Web Vitals
 description: Practical performance wins from real client projects — images, fonts, code splitting, and Lighthouse audits that actually matter.
 image: /blogs/next.webp
 createdAt: 2026-01-15
-updatedAt: 2026-01-15
+updatedAt: 2026-09-21
 ---
 
 Performance isn't a one-time task. On every client handoff, I run **Lighthouse**, check **Core Web Vitals**, and fix the issues that affect real users — not just the audit score.
@@ -52,7 +52,49 @@ const ProjectGallery = dynamic(
 
 ## Real project example
 
-On a multilingual tour-booking platform, I improved PageSpeed by combining image optimization, code splitting, and deferring non-critical scripts. The site targeted international tourists on mobile networks — every 100ms matters.
+On a multilingual tour-booking platform, I improved PageSpeed by combining image optimization, code splitting, and deferring non-critical scripts — the same build as the [tour booking platform](/projects/tour-booking-platform) sibling. The site targeted international tourists on mobile networks — every 100ms matters. For the CMS side of those builds, see [WordPress as a headless CMS](/blog/wordpress-headless-cms-with-nextjs).
+
+## What I actually measured
+
+On the [multilingual tour platform](/projects/multilingual-tour-platform) the number I published is **1.5s LCP**, Lighthouse mobile lab, not CrUX field data. The page is a filter-heavy booking UI for guests on phones, English and Chinese, with a WordPress REST backend. I am not claiming a before/after delta I did not record. The lab result and the conditions are the result.
+
+What moved that lab run:
+
+- Hero and card images served through `next/image` at the rendered size, AVIF/WebP, not a 2000px export in a 400px slot
+- GSAP and the gallery carousel loaded with `next/dynamic` on the routes that use them, not on the article template
+- Fonts limited to the faces that paint the first screen. A display face used once below the fold does not get `preload`
+- WordPress responses cached with a sane `revalidate` so a filter change does not refetch the whole catalog
+
+Lighthouse mobile is a simulated slow device. It is the right check before handoff and the wrong number to quote as “what users in Hanoi felt last week” unless CrUX says so. I label the case study **Mobile lab** for that reason.
+
+## The checks that fail quietly
+
+**LCP** is usually the hero image or the first text block, blocked by too many `preload` hints. Eleven high-priority preloads (fonts plus the LCP image plus CSS) fight each other. Preload the LCP image and the one body font. Let the rest load with `font-display: swap`.
+
+**INP** follows main-thread JavaScript. A full analytics SDK parsed on first load, including surveys and heatmaps you never open, shows up as long tasks. I defer that work until `requestIdleCallback` and turn the unused modules off. Animation libraries stay in the route that animates, not in the root layout of a text page.
+
+**CLS** on these projects stays low when images have width and height and the header does not swap fonts after paint. I still watch it because a late cookie banner or a mascot sprite without a reserved box will blow a good score.
+
+## How I audit a handoff
+
+1. Lighthouse mobile, slow 4G, logged-out, on the template the guest actually lands on (listing, not the empty dashboard).
+2. Note LCP element, transfer size, and whether it was preloaded.
+3. Coverage: which JS bytes never execute on that template.
+4. Fix the largest unused chunk and the oversized image. Re-run once. Stop when the lab metric is in the range I am willing to put on the case study, with the condition written next to it.
+
+The same pass is what I use on this portfolio when a new client chunk lands in the root layout. web.dev’s thresholds are the reference I grade against: [Core Web Vitals](https://web.dev/articles/vitals).
+
+## A preload budget
+
+I keep a short list of what is allowed to be high priority on the first HTML response:
+
+- The document and the CSS required to paint text
+- One sans font and one mono font, if both are on screen
+- The LCP image, with explicit width and height
+
+Everything else waits. Pixel display fonts, a second illustration, analytics, and a click sound are not on that list. On this site the pixel face is a single file, not the whole five-face family, because importing the family barrel makes `next/font` preload every face. The avatar file is 240×240, which covers a retina thumbnail without shipping a 400×400 JPEG for a 40px byline.
+
+If a new dependency adds a `preload` I did not ask for, I delete it before I look at the Lighthouse score again. The score moves after the network queue is short. It does not move because I tweaked a meta tag.
 
 ## Final thought
 

@@ -195,8 +195,8 @@
   /* zinc-100 */
   --muted: oklch(0.967 0.001 286.375);
 
-  /* zinc-500 */
-  --muted-foreground: oklch(0.552 0.016 285.938);
+  /* zinc-600 — slightly darker than zinc-500 for contrast headroom */
+  --muted-foreground: oklch(0.48 0.016 285.938);
 
   /* white */
   --card: oklch(1 0 0);
@@ -337,8 +337,8 @@
   /* zinc-800 */
   --muted: oklch(0.274 0.006 286.033);
 
-  /* zinc-400 */
-  --muted-foreground: oklch(0.705 0.015 286.067);
+  /* zinc-350-ish — slightly lighter than zinc-400 for contrast headroom */
+  --muted-foreground: oklch(0.76 0.015 286.067);
 
   /* zinc-900 */
   --card: oklch(0.21 0.006 285.885);

@@ -46,3 +46,7 @@ next-env.d.ts
 # runtime data (guestbook removed; visitors persist here)
 /data/*.json
 !/data/.gitkeep
+
+.venv-mascot
+.husky
+.seo-audit/

@@ -1,8 +1,9 @@
 "use client"
 
-import { useMotionValueEvent, useScroll } from "motion/react"
 import { usePathname } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
+
+import { routing } from "@/i18n/routing"
 
 import { ChanhDaiMark } from "./chanhdai-mark"
 
@@ -14,27 +15,30 @@ const calcDistance = (el: HTMLElement) => {
 }
 
 function ChanhDaiMarkMotion() {
-  const { scrollY } = useScroll()
   const [visible, setVisible] = useState(false)
-  const distanceRef = useRef(160)
-
-  useMotionValueEvent(scrollY, "change", (latestValue) => {
-    setVisible(latestValue >= distanceRef.current)
-  })
 
   useEffect(() => {
     const coverMark = document.getElementById("js-cover-mark")
-    if (!coverMark) return
+    let distance = coverMark ? calcDistance(coverMark) : 160
 
-    distanceRef.current = calcDistance(coverMark)
+    const update = () => {
+      setVisible(window.scrollY >= distance)
+    }
 
-    const resizeObserver = new ResizeObserver(() => {
-      distanceRef.current = calcDistance(coverMark)
-    })
-    resizeObserver.observe(coverMark)
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+
+    const resizeObserver = coverMark
+      ? new ResizeObserver(() => {
+          distance = calcDistance(coverMark)
+          update()
+        })
+      : null
+    if (coverMark && resizeObserver) resizeObserver.observe(coverMark)
 
     return () => {
-      resizeObserver.disconnect()
+      window.removeEventListener("scroll", update)
+      resizeObserver?.disconnect()
     }
   }, [])
 
@@ -48,6 +52,8 @@ function ChanhDaiMarkMotion() {
 
 export function SiteHeaderMark() {
   const pathname = usePathname()
-  const isHome = ["/", "/index"].includes(pathname)
+  const homePaths = ["/", "/index", ...routing.locales.map((locale) => `/${locale}`)]
+  const isHome = homePaths.includes(pathname)
+
   return isHome ? <ChanhDaiMarkMotion /> : <ChanhDaiMark />
 }

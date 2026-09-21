@@ -3,7 +3,7 @@ title: Xây site Next.js song ngữ với next-intl
 description: i18n EN/VI thực tế cho site marketing và portfolio — routing, messages, nội dung MDX, và cái gì nên dịch / cái gì nên giữ nguyên.
 image: /blogs/next.webp
 createdAt: 2026-04-05
-updatedAt: 2026-04-05
+updatedAt: 2026-09-21
 ---
 
 Ship một ngôn ngữ thì dễ. Ship **tiếng Anh và tiếng Việt** mà không nhân đôi cả app mới là chỗ hầu hết site marketing bị rối.
@@ -56,6 +56,61 @@ Tiếng Việt không phải tiếng Anh đổi từ — độ dài câu đổi 
 - Ảnh có chữ burn-in cần bản theo locale hoặc redesign
 - Format ngày và số điện thoại khác nhau; đừng mặc định `en-US` mọi nơi
 - Client component đọc message vẫn cần đúng cây provider
+
+## Canonical và hreflang phải đồng ý với nhau
+
+`hreflang` không cứu được một trang tự nói rằng bản tiếng Anh mới là bản chính. Trên portfolio này, mỗi URL `/vi/...` phải có `<link rel="canonical">` trỏ về chính nó, và `hreflang` vẫn khai báo cặp `en` / `vi` / `x-default`. Google ưu tiên canonical khi hai tín hiệu mâu thuẫn, nên một trang tiếng Việt canonical về `/projects` sẽ bị coi là bản trùng của trang tiếng Anh.
+
+Helper metadata phải nhận locale đang phục vụ, không hard-code locale mặc định:
+
+```ts
+const locale = await getLocale()
+const localizedPath = locale === "en" ? path : `/${locale}${path}`
+
+return {
+  alternates: {
+    canonical: localizedPath,
+    languages: {
+      en: absolute(path, "en"),
+      vi: absolute(path, "vi"),
+      "x-default": absolute(path, "en"),
+    },
+  },
+  openGraph: {
+    url: absolute(path, locale),
+    locale: locale === "vi" ? "vi_VN" : "en_US",
+  },
+}
+```
+
+Re-export `generateMetadata` từ file tiếng Anh sang route `/vi` chỉ an toàn khi hàm đó tự gọi `getLocale()`. Nếu không, trang tiếng Việt kế thừa canonical tiếng Anh.
+
+## Dịch title, không chỉ body
+
+`lang="vi"` với body đã dịch mà `<title>` và meta description vẫn tiếng Anh là một trang lai. Crawler và preview Zalo/Facebook đọc title trước. Chuỗi nav, form, và meta nằm trong `messages/vi.json`. Bài dài và case study nằm trong file MDX hoặc object copy riêng, không nhét vào JSON.
+
+Checklist trước khi coi một route là xong:
+
+- Title và description tiếng Việt trên `/vi/...`
+- Canonical tự tham chiếu
+- `og:url` là URL `/vi`, `og:locale` là `vi_VN`
+- Một đoạn body không còn câu tiếng Anh hard-code (search literal trong component)
+- Sitemap có cả URL `/vi` lẫn URL tiếng Anh, mỗi cái một `<loc>`, sau khi canonical đã đúng
+
+Ảnh có chữ burn-in vẫn cần bản riêng hoặc bỏ chữ. Ngày và số điện thoại format theo locale, không khóa `en-US`.
+
+Cách mình đang chạy trên site này là English ở `/` và tiếng Việt ở `/vi`. Case study đi cùng mô hình đó, ví dụ [nền tảng tour đa ngôn ngữ](/projects/multilingual-tour-platform). Tài liệu routing: [next-intl routing](https://next-intl.dev/docs/routing).
+
+## Lượt review mình thực sự chạy
+
+Mình không coi “có file JSON” là xong. Sau khi chuỗi vào, mình mở `/` và `/vi` trên cùng một template và kiểm tra bốn thứ trong HTML đã render, không phải trong editor:
+
+1. `<html lang>` khớp body. `lang="vi"` mà title vẫn tiếng Anh là fail, kể cả khi đoạn văn đã dịch.
+2. Canonical khớp thanh địa chỉ. Ở `/vi/blog` href đó phải chứa `/vi/blog`. Ở `/blog` thì không.
+3. `hreflang` có đi có lại: trang tiếng Anh trỏ `/vi/...`, trang tiếng Việt trỏ ngược lại.
+4. Nút và hero vẫn vừa. Tiếng Việt dài hơn, nên label một dòng ở tiếng Anh có thể xuống dòng trên nav hoặc menu mobile.
+
+Key thiếu là lỗi còn lại. Mình giữ tập key giống nhau giữa `en.json` và `vi.json`, diff path trước khi ship, để CTA mới không lọt tiếng Anh trên site tiếng Việt. Tên brand, code, và nhãn stack giữ nguyên. Mọi thứ người đọc trong chrome đều có một dòng tiếng Việt.
 
 ## Kết
 

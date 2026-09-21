@@ -4,7 +4,7 @@ description: A production-minded Docker setup for Next.js standalone — build a
 image: /blogs/next.webp
 new: true
 createdAt: 2026-04-22
-updatedAt: 2026-04-22
+updatedAt: 2026-09-21
 ---
 
 Docker makes deploys repeatable. It also makes it dangerously easy to bake **API keys** into an image you later push to a registry.
@@ -59,6 +59,88 @@ Build gets the public URL. The running container gets email and AI keys. The pub
 - [ ] API routes read `process.env` at request time
 - [ ] Old registry tags rebuilt after removing baked secrets
 - [ ] Keys rotated if an old image was ever public
+
+## Using BuildKit secret mounts
+
+Runtime `env_file` is the right default for this portfolio: the Next.js server reads `process.env` when a request hits an API route. It does not cover the other leak, which is a secret the **build** itself needs — a private npm token, a font license, a CMS token only `next build` uses.
+
+Passing that as `ARG` still writes it into image history. BuildKit secret mounts keep the value in a tmpfs for one `RUN` and never commit it as a layer.
+
+```dockerfile
+# syntax=docker/dockerfile:1
+
+FROM node:22-bookworm-slim AS deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=secret,id=npm_token \
+    NPM_TOKEN="$(cat /run/secrets/npm_token)" \
+    corepack enable && pnpm install --frozen-lockfile
+
+FROM node:22-bookworm-slim AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ARG APP_URL
+ENV APP_URL=${APP_URL}
+RUN pnpm build
+
+FROM node:22-bookworm-slim AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN useradd --create-home --uid 1001 nextjs
+COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nextjs /app/public ./public
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+Build it with the secret outside the image:
+
+```bash
+docker build \
+  --secret id=npm_token,env=NPM_TOKEN \
+  --build-arg APP_URL=https://rivernguyen.id.vn \
+  -t river-portfolio .
+```
+
+`APP_URL` stays a build arg because it is public and Next.js inlines it into metadata. `NPM_TOKEN` is not an `ARG`. If `next build` needs a private registry, the mount belongs on the install `RUN` only. API keys for email or the model stay in Compose `env_file` and are read at request time.
+
+## What `docker history` should show
+
+After a bad build, history is the proof, not the Dockerfile you wish you had written. A leaked key looks like this (sample, not a real token):
+
+```text
+docker history river-portfolio:leaked
+IMAGE  CREATED BY
+...    ENV RESEND_API_KEY=re_sample_not_a_real_key
+...    ARG RESEND_API_KEY
+```
+
+A clean image does not contain that line. I check three commands before a tag is pushed:
+
+```bash
+docker history --no-trunc river-portfolio:latest | grep -Ei 'key|token|secret|password' || echo "no secret strings in history"
+docker image inspect river-portfolio:latest --format '{{json .Config.Env}}'
+trufflehog docker --image river-portfolio:latest
+```
+
+`grep` is a smoke test. It misses base64 and values that only exist inside a `node_modules` tarball copied forward. The secret mount avoids that copy. `.dockerignore` still has to exclude `.env`, `.env.local`, and any `*.pem` so `COPY . .` cannot sneak them into the builder context.
+
+## Rotation runbook
+
+If an old tag was public, or history shows a key, rotating the app without rotating the key does nothing. The order I use:
+
+1. **Revoke** the key at the provider (Resend, OpenAI, npm). Do this before the rebuild so a pulled old image is already dead.
+2. **Issue** a new key into the runtime secret store only — host `.env` for Compose, or the orchestrator secret. Not a build arg.
+3. **Rebuild** from a Dockerfile that has no secret `ARG`/`ENV`, with `--no-cache` on the stage that used to copy the leak.
+4. **Retag and delete** the bad digest in the registry. Deleting a tag is not enough if the digest is still pullable.
+5. **Confirm** `docker history` on the new tag, then redeploy. Server routes should fail closed if the new env var is missing, not fall back to a baked default.
+
+I treat the image as something I might push to the wrong registry. That is the same rule on client Dockerfiles and on this portfolio's standalone output.
+
+The booking builds that sit next to this setup are written up as case studies, starting with the [multilingual tour platform](/projects/multilingual-tour-platform). Docker docs for the mount syntax live at [Build secrets](https://docs.docker.com/build/building/secrets/). Next.js standalone output is documented under [output: standalone](https://nextjs.org/docs/app/api-reference/config/next-config-js/output).
 
 ## Final thought
 

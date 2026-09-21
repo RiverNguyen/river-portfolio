@@ -41,7 +41,7 @@ import {
 import type { PostPreview } from "@/features/blog/types/post"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 import { useDuckFollowerVisibility } from "@/hooks/use-duck-follower-visibility"
-import { useSound } from "@/hooks/use-sound"
+import { useSoundLazy } from "@/hooks/use-sound"
 import { trackEvent } from "@/lib/events"
 import { cn } from "@/lib/utils"
 import { copyText } from "@/utils/copy"
@@ -163,7 +163,7 @@ export function CommandMenu({ posts }: { posts: PostPreview[] }) {
 
   const [open, setOpen] = useState(false)
 
-  const playClick = useSound("/audio/ui-sounds/click.wav")
+  const { play: playClick } = useSoundLazy("/audio/ui-sounds/click.wav")
 
   const [, setIsDuckFollowerVisible] = useDuckFollowerVisibility()
 

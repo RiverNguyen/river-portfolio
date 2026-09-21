@@ -30,6 +30,8 @@ export type CaseStudy = {
   sections: CaseStudySection[]
   metrics: CaseStudyMetric[]
   outcomes: string[]
+  ctaNote: string
+  architecture: string[]
 }
 
 type CaseStudyCopy = {
@@ -915,6 +917,92 @@ Cần trải nghiệm phía khách hiện đại, trong khi ops vẫn quản lý
   },
 }
 
+const CTA: Record<string, { en: string; vi: string }> = {
+  "tour-booking-platform": {
+    en: "Need a tour booking flow — live filters, custom requests, and a payment rail?",
+    vi: "Cần luồng đặt tour — lọc trực tiếp, yêu cầu riêng và thanh toán?",
+  },
+  "corporate-landing-page": {
+    en: "Need a corporate landing page that stays fast after the motion is in?",
+    vi: "Cần landing doanh nghiệp vẫn nhanh sau khi đã có motion?",
+  },
+  "corporate-website-auth": {
+    en: "Need a corporate site with a real sign-in path, not just a brochure?",
+    vi: "Cần site doanh nghiệp có đăng nhập thật, không chỉ brochure?",
+  },
+  "agency-website": {
+    en: "Need an agency site that shows the work without burying the contact path?",
+    vi: "Cần site agency khoe được việc làm mà không chôn lối liên hệ?",
+  },
+  "industrial-corporate-site": {
+    en: "Need an industrial corporate site with a CMS your team can actually edit?",
+    vi: "Cần site công nghiệp với CMS team bạn tự sửa được?",
+  },
+  "salon-booking-platform": {
+    en: "Need a service booking flow — slots, staff, and a confirmation path?",
+    vi: "Cần luồng đặt lịch dịch vụ — slot, nhân sự và xác nhận?",
+  },
+  "multilingual-tour-platform": {
+    en: "Need a multilingual booking product for guests who don't share one language?",
+    vi: "Cần sản phẩm đặt chỗ đa ngôn ngữ cho khách không cùng một thứ tiếng?",
+  },
+  "travel-combo-platform": {
+    en: "Need a travel combo builder — packages, filters, and checkout in one rail?",
+    vi: "Cần bộ combo du lịch — gói, bộ lọc và thanh toán trên một luồng?",
+  },
+  "luxury-travel-brand": {
+    en: "Need a luxury travel brand site — editorial pages, not a generic storefront?",
+    vi: "Cần site thương hiệu du lịch cao cấp — trang editorial, không phải storefront generic?",
+  },
+  "ai-product-brand": {
+    en: "Need an AI product brand site with a clear story, not a travel storefront?",
+    vi: "Cần site brand sản phẩm AI với câu chuyện rõ, không phải storefront du lịch?",
+  },
+}
+
+const ARCHITECTURE: Record<string, { en: string[]; vi: string[] }> = {
+  "tour-booking-platform": {
+    en: ["Figma", "Next.js UI", "WordPress CPT/ACF", "REST", "Payment"],
+    vi: ["Figma", "UI Next.js", "WordPress CPT/ACF", "REST", "Thanh toán"],
+  },
+  "corporate-landing-page": {
+    en: ["Brand system", "Next.js", "GSAP", "Static sections"],
+    vi: ["Hệ brand", "Next.js", "GSAP", "Section tĩnh"],
+  },
+  "corporate-website-auth": {
+    en: ["Next.js", "Auth", "CMS content", "Member area"],
+    vi: ["Next.js", "Auth", "Nội dung CMS", "Khu thành viên"],
+  },
+  "agency-website": {
+    en: ["Figma", "Next.js", "Case studies", "Contact"],
+    vi: ["Figma", "Next.js", "Case study", "Liên hệ"],
+  },
+  "industrial-corporate-site": {
+    en: ["WordPress", "ACF", "Next.js", "Catalog pages"],
+    vi: ["WordPress", "ACF", "Next.js", "Trang catalog"],
+  },
+  "salon-booking-platform": {
+    en: ["Next.js", "Schedule", "Booking form", "Confirm"],
+    vi: ["Next.js", "Lịch", "Form đặt", "Xác nhận"],
+  },
+  "multilingual-tour-platform": {
+    en: ["EN/ZH copy", "Next.js", "WordPress REST", "Filters", "Checkout"],
+    vi: ["Copy EN/ZH", "Next.js", "WordPress REST", "Bộ lọc", "Checkout"],
+  },
+  "travel-combo-platform": {
+    en: ["Packages", "Filters", "Next.js", "Checkout"],
+    vi: ["Gói", "Bộ lọc", "Next.js", "Checkout"],
+  },
+  "luxury-travel-brand": {
+    en: ["Editorial", "Next.js", "Media budget", "CMS"],
+    vi: ["Editorial", "Next.js", "Ngân sách media", "CMS"],
+  },
+  "ai-product-brand": {
+    en: ["Product story", "Next.js", "Motion", "Knowledge hub"],
+    vi: ["Câu chuyện sản phẩm", "Next.js", "Motion", "Knowledge hub"],
+  },
+}
+
 function formatPeriod(
   start: string,
   end: string | undefined,
@@ -953,6 +1041,10 @@ function buildCaseStudy(
       note: metric.note?.[locale],
     })),
     outcomes: copy.outcomes,
+    ctaNote: (CTA[projectId] ?? CTA["tour-booking-platform"]!)[locale],
+    architecture: (ARCHITECTURE[projectId] ?? ARCHITECTURE["tour-booking-platform"]!)[
+      locale
+    ],
   }
 }
 

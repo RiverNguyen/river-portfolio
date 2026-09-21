@@ -3,7 +3,7 @@ title: Tối ưu Next.js cho Core Web Vitals
 description: Các win hiệu năng thực tế từ dự án khách hàng — ảnh, font, code splitting và audit Lighthouse có ý nghĩa.
 image: /blogs/next.webp
 createdAt: 2026-01-15
-updatedAt: 2026-01-15
+updatedAt: 2026-09-21
 ---
 
 Hiệu năng không phải việc làm một lần. Mỗi lần bàn giao dự án, mình chạy **Lighthouse**, kiểm tra **Core Web Vitals** và sửa những gì user thực sự cảm nhận — không chỉ đuổi điểm audit.
@@ -52,7 +52,49 @@ const ProjectGallery = dynamic(
 
 ## Ví dụ thực tế
 
-Ở một nền tảng đặt tour đa ngôn ngữ, mình cải thiện PageSpeed bằng tối ưu ảnh, code splitting và defer script không quan trọng. Site hướng tới khách quốc tế trên mạng di động — mỗi 100ms đều đáng kể.
+Ở một nền tảng đặt tour đa ngôn ngữ, mình cải thiện PageSpeed bằng tối ưu ảnh, code splitting và defer script không quan trọng — cùng kiểu build với [tour booking platform](/projects/tour-booking-platform). Site hướng tới khách quốc tế trên mạng di động — mỗi 100ms đều đáng kể. Phía CMS của những bản đó nằm ở [WordPress headless với Next.js](/blog/wordpress-headless-cms-with-nextjs).
+
+## Số mình đo được
+
+Trên [nền tảng tour đa ngôn ngữ](/projects/multilingual-tour-platform), số mình công bố là **LCP 1.5s**, Lighthouse mobile lab, không phải dữ liệu field CrUX. Trang là UI đặt tour nhiều bộ lọc, khách dùng điện thoại, tiếng Anh và tiếng Trung, backend WordPress REST. Mình không bịa mức before/after mà mình không ghi lại. Kết quả lab và điều kiện đo mới là kết quả.
+
+Những gì làm lab run đó dịch chuyển:
+
+- Ảnh hero và card đi qua `next/image` đúng kích thước render, AVIF/WebP, không phải file export 2000px nhét vào ô 400px
+- GSAP và carousel gallery load bằng `next/dynamic` trên route thật sự dùng chúng, không nhét vào template bài viết
+- Font chỉ giữ face vẽ màn hình đầu. Face display dùng một lần dưới fold thì không `preload`
+- Response WordPress cache với `revalidate` vừa phải để đổi filter không kéo lại cả catalog
+
+Lighthouse mobile là máy chậm mô phỏng. Đúng để kiểm trước bàn giao, sai nếu quote thành “user ở Hà Nội cảm thấy tuần trước” khi chưa có CrUX. Case study ghi **Lab mobile** vì lý do đó.
+
+## Những chỗ hỏng âm thầm
+
+**LCP** thường là ảnh hero hoặc khối chữ đầu, bị nghẽn vì quá nhiều hint `preload`. Mười một preload ưu tiên cao (font, ảnh LCP, CSS) tranh nhau. Preload ảnh LCP và một font body. Phần còn lại để `font-display: swap`.
+
+**INP** đi theo JavaScript trên main thread. SDK analytics parse ngay lần tải đầu, kèm survey và heatmap không ai mở, thành long task. Mình hoãn việc đó tới `requestIdleCallback` và tắt module không dùng. Thư viện animation ở route có animation, không ở root layout của trang chữ.
+
+**CLS** trên các dự án này thấp khi ảnh có width/height và header không đổi font sau paint. Mình vẫn canh vì banner cookie trễ hoặc sprite mascot không chừa chỗ sẽ phá điểm tốt.
+
+## Cách mình audit lúc bàn giao
+
+1. Lighthouse mobile, slow 4G, chưa đăng nhập, trên template khách thực sự vào (listing, không phải dashboard trống).
+2. Ghi phần tử LCP, dung lượng transfer, và nó có được preload không.
+3. Coverage: byte JS nào không chạy trên template đó.
+4. Sửa chunk unused lớn nhất và ảnh quá khổ. Chạy lại một lần. Dừng khi số lab nằm trong khoảng mình chịu ghi lên case study, kèm điều kiện đo.
+
+Cùng một lượt đó mình dùng trên portfolio này khi một chunk client mới rơi vào root layout. Ngưỡng mình đối chiếu: [Core Web Vitals](https://web.dev/articles/vitals).
+
+## Ngân sách preload
+
+Mình giữ danh sách ngắn những gì được ưu tiên cao trên response HTML đầu:
+
+- Document và CSS cần để vẽ chữ
+- Một font sans và một font mono, nếu cả hai đang ở trên màn hình
+- Ảnh LCP, có width và height rõ
+
+Phần còn lại phải chờ. Font display pixel, ảnh minh họa thứ hai, analytics, và tiếng click không nằm trong danh sách đó. Trên site này face pixel là một file, không phải cả họ năm face, vì import barrel của họ khiến `next/font` preload mọi face. File avatar là 240×240, đủ thumbnail retina mà không ship JPEG 400×400 cho byline 40px.
+
+Nếu dependency mới thêm `preload` mình không yêu cầu, mình gỡ trước khi nhìn lại điểm Lighthouse. Điểm dịch chuyển sau khi hàng đợi mạng ngắn lại, không phải vì sửa một thẻ meta.
 
 ## Kết luận
 

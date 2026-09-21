@@ -7,7 +7,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 
 import { META_THEME_COLORS } from "@/config/site"
 import { useMetaColor } from "@/hooks/use-meta-color"
-import { useSound } from "@/hooks/use-sound"
+import { useSoundLazy } from "@/hooks/use-sound"
 
 import { MoonIcon } from "./animated-icons/moon"
 import { SunMediumIcon } from "./animated-icons/sun-medium"
@@ -20,7 +20,7 @@ export function ThemeToggle() {
   const t = useTranslations("ThemeToggle")
   const { setMetaColor } = useMetaColor()
 
-  const playClick = useSound("/audio/ui-sounds/click.wav")
+  const { play: playClick } = useSoundLazy("/audio/ui-sounds/click.wav")
 
   const switchTheme = useCallback(() => {
     playClick(0.5)
@@ -41,6 +41,7 @@ export function ThemeToggle() {
           <Button
             variant="ghost"
             size="icon"
+            className="size-11 sm:size-8"
             onClick={switchTheme}
           // onClick={() => {
           //   if (!document.startViewTransition) switchTheme();

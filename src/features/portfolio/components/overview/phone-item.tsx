@@ -2,7 +2,6 @@
 
 import { PhoneIcon } from "lucide-react"
 
-import { useIsClient } from "@/hooks/use-is-client"
 import { decodePhoneNumber, formatPhoneNumber } from "@/utils/string"
 
 import {
@@ -17,7 +16,6 @@ type PhoneItemProps = {
 }
 
 export function PhoneItem({ phoneNumber }: PhoneItemProps) {
-  const isClient = useIsClient()
   const phoneNumberDecoded = decodePhoneNumber(phoneNumber)
 
   return (
@@ -28,16 +26,10 @@ export function PhoneItem({ phoneNumber }: PhoneItemProps) {
 
       <IntroItemContent>
         <IntroItemLink
-          href={isClient ? `tel:${phoneNumberDecoded}` : "#"}
-          aria-label={
-            isClient
-              ? `Call ${formatPhoneNumber(phoneNumberDecoded)}`
-              : "Phone number"
-          }
+          href={`tel:${phoneNumberDecoded}`}
+          aria-label={`Call ${formatPhoneNumber(phoneNumberDecoded)}`}
         >
-          {isClient
-            ? formatPhoneNumber(phoneNumberDecoded)
-            : "[Phone protected]"}
+          {formatPhoneNumber(phoneNumberDecoded)}
         </IntroItemLink>
       </IntroItemContent>
     </IntroItem>

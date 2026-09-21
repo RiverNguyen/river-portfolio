@@ -24,7 +24,11 @@
     "previous": "Previous",
     "previousPost": "Previous Post",
     "next": "Next",
-    "nextPost": "Next Post"
+    "nextPost": "Next Post",
+    "published": "Published",
+    "updated": "Updated",
+    "minRead": "{minutes} min read",
+    "authorBio": "Frontend developer in Ha Noi. I write about the Next.js, WordPress, and performance work I actually ship."
   },
   "ProjectsPage": {
     "title": "Projects",
@@ -52,7 +56,9 @@
     "metricsNote": "Lab / shipping",
     "gallery": "Gallery",
     "tech": "Technologies",
-    "ctaNote": "Want something in this vein — booking, headless CMS, or a travel storefront?",
+    "architecture": "Architecture",
+    "architectureNote": "How the build is wired. Client UI stays off this page — names, logos, and screenshots are covered by NDA.",
+    "ctaNote": "Want something in this vein?",
     "ctaContact": "Talk to me",
     "privateTitle": "Private client project",
     "privateDesc": "This is anonymized client work. The brand, live site, and visuals are covered by an NDA — reach out and I'll walk you through the details, the decisions, and the results.",
@@ -104,7 +110,8 @@
       "sendSuccess": "Message sent successfully",
       "sendFail": "Failed to send message"
     },
-    "note": "I'll get back to you as soon as I can."
+    "note": "I'll get back to you as soon as I can.",
+    "privacyNote": "Messages sent through this form are used only to reply to you. Email and phone above are published for direct contact — same details as on the resume page."
   },
   "Portfolio": {
     "overview": "Overview",

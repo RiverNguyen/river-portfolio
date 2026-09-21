@@ -4,7 +4,6 @@ import { getLocale, getTranslations } from "next-intl/server"
 import { getUserByLocale } from "@/features/portfolio/data/user"
 import { cn } from "@/lib/utils"
 
-import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 import { CurrentLocalTimeItem } from "./overview/current-local-time-item"
 import { EmailItem } from "./overview/email-item"
 import {
@@ -14,6 +13,7 @@ import {
   IntroItemLink,
 } from "./overview/intro-item"
 import { PhoneItem } from "./overview/phone-item"
+import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
 export async function ContactChannels() {
   const locale = await getLocale()

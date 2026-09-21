@@ -30,7 +30,7 @@ export function TechStack() {
                       {tech.theme ? (
                         <>
                           <Image
-                            src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}-light.svg`}
+                            src={`/icons/tech/${tech.key}-light.svg`}
                             alt={`${tech.title} light icon`}
                             width={32}
                             height={32}
@@ -38,7 +38,7 @@ export function TechStack() {
                             unoptimized
                           />
                           <Image
-                            src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}-dark.svg`}
+                            src={`/icons/tech/${tech.key}-dark.svg`}
                             alt={`${tech.title} dark icon`}
                             width={32}
                             height={32}
@@ -48,7 +48,7 @@ export function TechStack() {
                         </>
                       ) : (
                         <Image
-                          src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}.svg`}
+                          src={`/icons/tech/${tech.key}.svg`}
                           alt={`${tech.title} icon`}
                           width={32}
                           height={32}

@@ -30,7 +30,7 @@ export const USER_EN = {
       website: "https://bateco.vn",
     },
   ],
-  about: `I'm **Nguyễn Đình Giang** (River) — a **Frontend Developer** with 1.5+ years of experience shipping polished, high-performance web products from design to production.
+  about: `I'm **Nguyễn Đình Giang** (River) — a **Frontend Developer** with 2+ years of experience shipping polished, high-performance web products from design to production.
 - Build modern UIs with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**, turning Figma into responsive, accessible interfaces.
 - Integrate **REST** and **GraphQL** APIs, and collaborate smoothly with teams via **Git**, **GitHub**, and **GitLab**.
 - Care about speed: lazy loading, code splitting, image optimization, and clean component architecture.
@@ -93,7 +93,7 @@ export const USER_VI = {
       website: "https://bateco.vn",
     },
   ],
-  about: `Tôi là **Nguyễn Đình Giang** (River) — **Lập trình viên Frontend** với hơn 1,5 năm kinh nghiệm đưa sản phẩm web từ thiết kế đến production, chú trọng chất lượng và hiệu năng.
+  about: `Tôi là **Nguyễn Đình Giang** (River) — **Lập trình viên Frontend** với hơn 2 năm kinh nghiệm đưa sản phẩm web từ thiết kế đến production, chú trọng chất lượng và hiệu năng.
 - Xây dựng UI hiện đại với **Next.js**, **React**, **TypeScript** và **Tailwind CSS**; chuyển Figma thành giao diện responsive, dễ dùng.
 - Tích hợp API **REST** và **GraphQL**, phối hợp nhóm mượt với **Git**, **GitHub** và **GitLab**.
 - Ưu tiên tốc độ: lazy loading, code splitting, tối ưu hình ảnh và kiến trúc component gọn.

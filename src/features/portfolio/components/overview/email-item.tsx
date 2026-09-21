@@ -2,7 +2,6 @@
 
 import { MailIcon } from "lucide-react"
 
-import { useIsClient } from "@/hooks/use-is-client"
 import { decodeEmail } from "@/utils/string"
 
 import {
@@ -17,7 +16,6 @@ type EmailItemProps = {
 }
 
 export function EmailItem({ email }: EmailItemProps) {
-  const isClient = useIsClient()
   const emailDecoded = decodeEmail(email)
 
   return (
@@ -28,12 +26,10 @@ export function EmailItem({ email }: EmailItemProps) {
 
       <IntroItemContent>
         <IntroItemLink
-          href={isClient ? `mailto:${emailDecoded}` : "#"}
-          aria-label={
-            isClient ? `Send email to ${emailDecoded}` : "Email address"
-          }
+          href={`mailto:${emailDecoded}`}
+          aria-label={`Send email to ${emailDecoded}`}
         >
-          {isClient ? emailDecoded : "[Email protected]"}
+          {emailDecoded}
         </IntroItemLink>
       </IntroItemContent>
     </IntroItem>

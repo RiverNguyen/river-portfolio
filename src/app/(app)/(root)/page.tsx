@@ -1,6 +1,6 @@
+import { getLocale } from "next-intl/server"
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts"
 
-import { SITE_INFO } from "@/config/site"
 import { About } from "@/features/portfolio/components/about"
 import { Blog } from "@/features/portfolio/components/blog"
 import { ContactCta } from "@/features/portfolio/components/contact-cta"
@@ -13,19 +13,25 @@ import { ProfileHeader } from "@/features/portfolio/components/profile-header"
 import { Projects } from "@/features/portfolio/components/projects"
 import { SocialLinks } from "@/features/portfolio/components/social-links"
 import { TechStack } from "@/features/portfolio/components/tech-stack"
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
-import { USER } from "@/features/portfolio/data/user"
+import { getUserByLocale } from "@/features/portfolio/data/user"
 import { Visitors } from "@/features/visitors/components/visitors"
-import { getAbsoluteUrl } from "@/lib/seo"
+import { getPersonJsonLd } from "@/lib/person-jsonld"
+import { getLocalizedUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
-export default function Page() {
+export default async function Page() {
+  const locale = await getLocale()
+  const portfolioLocale = locale === "vi" ? "vi" : "en"
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd()).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPageJsonLd(portfolioLocale)).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
 
@@ -52,9 +58,6 @@ export default function Page() {
         <TechStack />
         <Separator />
 
-        {/* <Components />
-        <Separator /> */}
-
         <Experiences />
         <Separator />
 
@@ -69,56 +72,25 @@ export default function Page() {
 
         <Visitors />
         <Separator />
-
-        {/* <Awards />
-        <Separator />
-
-        <Certifications />
-        <Separator />
-
-        <Bookmarks />
-        <Separator /> */}
-
-        {/* <Sponsors />
-        <Separator /> */}
       </div>
     </>
   )
 }
 
-function getPageJsonLd(): WithContext<PageSchema> {
+function getPageJsonLd(
+  locale: "en" | "vi"
+): WithContext<PageSchema> {
+  const user = getUserByLocale(locale)
+
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    name: `${USER.displayName} | ${USER.jobTitle}`,
-    url: SITE_INFO.url,
-    dateCreated: new Date(USER.dateCreated).toISOString(),
+    name: `${user.displayName} | ${user.jobTitle}`,
+    url: getLocalizedUrl("/", locale),
+    dateCreated: new Date(user.dateCreated).toISOString(),
     dateModified: new Date().toISOString(),
-    inLanguage: ["en", "vi"],
-    mainEntity: {
-      "@type": "Person",
-      name: USER.displayName,
-      givenName: USER.firstName,
-      additionalName: "Đình",
-      familyName: USER.lastName,
-      alternateName: [
-        "Giang Nguyễn Đình",
-        "Nguyen Dinh Giang",
-        "Giang Nguyen Dinh",
-        USER.username,
-        "River Nguyen",
-      ],
-      url: SITE_INFO.url,
-      image: getAbsoluteUrl(USER.avatar),
-      jobTitle: USER.jobTitle,
-      description: SITE_INFO.description,
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: USER.address,
-        addressCountry: "VN",
-      },
-      sameAs: SOCIAL_LINKS.map((link) => link.href),
-    },
+    inLanguage: locale,
+    mainEntity: getPersonJsonLd(locale),
   }
 }
 

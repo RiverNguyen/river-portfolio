@@ -1,6 +1,5 @@
 "use client"
 
-import { useReducedMotion } from "motion/react"
 import dynamic from "next/dynamic"
 import { useMemo } from "react"
 
@@ -19,7 +18,10 @@ const DuckFollowerCore = dynamic(() => import("./duck-follower-core"), {
 export function DuckFollower() {
   const isClient = useIsClient()
   const [isDuckFollowerVisible] = useDuckFollowerVisibility()
-  const shouldReduceMotion = useReducedMotion()
+  const shouldReduceMotion = useMemo(() => {
+    if (!isClient) return true
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  }, [isClient])
 
   const isTouch = useMemo(() => {
     if (!isClient) return true

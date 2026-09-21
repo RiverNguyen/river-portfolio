@@ -1,6 +1,11 @@
 "use client"
 
-import { ArrowUpRightIcon, BoxIcon, InfinityIcon, NotebookTextIcon } from "lucide-react"
+import {
+  ArrowUpRightIcon,
+  BoxIcon,
+  InfinityIcon,
+  NotebookTextIcon,
+} from "lucide-react"
 import { motion } from "motion/react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
@@ -24,6 +29,7 @@ import {
 } from "@/components/ui/tooltip"
 import { ProseMono } from "@/components/ui/typography"
 import { UTM_PARAMS } from "@/config/site"
+import { getCaseStudyBySlug } from "@/features/portfolio/data/case-studies"
 import type { Project } from "@/features/portfolio/types/projects"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
@@ -45,6 +51,11 @@ function getProjectSummary(description?: string) {
       .map((part) => part.trim())
       .find((part) => part.length > 0 && !part.startsWith("-")) ?? ""
   )
+}
+
+function getProjectImpact(project: Project) {
+  if (!project.caseStudySlug) return null
+  return getCaseStudyBySlug(project.caseStudySlug)?.metrics[0] ?? null
 }
 
 function ProjectPeriod({ start, end }: { start: string; end?: string }) {
@@ -137,6 +148,7 @@ function ProjectArchiveCard({
 }) {
   const t = useTranslations("ProjectsPage")
   const summary = getProjectSummary(project.description)
+  const impact = getProjectImpact(project)
   const indexLabel = String(index + 1).padStart(2, "0")
 
   return (
@@ -202,6 +214,13 @@ function ProjectArchiveCard({
             {project.skills.slice(0, featured ? 5 : 3).join(" · ")}
           </p>
         ) : null}
+
+        {impact ? (
+          <p className="font-mono text-[11px] text-muted-foreground">
+            <span className="text-foreground">{impact.value}</span>{" "}
+            {impact.label}
+          </p>
+        ) : null}
       </div>
     </motion.button>
   )
@@ -218,11 +237,6 @@ function ProjectDetailDialog({
 }) {
   const t = useTranslations("ProjectsPage")
   const lenis = useLenis()
-  const [activeProject, setActiveProject] = useState<Project | null>(project)
-
-  useEffect(() => {
-    if (project) setActiveProject(project)
-  }, [project])
 
   useEffect(() => {
     if (!lenis) return
@@ -237,12 +251,10 @@ function ProjectDetailDialog({
     lenis.start()
   }, [lenis, open])
 
-  if (!activeProject) return null
+  if (!project) return null
 
-  const summary = getProjectSummary(activeProject.description)
-  const href = activeProject.link
-    ? addQueryParams(activeProject.link, UTM_PARAMS)
-    : null
+  const summary = getProjectSummary(project.description)
+  const href = project.link ? addQueryParams(project.link, UTM_PARAMS) : null
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -253,9 +265,9 @@ function ProjectDetailDialog({
         >
           <DialogHeader className="gap-3 border-b border-edge p-5 pr-12 text-left sm:p-6">
             <div className="flex min-w-0 items-start gap-3">
-              {activeProject.logo ? (
+              {project.logo ? (
                 <Image
-                  src={activeProject.logo}
+                  src={project.logo}
                   alt=""
                   width={40}
                   height={40}
@@ -269,16 +281,16 @@ function ProjectDetailDialog({
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-mono text-xs text-muted-foreground">
                     <ProjectPeriod
-                      start={activeProject.period.start}
-                      end={activeProject.period.end}
+                      start={project.period.start}
+                      end={project.period.end}
                     />
                   </p>
 
-                  {activeProject.caseStudySlug ? (
+                  {project.caseStudySlug ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          href={`/projects/${activeProject.caseStudySlug}`}
+                          href={`/projects/${project.caseStudySlug}`}
                           onClick={() => onOpenChange(false)}
                           aria-label={t("caseStudy")}
                           className="inline-flex items-center gap-1 rounded-sm border border-edge px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase transition-colors hover:border-foreground/30 hover:text-foreground"
@@ -303,7 +315,7 @@ function ProjectDetailDialog({
                       className="group/title inline-flex items-center gap-1.5"
                     >
                       <span className="bg-gradient-to-r from-foreground to-foreground bg-[length:0%_1.5px] bg-left-bottom bg-no-repeat transition-[background-size] duration-300 group-hover/title:bg-[length:100%_1.5px]">
-                        {activeProject.title}
+                        {project.title}
                       </span>
                       <ArrowUpRightIcon
                         className="size-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 group-hover/title:text-foreground sm:size-5"
@@ -312,7 +324,7 @@ function ProjectDetailDialog({
                       <span className="sr-only">{t("viewProject")}</span>
                     </a>
                   ) : (
-                    activeProject.title
+                    project.title
                   )}
                 </DialogTitle>
                 {summary ? (
@@ -321,18 +333,18 @@ function ProjectDetailDialog({
                   </DialogDescription>
                 ) : (
                   <DialogDescription className="sr-only">
-                    {activeProject.title}
+                    {project.title}
                   </DialogDescription>
                 )}
               </div>
             </div>
           </DialogHeader>
 
-          {activeProject.images && activeProject.images.length > 0 ? (
+          {project.images && project.images.length > 0 ? (
             <div className="min-w-0 overflow-hidden border-b border-edge p-4 sm:p-5">
               <ProjectGallery
-                images={activeProject.images}
-                title={activeProject.title}
+                images={project.images}
+                title={project.title}
               />
             </div>
           ) : null}
@@ -345,17 +357,17 @@ function ProjectDetailDialog({
               onNavigate={() => onOpenChange(false)}
             />
 
-            {activeProject.description ? (
+            {project.description ? (
               <ProseMono className="max-w-full wrap-break-word [&_img]:h-auto [&_img]:max-w-full [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {activeProject.description}
+                  {project.description}
                 </ReactMarkdown>
               </ProseMono>
             ) : null}
 
-            {activeProject.skills.length > 0 ? (
+            {project.skills.length > 0 ? (
               <ul className="flex flex-wrap gap-1.5">
-                {activeProject.skills.map((skill) => (
+                {project.skills.map((skill) => (
                   <li key={skill}>
                     <Tag>{skill}</Tag>
                   </li>

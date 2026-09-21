@@ -200,9 +200,32 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
         </ul>
       </section>
 
+      <section className="screen-line-before space-y-3 px-4 py-6">
+        <h2 className="font-mono text-[11px] tracking-[0.28em] text-muted-foreground uppercase">
+          {t("architecture")}
+        </h2>
+        <p className="max-w-xl font-mono text-xs leading-relaxed text-muted-foreground">
+          {t("architectureNote")}
+        </p>
+        <ol className="flex flex-wrap items-center gap-2">
+          {study.architecture.map((step, index) => (
+            <li key={step} className="flex items-center gap-2">
+              <span className="border border-edge px-2 py-1 font-mono text-xs text-foreground">
+                {step}
+              </span>
+              {index < study.architecture.length - 1 ? (
+                <span aria-hidden className="font-mono text-xs text-muted-foreground">
+                  →
+                </span>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <div className="screen-line-before flex flex-col gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-md font-mono text-sm text-muted-foreground">
-          {t("ctaNote")}
+          {study.ctaNote}
         </p>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" asChild>

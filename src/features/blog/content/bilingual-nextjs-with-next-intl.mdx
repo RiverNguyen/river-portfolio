@@ -3,7 +3,7 @@ title: Building Bilingual Next.js Sites with next-intl
 description: Practical EN/VI i18n for marketing and portfolio sites — routing, messages, MDX content, and what to localize vs leave alone.
 image: /blogs/next.webp
 createdAt: 2026-04-05
-updatedAt: 2026-04-05
+updatedAt: 2026-09-21
 ---
 
 Shipping one language is easy. Shipping **English and Vietnamese** without duplicating your whole app is where most marketing sites get messy.
@@ -56,6 +56,61 @@ Vietnamese isn’t English with different words — sentence length changes layo
 - Images with burned-in text need locale variants or redesign
 - Dates and phone formatting differ; don’t assume `en-US` everywhere
 - Client components that read messages still need the right provider tree
+
+## Canonical and hreflang have to agree
+
+`hreflang` does not save a page that tells Google the English URL is the real one. On this portfolio every `/vi/...` URL has to canonicalise to itself, while `hreflang` still advertises the `en` / `vi` / `x-default` pair. Google prefers the canonical when the two signals conflict, so a Vietnamese page whose canonical is `/projects` gets treated as a duplicate of the English page.
+
+The metadata helper has to take the locale actually being served, not a hard-coded default:
+
+```ts
+const locale = await getLocale()
+const localizedPath = locale === "en" ? path : `/${locale}${path}`
+
+return {
+  alternates: {
+    canonical: localizedPath,
+    languages: {
+      en: absolute(path, "en"),
+      vi: absolute(path, "vi"),
+      "x-default": absolute(path, "en"),
+    },
+  },
+  openGraph: {
+    url: absolute(path, locale),
+    locale: locale === "vi" ? "vi_VN" : "en_US",
+  },
+}
+```
+
+Re-exporting `generateMetadata` from the English file into the `/vi` route is safe only when that function calls `getLocale()`. Otherwise the Vietnamese page inherits the English canonical.
+
+## Localize the title, not just the body
+
+`lang="vi"` plus a translated body and an English `<title>` is a mixed page. Crawlers and Zalo/Facebook previews read the title first. Nav, forms, and meta strings live in `messages/vi.json`. Long posts and case studies live in MDX or a copy object, not in that JSON file.
+
+Before I call a route done:
+
+- Vietnamese title and description on `/vi/...`
+- Self-referencing canonical
+- `og:url` is the `/vi` URL and `og:locale` is `vi_VN`
+- No hard-coded English sentence left in the component (search literals)
+- Sitemap lists both the `/vi` URL and the English URL as their own `<loc>`, and only after the canonical is fixed
+
+Images with burned-in text still need a second asset or no text. Dates and phone numbers format for the locale instead of assuming `en-US`.
+
+English stays at `/` and Vietnamese at `/vi` on this site. The same split shows up in client work, for example the [multilingual tour platform](/projects/multilingual-tour-platform). Routing reference: [next-intl routing](https://next-intl.dev/docs/routing).
+
+## The review pass I actually run
+
+I do not treat “the JSON file exists” as done. After the strings land I open `/` and `/vi` on the same template and check four things in the rendered HTML, not in the editor. The pass is the same one I use before a client handoff.
+
+1. `<html lang>` matches the body. `lang="vi"` with an English title is a fail even when the paragraphs are Vietnamese.
+2. The canonical href matches the address bar. On `/vi/blog` that href contains `/vi/blog`. On `/blog` it does not.
+3. `hreflang` entries are reciprocal: the English page points at `/vi/...`, and the Vietnamese page points back.
+4. Buttons and the hero still fit. Vietnamese runs longer, so a label that was one line in English wraps onto the nav or the mobile menu. I fix the wrap in layout, not by shortening the translation into nonsense.
+
+Missing keys are the other failure. next-intl throws or falls back depending on config. I keep the key sets identical between `en.json` and `vi.json` and I diff the key paths before shipping, so a new CTA cannot go out in English on the Vietnamese site by accident. Brand names, code, and stack labels stay as-is. Everything a person reads in the chrome gets a Vietnamese line.
 
 ## Final thought
 

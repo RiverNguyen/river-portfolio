@@ -1,11 +1,15 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
+import type { ContactPage as ContactPageSchema, WithContext } from "schema-dts"
 
+import { SITE_INFO } from "@/config/site"
 import { Contact } from "@/features/portfolio/components/contact"
 import { ContactChannels } from "@/features/portfolio/components/contact-channels"
 import { SocialLinks } from "@/features/portfolio/components/social-links"
-import { createPageMetadata } from "@/lib/seo"
+import { USER } from "@/features/portfolio/data/user"
+import { createPageMetadata, getLocalizedUrl } from "@/lib/seo"
 import { cn } from "@/lib/utils"
+import { decodeEmail, decodePhoneNumber } from "@/utils/string"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Contact")
@@ -18,11 +22,45 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 }
 
+function getContactJsonLd(locale: string): WithContext<ContactPageSchema> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: `${USER.displayName} — Contact`,
+    url: getLocalizedUrl("/contact", locale),
+    description: SITE_INFO.description,
+    mainEntity: {
+      "@type": "Person",
+      name: USER.displayName,
+      url: SITE_INFO.url,
+      email: decodeEmail(USER.email),
+      telephone: decodePhoneNumber(USER.phoneNumber),
+      jobTitle: USER.jobTitle,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: USER.address,
+        addressCountry: "VN",
+      },
+    },
+  }
+}
+
 export default async function Page() {
+  const locale = await getLocale()
   const t = await getTranslations("Contact")
 
   return (
     <div className="min-h-svh">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getContactJsonLd(locale)).replace(
+            /</g,
+            "\\u003c"
+          ),
+        }}
+      />
+
       <section className="relative isolate overflow-hidden screen-line-after">
         <div
           aria-hidden
@@ -61,6 +99,12 @@ export default async function Page() {
       <Separator />
 
       <SocialLinks className="border-x-0" title={t("socialTitle")} />
+
+      <div className="border-t border-edge px-4 py-6 sm:px-6">
+        <p className="mx-auto max-w-2xl font-mono text-xs leading-relaxed text-muted-foreground">
+          {t("privacyNote")}
+        </p>
+      </div>
 
       <div className="h-8" />
     </div>

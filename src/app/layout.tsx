@@ -10,22 +10,33 @@ import type { WebSite, WithContext } from "schema-dts"
 
 import { DuckFollower } from "@/components/duck-follower"
 import { LenisProvider } from "@/components/lenis-provider"
-import { PageReveal } from "@/components/page-reveal"
+import { PageRevealGate } from "@/components/page-reveal-gate"
 import { Providers } from "@/components/providers"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
-import { USER } from "@/features/portfolio/data/user"
+import { getUserByLocale, USER } from "@/features/portfolio/data/user"
 import { fontMono, fontPixelSquare, fontSans } from "@/lib/fonts"
-import { getLanguageAlternates } from "@/lib/seo"
+import {
+  getLanguageAlternates,
+  getLocalizedPath,
+  getLocalizedUrl,
+} from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
-function getWebSiteJsonLd(): WithContext<WebSite> {
+function getSiteDescription(locale: string) {
+  const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+  return locale === "vi"
+    ? `${USER.displayName} (River) — ${user.jobTitle} tại Hà Nội. Portfolio, dự án, blog và liên hệ.`
+    : SITE_INFO.description
+}
+
+function getWebSiteJsonLd(locale: string): WithContext<WebSite> {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_INFO.name,
     url: SITE_INFO.url,
-    description: SITE_INFO.description,
-    inLanguage: ["en", "vi"],
+    description: getSiteDescription(locale),
+    inLanguage: locale === "vi" ? "vi" : "en",
     alternateName: [USER.username, USER.displayName],
   }
 }
@@ -56,76 +67,83 @@ const preloaderBootScript = String.raw`
   } catch (_) {}
 `
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_INFO.url),
-  alternates: {
-    canonical: "/",
-    languages: getLanguageAlternates("/"),
-  },
-  title: {
-    template: `%s | ${SITE_INFO.name}`,
-    default: `${USER.displayName} | ${USER.jobTitle}`,
-  },
-  description: SITE_INFO.description,
-  keywords: SITE_INFO.keywords,
-  authors: [
-    {
-      name: USER.displayName,
-      url: SITE_INFO.url,
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
+  const user = getUserByLocale(locale === "vi" ? "vi" : "en")
+  const description = getSiteDescription(locale)
+  const title = `${USER.displayName} | ${user.jobTitle}`
+
+  return {
+    metadataBase: new URL(SITE_INFO.url),
+    alternates: {
+      canonical: getLocalizedPath("/", locale),
+      languages: getLanguageAlternates("/"),
     },
-  ],
-  creator: USER.displayName,
-  publisher: USER.displayName,
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    title: {
+      template: `%s | ${SITE_INFO.name}`,
+      default: title,
+    },
+    description,
+    keywords: user.keywords,
+    authors: [
+      {
+        name: USER.displayName,
+        url: SITE_INFO.url,
+      },
+    ],
+    creator: USER.displayName,
+    publisher: USER.displayName,
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  openGraph: {
-    siteName: SITE_INFO.name,
-    url: SITE_INFO.url,
-    type: "website",
-    locale: "en_US",
-    alternateLocale: ["vi_VN"],
-    title: `${USER.displayName} | ${USER.jobTitle}`,
-    description: SITE_INFO.description,
-    images: [
-      {
-        url: SITE_INFO.ogImage,
-        width: 1200,
-        height: 630,
-        alt: `${USER.displayName} — ${USER.jobTitle}`,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${USER.displayName} | ${USER.jobTitle}`,
-    description: SITE_INFO.description,
-    images: [SITE_INFO.ogImage],
-  },
-  icons: {
-    icon: [
-      {
-        url: "/favicon.ico",
-        sizes: "any",
-      },
-      {
-        url: "/logo.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: {
-      url: "/apple-touch-icon.png",
-      type: "image/png",
-      sizes: "180x180",
+    openGraph: {
+      siteName: SITE_INFO.name,
+      url: getLocalizedUrl("/", locale),
+      type: "website",
+      locale: locale === "vi" ? "vi_VN" : "en_US",
+      alternateLocale: locale === "vi" ? ["en_US"] : ["vi_VN"],
+      title,
+      description,
+      images: [
+        {
+          url: SITE_INFO.ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${USER.displayName} — ${user.jobTitle}`,
+        },
+      ],
     },
-  },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [SITE_INFO.ogImage],
+    },
+    icons: {
+      icon: [
+        {
+          url: "/favicon.ico",
+          sizes: "any",
+        },
+        {
+          url: "/logo.svg",
+          type: "image/svg+xml",
+        },
+      ],
+      apple: {
+        url: "/apple-touch-icon.png",
+        type: "image/png",
+        sizes: "180x180",
+      },
+    },
+  }
 }
 
 export const viewport: Viewport = {
@@ -169,14 +187,17 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(getWebSiteJsonLd()).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(getWebSiteJsonLd(locale)).replace(
+              /</g,
+              "\\u003c"
+            ),
           }}
         />
       </head>
 
       <body>
         <LenisProvider>
-          <PageReveal />
+          <PageRevealGate />
           <Providers>
             <NuqsAdapter>
               {children}

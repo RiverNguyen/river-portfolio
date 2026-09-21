@@ -24,7 +24,11 @@
     "previous": "Trước",
     "previousPost": "Bài trước",
     "next": "Sau",
-    "nextPost": "Bài sau"
+    "nextPost": "Bài sau",
+    "published": "Đăng",
+    "updated": "Cập nhật",
+    "minRead": "{minutes} phút đọc",
+    "authorBio": "Lập trình viên frontend ở Hà Nội. Mình viết về Next.js, WordPress và hiệu năng của những thứ mình thực sự ship."
   },
   "ProjectsPage": {
     "title": "Dự án",
@@ -52,7 +56,9 @@
     "metricsNote": "Lab / shipping",
     "gallery": "Thư viện ảnh",
     "tech": "Công nghệ dùng",
-    "ctaNote": "Bạn cần kiểu này — booking, headless CMS, hay storefront du lịch?",
+    "architecture": "Kiến trúc",
+    "architectureNote": "Cách hệ thống được nối. UI khách không đưa lên trang này — tên, logo và screenshot thuộc NDA.",
+    "ctaNote": "Bạn cần một thứ cùng hướng?",
     "ctaContact": "Nhắn mình",
     "privateTitle": "Dự án bảo mật",
     "privateDesc": "Đây là dự án khách hàng đã được ẩn danh. Thương hiệu, trang live và hình ảnh thuộc thỏa thuận bảo mật (NDA) — liên hệ để mình trao đổi chi tiết về cách làm, quyết định và kết quả.",
@@ -104,7 +110,8 @@
       "sendSuccess": "Gửi tin nhắn thành công",
       "sendFail": "Gửi tin nhắn thất bại"
     },
-    "note": "Mình sẽ phản hồi bạn sớm nhất có thể."
+    "note": "Mình sẽ phản hồi bạn sớm nhất có thể.",
+    "privacyNote": "Tin nhắn gửi qua form chỉ dùng để trả lời bạn. Email và số điện thoại ở trên được công khai để liên hệ trực tiếp — cùng thông tin trên trang CV."
   },
   "Portfolio": {
     "overview": "Tổng quan",

@@ -4,7 +4,7 @@ description: Setup Docker thiên production cho Next.js standalone — build arg
 image: /blogs/next.webp
 new: true
 createdAt: 2026-04-22
-updatedAt: 2026-04-22
+updatedAt: 2026-09-21
 ---
 
 Docker giúp deploy lặp lại được. Nó cũng khiến việc bake **API key** vào image rồi push lên registry trở nên dễ đến mức nguy hiểm.
@@ -59,6 +59,68 @@ Build nhận URL public. Container đang chạy nhận key email và AI. Image p
 - [ ] API route đọc `process.env` lúc request
 - [ ] Tag registry cũ được rebuild sau khi gỡ secret đã bake
 - [ ] Rotate key nếu image cũ từng public
+
+## Dùng BuildKit secret mount
+
+`env_file` lúc chạy là mặc định đúng cho portfolio này: server Next.js đọc `process.env` khi request vào API route. Nó không che lỗ hổng kia — secret mà chính bước **build** cần, như token npm private.
+
+Đưa secret đó vào `ARG` vẫn ghi vào history của image. Secret mount của BuildKit giữ giá trị trên tmpfs cho một `RUN` và không commit thành layer.
+
+```dockerfile
+# syntax=docker/dockerfile:1
+
+FROM node:22-bookworm-slim AS deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=secret,id=npm_token \
+    NPM_TOKEN="$(cat /run/secrets/npm_token)" \
+    corepack enable && pnpm install --frozen-lockfile
+```
+
+Build với secret nằm ngoài image:
+
+```bash
+docker build \
+  --secret id=npm_token,env=NPM_TOKEN \
+  --build-arg APP_URL=https://rivernguyen.id.vn \
+  -t river-portfolio .
+```
+
+`APP_URL` vẫn là build arg vì nó public và Next.js inline vào metadata. `NPM_TOKEN` không phải `ARG`. Key email hoặc model nằm trong `env_file` của Compose và chỉ được đọc lúc request.
+
+## `docker history` phải hiện gì
+
+Sau một bản build hỏng, history là bằng chứng, không phải Dockerfile bạn ước mình đã viết. Key lộ trông như thế này (mẫu, không phải token thật):
+
+```text
+docker history river-portfolio:leaked
+IMAGE  CREATED BY
+...    ENV RESEND_API_KEY=re_sample_not_a_real_key
+...    ARG RESEND_API_KEY
+```
+
+Image sạch không có dòng đó. Trước khi push tag, mình kiểm tra:
+
+```bash
+docker history --no-trunc river-portfolio:latest | grep -Ei 'key|token|secret|password' || echo "no secret strings in history"
+docker image inspect river-portfolio:latest --format '{{json .Config.Env}}'
+```
+
+`grep` chỉ là smoke test. `.dockerignore` vẫn phải loại `.env`, `.env.local` và `*.pem` để `COPY . .` không kéo chúng vào context.
+
+## Runbook rotate key
+
+Rebuild app mà không rotate key thì image cũ vẫn dùng được. Thứ tự mình dùng:
+
+1. **Thu hồi** key ở nhà cung cấp trước khi rebuild, để image cũ bị pull cũng đã chết.
+2. **Cấp** key mới chỉ vào secret runtime — `.env` trên host hoặc secret của orchestrator. Không phải build arg.
+3. **Rebuild** từ Dockerfile không còn secret `ARG`/`ENV`, `--no-cache` ở stage từng copy chỗ lộ.
+4. **Xóa digest** hỏng trên registry. Xóa tag không đủ nếu digest vẫn pull được.
+5. **Xác nhận** `docker history` trên tag mới, rồi deploy. Route server phải fail nếu thiếu env mới, không fallback về giá trị đã bake.
+
+Mình coi image là thứ có thể push nhầm registry. Cùng quy tắc đó cho Dockerfile khách và bản standalone của portfolio này. Trước khi tag, mình còn đối chiếu `.dockerignore` với `.gitignore`: file nào không được commit thì cũng không được vào build context. Một file `credentials.json` bị gitignore nhưng quên dockerignore vẫn thành layer. Mình đọc lại history của image vừa build, không phải history của commit, vì layer không nằm trong git. Nếu registry không cho xóa digest, mình rotate key rồi coi digest cũ là public vĩnh viễn — không có bước “để đó, ít người pull”. Standalone output của Next.js cũng không ngoại lệ: `server.js` và các chunk trong `.next/standalone` vẫn là layer. Secret không được nằm trong những file đó chỉ vì chúng “không phải source”. Mình grep bản standalone trước khi tag, cùng cách grep `docker history`.
+
+Các bản booking ngồi cạnh setup này được viết thành case study, bắt đầu từ [nền tảng tour đa ngôn ngữ](/projects/multilingual-tour-platform). Cú pháp mount: [Build secrets](https://docs.docker.com/build/building/secrets/). Output standalone: [output: standalone](https://nextjs.org/docs/app/api-reference/config/next-config-js/output).
 
 ## Kết
 

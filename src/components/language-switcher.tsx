@@ -42,7 +42,12 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t("language")}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-11 sm:size-8"
+          aria-label={t("language")}
+        >
           <LanguagesIcon className="size-4" />
           <span className="sr-only">{t("language")}</span>
         </Button>
