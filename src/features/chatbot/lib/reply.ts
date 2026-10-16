@@ -259,7 +259,7 @@ function detectLocale(text: string): Locale {
   }
 
   if (
-    /(^|[^\p{L}\p{N}_])(là|gì|nào|không|được|với|cho|tôi|mình|bạn|dự án|kinh nghiệm|liên hệ|thuê|stack|giới thiệu)(?![\\p{L}\\p{N}_])/iu.test(
+    /(^|[^\p{L}\p{N}_])(là|gì|nào|không|được|với|cho|tôi|mình|bạn|dự án|kinh nghiệm|liên hệ|thuê|giới thiệu)(?![\p{L}\p{N}_])/iu.test(
       text
     )
   ) {
@@ -586,12 +586,15 @@ function buildFallbackReply(locale: Locale) {
   ].join("\n")
 }
 
-export function buildLocalReply(userText: string): {
+export function buildLocalReply(
+  userText: string,
+  preferredLocale?: Locale
+): {
   reply: string
   locale: Locale
   intent: Intent
 } {
-  const locale = detectLocale(userText)
+  const locale = preferredLocale ?? detectLocale(userText)
   const intent = scoreIntent(userText)
 
   const replyByIntent: Record<Intent, (locale: Locale) => string> = {

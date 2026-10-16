@@ -1,7 +1,9 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
-import { Redis } from "@upstash/redis"
+import type { Redis } from "@upstash/redis"
+
+import { getRedis } from "@/lib/redis"
 
 import type {
   DayStat,
@@ -37,20 +39,6 @@ function freshStore(): VisitorsStore {
 /* -------------------------------------------------------------------------- */
 
 const REDIS_KEY = "visitors:store"
-
-let redisClient: Redis | null | undefined
-
-function getRedis(): Redis | null {
-  if (redisClient !== undefined) return redisClient
-
-  const url =
-    process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL
-  const token =
-    process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN
-
-  redisClient = url && token ? new Redis({ url, token }) : null
-  return redisClient
-}
 
 function getDataPath() {
   return (

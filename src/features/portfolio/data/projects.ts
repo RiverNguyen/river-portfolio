@@ -89,16 +89,11 @@ It also supports custom tour requests where users can personalize itineraries ba
       "Swiper",
       "Motion UI",
     ],
-    description: `- Built responsive **Next.js** & **React.js** apps with cross-device compatibility.
-- Developed custom **WordPress themes** optimized for performance, SEO, and accessibility.
-- Integrated **RESTful APIs** for dynamic, interactive user experiences.
-- Created **Custom Post Types** & **ACF fields** exposed via **REST API** for **Next.js** frontends.
-- Used **GSAP** for smooth animations across WordPress and Next.js projects.
-- Managed state with **Redux**, **Zustand**, and **Context API**.
-- Applied SEO best practices: **lazy loading**, **code splitting**, and **image optimization**.
-- Integrated payment gateways and booking forms for e-commerce platforms.
-- Ensured cross-browser compatibility and mobile responsiveness.
-- Implemented security measures: file permissions, **reCAPTCHA**, and login rate limiting.`,
+    description: `A set of marketing sites delivered for an agency: brand pages, campaign landings, and content sites on a shared WordPress + Next.js setup.
+- Built responsive Next.js frontends from Figma, reused across several client sites.
+- Developed custom WordPress themes and ACF content models, exposed through the REST API.
+- Added GSAP motion where the design called for it, without a one-size animation on every page.
+- Kept SEO and performance consistent: semantic structure, image optimization, and code splitting.`,
     isExpanded: false,
   },
   {
@@ -116,17 +111,11 @@ It also supports custom tour requests where users can personalize itineraries ba
       "GSAP",
       "Swiper",
     ],
-    description: `A website for an industrial company, presenting its products, services, and achievements.
-- Built responsive **Next.js** & **React.js** apps with cross-device compatibility.
-- Developed custom **WordPress themes** optimized for performance, SEO, and accessibility.
-- Integrated **RESTful APIs** for dynamic, interactive user experiences.
-- Created **Custom Post Types** & **ACF fields** exposed via **REST API** for **Next.js** frontends.
-- Used **GSAP** for smooth animations across WordPress and Next.js projects.
-- Managed state with **Redux**, **Zustand**, and **Context API**.
-- Applied SEO best practices: **lazy loading**, **code splitting**, and **image optimization**.
-- Integrated payment gateways and booking forms for e-commerce platforms.
-- Ensured cross-browser compatibility and mobile responsiveness.
-- Implemented security measures: file permissions, **reCAPTCHA**, and login rate limiting.`,
+    description: `A corporate site for an industrial company: product lines, services, and company profile, without a store or booking flow.
+- Built a responsive Next.js frontend from Figma on top of a WordPress content model.
+- Structured products and services as Custom Post Types and ACF fields, served through the REST API.
+- Used GSAP and Swiper for section motion and product galleries.
+- Tuned structure, images, and loading so catalog pages stay fast on desktop and mobile.`,
     isExpanded: false,
   },
   {
@@ -261,30 +250,19 @@ Hỗ trợ yêu cầu tour tuỳ chỉnh giúp người dùng cá nhân hoá l�
   },
   "agency-website": {
     title: "Dự án website cho agency",
-    description: `- Xây dựng ứng dụng **Next.js** & **React.js** responsive, tương thích đa thiết bị.
-- Phát triển **theme WordPress** tuỳ biến, tối ưu hiệu năng, SEO và accessibility.
-- Tích hợp **RESTful APIs** để tạo trải nghiệm tương tác, dữ liệu động.
-- Tạo **Custom Post Types** & **ACF fields** và expose qua **REST API** cho frontend **Next.js**.
-- Dùng **GSAP** để tạo animation mượt cho cả dự án WordPress và Next.js.
-- Quản lý state bằng **Redux**, **Zustand** và **Context API**.
-- Áp dụng best practices SEO: **lazy loading**, **code splitting**, **tối ưu hình ảnh**.
-- Tích hợp cổng thanh toán và form booking cho nền tảng thương mại điện tử.
-- Đảm bảo tương thích trình duyệt và tối ưu hiển thị trên mobile.
-- Triển khai một số biện pháp bảo mật: phân quyền file, **reCAPTCHA**, giới hạn tần suất đăng nhập.`,
+    description: `Một nhóm website marketing làm cho agency: trang thương hiệu, landing chiến dịch và site nội dung trên cùng một setup WordPress + Next.js.
+- Dựng frontend Next.js responsive từ Figma, tái sử dụng cho nhiều site khách.
+- Phát triển theme WordPress tuỳ biến và content model ACF, expose qua REST API.
+- Thêm motion GSAP ở những trang thiết kế yêu cầu, không gắn animation giống nhau cho mọi trang.
+- Giữ SEO và hiệu năng đồng đều: cấu trúc semantic, tối ưu ảnh và code splitting.`,
   },
   "industrial-corporate-site": {
     title: "Website doanh nghiệp ngành công nghiệp",
-    description: `Website cho một doanh nghiệp ngành công nghiệp, giới thiệu sản phẩm, dịch vụ và thành tựu của công ty.
-- Xây dựng ứng dụng **Next.js** & **React.js** responsive, tương thích đa thiết bị.
-- Phát triển **theme WordPress** tuỳ biến, tối ưu hiệu năng, SEO và accessibility.
-- Tích hợp **RESTful APIs** để tạo trải nghiệm tương tác, dữ liệu động.
-- Tạo **Custom Post Types** & **ACF fields** và expose qua **REST API** cho frontend **Next.js**.
-- Dùng **GSAP** để tạo animation mượt cho cả dự án WordPress và Next.js.
-- Quản lý state bằng **Redux**, **Zustand** và **Context API**.
-- Áp dụng best practices SEO: **lazy loading**, **code splitting**, **tối ưu hình ảnh**.
-- Tích hợp cổng thanh toán và form booking cho nền tảng thương mại điện tử.
-- Đảm bảo tương thích trình duyệt và tối ưu hiển thị trên mobile.
-- Triển khai một số biện pháp bảo mật: phân quyền file, **reCAPTCHA**, giới hạn tần suất đăng nhập.`,
+    description: `Website doanh nghiệp ngành công nghiệp: dòng sản phẩm, dịch vụ và hồ sơ công ty, không có cửa hàng hay luồng đặt chỗ.
+- Dựng frontend Next.js responsive từ Figma trên content model WordPress.
+- Tổ chức sản phẩm và dịch vụ bằng Custom Post Types và ACF, phục vụ qua REST API.
+- Dùng GSAP và Swiper cho motion giữa các section và gallery sản phẩm.
+- Chỉnh cấu trúc, ảnh và cách tải để trang catalog nhanh trên desktop và mobile.`,
   },
   "salon-booking-platform": {
     title: "Nền tảng đặt lịch salon & thương mại điện tử",

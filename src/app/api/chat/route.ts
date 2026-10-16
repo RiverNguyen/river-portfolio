@@ -1,9 +1,11 @@
 import { z } from "zod"
 
+import { streamGeminiReply } from "@/features/chatbot/lib/gemini"
 import {
   buildLocalReply,
   extractLatestUserText,
 } from "@/features/chatbot/lib/reply"
+import { getRedis } from "@/lib/redis"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
@@ -24,10 +26,29 @@ function getClientIp(req: Request) {
   return req.headers.get("x-real-ip") || "unknown"
 }
 
-function isRateLimited(ip: string) {
+const RATE_WINDOW_MS = 60_000
+const RATE_LIMIT = 20
+
+// Shared across serverless instances when Upstash is configured; per-instance memory otherwise.
+async function isRateLimited(ip: string) {
+  const redis = getRedis()
+  if (redis) {
+    try {
+      const key = `chat:rate:${ip}`
+      const count = await redis.incr(key)
+      if (count === 1) await redis.pexpire(key, RATE_WINDOW_MS)
+      return count > RATE_LIMIT
+    } catch (err) {
+      console.error("[chat] Redis rate limit failed", err)
+    }
+  }
+  return isRateLimitedInMemory(ip)
+}
+
+function isRateLimitedInMemory(ip: string) {
   const now = Date.now()
-  const windowMs = 60_000
-  const limit = 40
+  const windowMs = RATE_WINDOW_MS
+  const limit = RATE_LIMIT
   const current = rateBucket.get(ip)
 
   if (!current || current.resetAt <= now) {
@@ -52,7 +73,7 @@ function chunkReply(text: string): string[] {
 
 export async function POST(req: Request) {
   const ip = getClientIp(req)
-  if (isRateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return Response.json(
       { error: "Too many messages. Please wait a minute." },
       { status: 429 }
@@ -71,19 +92,44 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid chat payload." }, { status: 400 })
   }
 
-  const userText = extractLatestUserText(
-    parsed.data.messages as Array<{
-      role?: string
-      parts?: Array<{ type?: string; text?: string }>
-      content?: string
-    }>
-  ).slice(0, MAX_MESSAGE_CHARS)
+  const messages = parsed.data.messages as Array<{
+    role?: string
+    parts?: Array<{ type?: string; text?: string }>
+    content?: string
+  }>
+  const userText = extractLatestUserText(messages).slice(0, MAX_MESSAGE_CHARS)
 
   if (!userText) {
     return Response.json({ error: "Empty message." }, { status: 400 })
   }
 
-  const { reply } = buildLocalReply(userText)
+  const turns = messages.flatMap((message) => {
+    if (message?.role !== "user" && message?.role !== "assistant") return []
+    const text = (
+      typeof message.content === "string"
+        ? message.content
+        : (message.parts ?? [])
+            .filter((part) => part.type === "text" && part.text)
+            .map((part) => part.text)
+            .join("")
+    )
+      .trim()
+      .slice(0, MAX_MESSAGE_CHARS)
+    return text ? [{ role: message.role as "user" | "assistant", text }] : []
+  })
+
+  const geminiStream = await streamGeminiReply(turns, parsed.data.locale)
+  if (geminiStream) {
+    return new Response(geminiStream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-River-Chat": "gemini",
+      },
+    })
+  }
+
+  const { reply } = buildLocalReply(userText, parsed.data.locale)
   const encoder = new TextEncoder()
   const chunks = chunkReply(reply)
 
