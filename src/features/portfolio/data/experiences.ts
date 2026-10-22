@@ -4,7 +4,7 @@ export const EXPERIENCES_EN: Experience[] = [
   {
     id: "bateco",
     companyName: "Bateco Group",
-    companyLogo: "/bateco.webp",
+    companyLogo: "/bateco.jpg",
     companyWebsite: "https://bateco.vn",
     positions: [
       {

@@ -41,7 +41,7 @@ export const USER_EN = {
   affiliateBadge: {
     name: "Bateco Group",
     url: "https://bateco.vn",
-    logo: "/bateco.webp",
+    logo: "/bateco.jpg",
   },
   timeZone: "Asia/Ho_Chi_Minh",
   keywords: [
