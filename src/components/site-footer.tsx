@@ -44,6 +44,12 @@ export async function SiteFooter() {
 
           <span className="opacity-50">•</span>
 
+          <Link className="font-medium" href="/guestbook">
+            {t("guestbook")}
+          </Link>
+
+          <span className="opacity-50">•</span>
+
           <Link className="font-medium" href="/resume">
             {t("resume")}
           </Link>

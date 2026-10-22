@@ -6,7 +6,8 @@
     "blog": "Blog",
     "contact": "Contact",
     "language": "Language",
-    "toggleMenu": "Toggle Menu"
+    "toggleMenu": "Toggle Menu",
+    "guestbook": "Guestbook"
   },
   "Footer": {
     "madeBy": "Made with ❤️ by {name}",
@@ -14,7 +15,8 @@
     "blog": "Blog",
     "resume": "Resume",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "guestbook": "Guestbook"
   },
   "Blog": {
     "title": "Blog",

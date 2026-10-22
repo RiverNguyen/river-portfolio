@@ -36,6 +36,7 @@ export async function SiteHeader() {
     { title: t("projects"), href: "/projects" },
     { title: t("resume"), href: "/resume" },
     { title: t("blog"), href: "/blog" },
+    { title: t("guestbook"), href: "/guestbook" },
     { title: t("contact"), href: "/contact" },
   ]
 

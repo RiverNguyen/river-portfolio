@@ -6,7 +6,8 @@
     "blog": "Blog",
     "contact": "Liên hệ",
     "language": "Ngôn ngữ",
-    "toggleMenu": "Mở/Tắt menu"
+    "toggleMenu": "Mở/Tắt menu",
+    "guestbook": "Lưu bút"
   },
   "Footer": {
     "madeBy": "Tạo với ❤️ bởi {name}",
@@ -14,7 +15,8 @@
     "blog": "Blog",
     "resume": "CV",
     "projects": "Dự án",
-    "contact": "Liên hệ"
+    "contact": "Liên hệ",
+    "guestbook": "Lưu bút"
   },
   "Blog": {
     "title": "Bài viết",
