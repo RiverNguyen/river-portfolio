@@ -7,12 +7,15 @@ import {
   recordSessionDuration,
   recordVisit,
 } from "@/features/visitors/lib/store"
+import { getClientIp, isRateLimited } from "@/lib/rate-limit"
 
 export const runtime = "nodejs"
 
 const VISITOR_COOKIE = "rv_vid"
 const SESSION_COOKIE = "rv_vsid"
 const ONE_YEAR = 60 * 60 * 24 * 365
+const RATE_LIMIT = 30
+const RATE_WINDOW_MS = 60_000
 
 const durationSchema = z.object({
   durationMs: z
@@ -35,6 +38,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  if (await isRateLimited(`visitors:rate:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 })
+  }
+
   try {
     const contentType = request.headers.get("content-type") ?? ""
     let durationMs: number | null = null
