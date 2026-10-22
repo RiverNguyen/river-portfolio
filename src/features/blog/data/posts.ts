@@ -79,6 +79,10 @@ export function getPostBySlug(slug: string, locale: BlogLocale = "en") {
   return getAllPosts(locale).find((post) => post.slug === slug)
 }
 
+export function isKnownPostSlug(slug: string | null): slug is string {
+  return !!slug && getAllPosts().some((post) => post.slug === slug)
+}
+
 export function getPostsByCategory(
   category: string,
   locale: BlogLocale = "en"

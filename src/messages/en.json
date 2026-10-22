@@ -30,7 +30,8 @@
     "minRead": "{minutes} min read",
     "authorBio": "Frontend developer in Ha Noi. I write about the Next.js, WordPress, and performance work I actually ship.",
     "views": "{count, plural, one {# view} other {# views}}",
-    "keepReading": "Keep reading"
+    "keepReading": "Keep reading",
+    "readingNow": "{count} reading now"
   },
   "ProjectsPage": {
     "title": "Projects",

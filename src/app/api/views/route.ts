@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-import { getAllPosts } from "@/features/blog/data/posts"
+import { isKnownPostSlug } from "@/features/blog/data/posts"
 import { getClientIp, isRateLimited } from "@/lib/rate-limit"
 import { getRedis } from "@/lib/redis"
 
@@ -12,7 +12,7 @@ const RATE_WINDOW_MS = 60_000
 // Only count known slugs so arbitrary input can't create Redis keys.
 function getSlug(request: Request) {
   const slug = new URL(request.url).searchParams.get("slug")
-  return slug && getAllPosts().some((post) => post.slug === slug) ? slug : null
+  return isKnownPostSlug(slug) ? slug : null
 }
 
 export async function GET(request: Request) {

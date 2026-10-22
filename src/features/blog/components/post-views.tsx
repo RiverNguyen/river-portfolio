@@ -8,6 +8,7 @@ const VIEWED_KEY_PREFIX = "rv_post_viewed:"
 export function PostViews({ slug }: { slug: string }) {
   const t = useTranslations("Blog")
   const [views, setViews] = useState<number | null>(null)
+  const [readers, setReaders] = useState<number | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -35,12 +36,55 @@ export function PostViews({ slug }: { slug: string }) {
     }
   }, [slug])
 
-  if (views == null) return null
+  useEffect(() => {
+    const id = crypto.randomUUID()
+    let cancelled = false
+
+    const beat = async () => {
+      if (document.visibilityState !== "visible") return
+      try {
+        const res = await fetch(
+          `/api/views/live?slug=${encodeURIComponent(slug)}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          }
+        )
+        if (!res.ok) return
+        const data = (await res.json()) as { readers: number | null }
+        if (!cancelled) setReaders(data.readers)
+      } catch {
+        // decorative
+      }
+    }
+
+    void beat()
+    const interval = setInterval(beat, 30_000)
+    document.addEventListener("visibilitychange", beat)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+      document.removeEventListener("visibilitychange", beat)
+    }
+  }, [slug])
 
   return (
     <>
-      {" · "}
-      {t("views", { count: views })}
+      {views != null && (
+        <>
+          {" · "}
+          {t("views", { count: views })}
+        </>
+      )}
+      {readers != null && readers > 1 && (
+        <>
+          {" · "}
+          <span className="text-emerald-600 dark:text-emerald-400">
+            {t("readingNow", { count: readers })}
+          </span>
+        </>
+      )}
     </>
   )
 }
