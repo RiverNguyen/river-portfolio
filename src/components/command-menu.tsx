@@ -13,6 +13,7 @@ import {
   MoonStarIcon,
   MousePointer2Icon,
   RssIcon,
+  SignatureIcon,
   SunMediumIcon,
   TextIcon,
   TextInitialIcon,
@@ -74,6 +75,12 @@ const MENU_LINKS: CommandLinkItem[] = [
     title: "Blog",
     href: "/blog",
     icon: RssIcon,
+  },
+  {
+    title: "Guestbook",
+    href: "/guestbook",
+    icon: SignatureIcon,
+    keywords: ["sign", "message", "hello"],
   },
 ]
 

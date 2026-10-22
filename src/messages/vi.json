@@ -318,5 +318,19 @@
         "description": "Những cookie này giúp chúng tôi hiểu cách bạn sử dụng website để cải thiện trải nghiệm."
       }
     }
+  },
+  "Guestbook": {
+    "title": "Sổ lưu bút",
+    "description": "Để lại vài dòng, một lời chào hay một góp ý. Đăng nhập bằng GitHub để viết.",
+    "signIn": "Đăng nhập bằng GitHub",
+    "signOut": "Đăng xuất",
+    "signedInAs": "Đang đăng nhập với @{login}.",
+    "placeholder": "Gửi lời chào…",
+    "submit": "Ký tên",
+    "empty": "Chưa có lời nhắn nào. Hãy là người đầu tiên!",
+    "notConfigured": "Sổ lưu bút hiện chưa khả dụng.",
+    "authError": "Đăng nhập GitHub thất bại. Vui lòng thử lại.",
+    "error": "Có lỗi xảy ra. Vui lòng thử lại.",
+    "delete": "Xoá"
   }
 }

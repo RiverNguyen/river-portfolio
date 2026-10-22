@@ -318,5 +318,19 @@
         "description": "These cookies help us understand how the site is used so we can improve it."
       }
     }
+  },
+  "Guestbook": {
+    "title": "Guestbook",
+    "description": "Leave a note, a hello, or a tip. Sign in with GitHub to post.",
+    "signIn": "Sign in with GitHub",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as @{login}.",
+    "placeholder": "Say hi…",
+    "submit": "Sign",
+    "empty": "No messages yet. Be the first!",
+    "notConfigured": "The guestbook is not available right now.",
+    "authError": "GitHub sign-in failed. Please try again.",
+    "error": "Something went wrong. Please try again.",
+    "delete": "Delete"
   }
 }
