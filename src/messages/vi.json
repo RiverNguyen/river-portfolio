@@ -7,7 +7,8 @@
     "contact": "Liên hệ",
     "language": "Ngôn ngữ",
     "toggleMenu": "Mở/Tắt menu",
-    "guestbook": "Lưu bút"
+    "guestbook": "Lưu bút",
+    "hire": "Thuê"
   },
   "Footer": {
     "madeBy": "Tạo với ❤️ bởi {name}",
@@ -34,6 +35,8 @@
     "authorBio": "Lập trình viên frontend ở Hà Nội. Mình viết về Next.js, WordPress và hiệu năng của những thứ mình thực sự ship.",
     "views": "{count} lượt xem",
     "keepReading": "Đọc tiếp",
+    "hirePrompt": "Cần tính năng kiểu này cho site của bạn?",
+    "hireLink": "Xem trang thuê →",
     "readingNow": "{count} người đang đọc",
     "reactPrompt": "Thấy hay không?",
     "reaction": {
@@ -144,16 +147,20 @@
     "hireCta": "Chế độ hire"
   },
   "Hire": {
-    "metaTitle": "Thuê River — Frontend (Next.js / React)",
-    "metaDescription": "Bản rút gọn cho recruiter: availability, stack và 3 case study.",
-    "label": "Recruiter mode",
-    "headline": "Frontend cho product UI và brand site.",
+    "metaTitle": "Thuê River — Frontend Developer (Next.js / React)",
+    "metaDescription": "Frontend Developer tại Hà Nội cho hợp đồng và product UI — availability, quy trình, NDA và ba case study đã ship.",
+    "label": "Thuê",
+    "headline": "Frontend Developer cho product UI và brand site.",
     "subtitle": "Next.js, React, TypeScript, motion và WordPress headless — đã ship dưới NDA, có số đo kèm theo.",
-    "ctaContact": "Bắt đầu trao đổi",
+    "ctaContact": "Đặt lịch gọi / bắt đầu chat",
     "ctaResume": "CV đầy đủ",
     "availabilityTitle": "Availability",
     "availabilityStatus": "Mở hợp tác freelance và full-time frontend",
     "availabilityNote": "Thường phản hồi trong 1–2 ngày làm việc. Remote từ Hà Nội (UTC+7).",
+    "clientsTitle": "Cách làm việc",
+    "clientsBody": "Gói cố định phạm vi hoặc retainer theo tuần. Làm overlap múi giờ từ UTC+7, giữ board chung, bàn giao code Next.js/WordPress sạch kèm Loom hoặc ghi chú ngắn. Thân thiện NDA — URL khách thường giữ riêng; case study chỉ hiện craft, không nêu tên brand.",
+    "processTitle": "Quy trình",
+    "processBody": "1) Phạm vi và ràng buộc · 2) Figma → kế hoạch component · 3) Build với mục tiêu LCP/CLS đo được · 4) Review, harden và tài liệu. Bạn có link staging sớm, không nhận dump bất ngờ ở cuối.",
     "stackTitle": "Stack chính",
     "projectsTitle": "Dự án chọn lọc",
     "caseStudy": "Đọc case study"

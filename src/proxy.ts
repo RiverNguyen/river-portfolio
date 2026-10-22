@@ -13,6 +13,7 @@ export const config = {
   // Match all pathnames except for:
   // - paths that start with `/api`, `/_next` or `/_vercel`
   // - paths that start with `/og` or `/vcard` (non-localized route handlers)
+  // - short RSS aliases rewritten in next.config (`/rss`, `/registry/rss`)
   // - paths containing a dot (e.g. `favicon.ico`, `llms.txt`)
-  matcher: "/((?!api|_next|_vercel|og|vcard|.*\\..*).*)",
+  matcher: "/((?!api|_next|_vercel|og|vcard|rss|registry/rss|.*\\..*).*)",
 }

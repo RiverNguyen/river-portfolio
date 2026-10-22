@@ -39,3 +39,10 @@ The file path defaults to `data/visitors.json` and can be moved with `VISITORS_D
 If Redis is unset and the file cannot be created, the counter does not move and the visitor still gets a response. A read error returns an empty store instead of throwing into the page. The chart can show zeros. It should not take the site down.
 
 The route is rate limited at 30 requests per IP per minute before any of this runs. Cookies are `sameSite: "lax"` and `secure` in production. That stops casual cross-site posts. It does not stop someone from curling the endpoint. The numbers are a sketch of traffic, not a billable report.
+
+## Related on this site
+
+- [Rate limiting Next.js routes](/blog/rate-limiting-nextjs-routes) — the shared limiter
+- [Counting blog views once](/blog/counting-blog-views-once) — per-post Redis integers, not this store
+- [Chatbot without Gemini](/blog/chatbot-that-answers-without-gemini) — another consumer of Upstash when present
+- [Rebuilding this portfolio](/blog/rebuilding-my-developer-portfolio) — why the chart exists

@@ -33,3 +33,10 @@ The flag is written only after a successful response. A `429` or a network error
 Redis is the counter. Without `UPSTASH_REDIS_REST_URL` and its token (or the `KV_REST_API_*` names), the number is not stored in a JSON file and not kept in memory. A process restart would forget an in-memory count, and a serverless disk would forget a file. Hiding the widget is clearer than showing a number that resets on every deploy.
 
 The count is not unique people. Two browsers are two views. Clearing site data for the tab starts a new session. That is enough for a byline. It is not analytics.
+
+## Related on this site
+
+- [Rate limiting when Redis might be missing](/blog/rate-limiting-nextjs-routes) — the same helper that caps `POST /api/views`
+- [Visitor stats without a disk](/blog/visitor-stats-without-a-disk) — site-wide counts, not per-post
+- [Chatbot that still answers without Gemini](/blog/chatbot-that-answers-without-gemini) — another public route behind that limiter
+- [Rebuilding this portfolio](/blog/rebuilding-my-developer-portfolio) — why these counters exist here

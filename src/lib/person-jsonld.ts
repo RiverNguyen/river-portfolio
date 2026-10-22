@@ -8,21 +8,18 @@ import {
   type PortfolioLocale,
   USER,
 } from "@/features/portfolio/data/user"
-import { getAbsoluteUrl, getLocalizedUrl } from "@/lib/seo"
-import { decodeEmail, decodePhoneNumber } from "@/utils/string"
+import { getAbsoluteUrl } from "@/lib/seo"
 
-export function getPersonJsonLd(
-  locale: PortfolioLocale,
-  opts?: { pagePath?: string }
-): WithContext<Person> {
+/** Stable Person node every page should reference. */
+export const PERSON_ID = `${SITE_INFO.url}/#person`
+
+export function getPersonJsonLd(locale: PortfolioLocale): WithContext<Person> {
   const user = getUserByLocale(locale)
-  const pageUrl = opts?.pagePath
-    ? getLocalizedUrl(opts.pagePath, locale)
-    : SITE_INFO.url
 
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": PERSON_ID,
     name: USER.displayName,
     givenName: USER.firstName,
     additionalName: "Đình",
@@ -34,15 +31,13 @@ export function getPersonJsonLd(
       USER.username,
       "River Nguyen",
     ],
-    url: pageUrl,
+    url: SITE_INFO.url,
     image: getAbsoluteUrl(USER.avatar),
     jobTitle: user.jobTitle,
     description:
       locale === "vi"
         ? `${USER.displayName} (River) — ${user.jobTitle} tại Hà Nội. Portfolio, dự án, blog và liên hệ.`
         : SITE_INFO.description,
-    email: decodeEmail(USER.email),
-    telephone: decodePhoneNumber(USER.phoneNumber),
     knowsLanguage: ["vi", "en"],
     knowsAbout: TECH_STACK.map((tech) => tech.title),
     address: {
@@ -70,8 +65,11 @@ export function getPersonJsonLd(
         url: "https://www.utc.edu.vn",
       },
     ],
+    // Public profiles only — skip Zalo (carries a phone number in the URL).
     sameAs: [
-      ...SOCIAL_LINKS.map((link) => link.href),
+      ...SOCIAL_LINKS.filter((link) => link.title !== "Zalo").map(
+        (link) => link.href
+      ),
       "https://www.youtube.com/@Jang-1309",
     ],
   }

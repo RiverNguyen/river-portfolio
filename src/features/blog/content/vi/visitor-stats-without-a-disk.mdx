@@ -39,3 +39,10 @@ Tổng và mảng `daily` nằm trong một object, key Redis `visitors:store`, 
 Redis chưa set và file không tạo được thì bộ đếm đứng yên, khách vẫn nhận response. Đọc lỗi thì trả store rỗng thay vì ném vào trang. Chart có thể hiện số không. Nó không được kéo site xuống.
 
 Route bị rate limit 30 request mỗi IP mỗi phút trước khi làm những việc trên. Cookie là `sameSite: "lax"` và `secure` khi production. Đủ chặn POST xuyên site kiểu sơ sài. Không chặn người curl thẳng endpoint. Các số này là phác thảo traffic, không phải báo cáo để tính tiền.
+
+## Liên quan trên site
+
+- [Rate limit route Next.js](/blog/rate-limiting-nextjs-routes) — limiter dùng chung
+- [Đếm lượt xem blog một lần](/blog/counting-blog-views-once) — số nguyên Redis theo bài, không phải store này
+- [Chatbot khi Gemini tắt](/blog/chatbot-that-answers-without-gemini) — consumer Upstash khác khi có cấu hình
+- [Xây lại portfolio](/blog/rebuilding-my-developer-portfolio) — vì sao có chart

@@ -33,3 +33,10 @@ Cờ chỉ được ghi sau response thành công. `429` hoặc lỗi mạng kh�
 Redis là bộ đếm. Không có `UPSTASH_REDIS_REST_URL` và token (hoặc tên `KV_REST_API_*`) thì số không ghi ra file JSON và không giữ trong memory. Process restart sẽ quên số trong memory, đĩa serverless sẽ quên file. Giấu widget rõ hơn là hiện một số reset mỗi lần deploy.
 
 Số này không phải số người. Hai trình duyệt là hai lượt. Xóa dữ liệu site của tab là một phiên mới. Đủ cho dòng byline. Không phải analytics.
+
+## Liên quan trên site
+
+- [Rate limit khi không có Redis](/blog/rate-limiting-nextjs-routes) — helper giới hạn `POST /api/views`
+- [Thống kê khách không phụ thuộc đĩa](/blog/visitor-stats-without-a-disk) — đếm cả site, không theo bài
+- [Chatbot khi Gemini tắt](/blog/chatbot-that-answers-without-gemini) — route public khác dùng cùng limiter
+- [Xây lại portfolio](/blog/rebuilding-my-developer-portfolio) — vì sao có các bộ đếm này

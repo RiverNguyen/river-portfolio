@@ -8,11 +8,10 @@ import { getLocale } from "next-intl/server"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 import type { WebSite, WithContext } from "schema-dts"
 
-import { DuckFollower } from "@/components/duck-follower"
+import { DeferredChrome } from "@/components/deferred-chrome"
 import { LenisProvider } from "@/components/lenis-provider"
 import { PageRevealGate } from "@/components/page-reveal-gate"
 import { Providers } from "@/components/providers"
-import { SmoothFollower } from "@/components/smooth-follower"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
 import { getUserByLocale, USER } from "@/features/portfolio/data/user"
 import { fontMono, fontPixelSquare, fontSans } from "@/lib/fonts"
@@ -201,8 +200,7 @@ export default async function RootLayout({
           <Providers>
             <NuqsAdapter>
               {children}
-              <SmoothFollower />
-              <DuckFollower />
+              <DeferredChrome />
             </NuqsAdapter>
           </Providers>
         </LenisProvider>

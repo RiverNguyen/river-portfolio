@@ -7,7 +7,8 @@
     "contact": "Contact",
     "language": "Language",
     "toggleMenu": "Toggle Menu",
-    "guestbook": "Guestbook"
+    "guestbook": "Guestbook",
+    "hire": "Hire"
   },
   "Footer": {
     "madeBy": "Made with ❤️ by {name}",
@@ -34,6 +35,8 @@
     "authorBio": "Frontend developer in Ha Noi. I write about the Next.js, WordPress, and performance work I actually ship.",
     "views": "{count, plural, one {# view} other {# views}}",
     "keepReading": "Keep reading",
+    "hirePrompt": "Need this kind of feature on your site?",
+    "hireLink": "See hire details →",
     "readingNow": "{count} reading now",
     "reactPrompt": "Enjoyed it?",
     "reaction": {
@@ -144,16 +147,20 @@
     "hireCta": "Hire mode"
   },
   "Hire": {
-    "metaTitle": "Hire River — Frontend (Next.js / React)",
-    "metaDescription": "Recruiter snapshot: availability, stack, and three shipped case studies.",
-    "label": "Recruiter mode",
-    "headline": "Frontend engineer for product UI and brand sites.",
+    "metaTitle": "Hire River — Frontend Developer (Next.js / React)",
+    "metaDescription": "Frontend Developer in Ha Noi for contract and product UI work — availability, process, NDA, and three shipped case studies.",
+    "label": "Hire",
+    "headline": "Frontend Developer for product UI and brand sites.",
     "subtitle": "Next.js, React, TypeScript, motion, and WordPress headless — shipped under NDA with metrics to back it up.",
-    "ctaContact": "Start a conversation",
+    "ctaContact": "Book a call / start a chat",
     "ctaResume": "Full resume",
     "availabilityTitle": "Availability",
     "availabilityStatus": "Open to contract and full-time frontend roles",
     "availabilityNote": "Typical reply within 1–2 business days. Remote-friendly from Hanoi (UTC+7).",
+    "clientsTitle": "How we work",
+    "clientsBody": "Fixed-scope or weekly retainers. I work in your timezone overlap from UTC+7, keep a shared board, and hand off clean Next.js/WordPress code with a short Loom or written notes. NDA-friendly — most client URLs stay private; case studies show the craft without naming the brand.",
+    "processTitle": "Process",
+    "processBody": "1) Scope and constraints · 2) Figma → component plan · 3) Build with measurable LCP/CLS goals · 4) Review, harden, and document. You get a staging link early, not a surprise dump at the end.",
     "stackTitle": "Core stack",
     "projectsTitle": "Selected work",
     "caseStudy": "Read case study"

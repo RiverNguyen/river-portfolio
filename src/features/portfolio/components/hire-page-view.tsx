@@ -46,6 +46,9 @@ export async function HirePageView({ locale }: { locale: "en" | "vi" }) {
           <Button variant="outline" asChild>
             <Link href="/resume">{t("ctaResume")}</Link>
           </Button>
+          <Button variant="outline" asChild>
+            <Link href="/projects">{t("projectsTitle")}</Link>
+          </Button>
         </div>
       </section>
 
@@ -61,6 +64,28 @@ export async function HirePageView({ locale }: { locale: "en" | "vi" }) {
             {t("availabilityStatus")}
           </p>
           <p className="pl-[18px] text-pretty">{t("availabilityNote")}</p>
+        </PanelContent>
+      </Panel>
+
+      <Panel className="border-x-0">
+        <PanelHeader className="px-4 py-3 sm:px-6">
+          <PanelTitle className="text-2xl sm:text-3xl">
+            {t("clientsTitle")}
+          </PanelTitle>
+        </PanelHeader>
+        <PanelContent className="px-4 py-5 font-mono text-sm leading-relaxed text-pretty text-muted-foreground sm:px-6 sm:py-6">
+          <p>{t("clientsBody")}</p>
+        </PanelContent>
+      </Panel>
+
+      <Panel className="border-x-0">
+        <PanelHeader className="px-4 py-3 sm:px-6">
+          <PanelTitle className="text-2xl sm:text-3xl">
+            {t("processTitle")}
+          </PanelTitle>
+        </PanelHeader>
+        <PanelContent className="px-4 py-5 font-mono text-sm leading-relaxed text-pretty text-muted-foreground sm:px-6 sm:py-6">
+          <p>{t("processBody")}</p>
         </PanelContent>
       </Panel>
 
@@ -120,7 +145,17 @@ export async function HirePageView({ locale }: { locale: "en" | "vi" }) {
         </PanelContent>
       </Panel>
 
-      <div className="h-10 sm:h-12" />
+      <div className="screen-line-before space-y-4 px-4 py-8 sm:px-6">
+        <p className="font-mono text-sm text-muted-foreground">
+          {t("availabilityNote")}
+        </p>
+        <Button asChild>
+          <Link href="/contact">
+            {t("ctaContact")}
+            <ArrowUpRightIcon />
+          </Link>
+        </Button>
+      </div>
     </div>
   )
 }

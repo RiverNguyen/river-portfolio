@@ -29,6 +29,7 @@ import type { Post } from "@/features/blog/types/post"
 import { ProfileMascot } from "@/features/portfolio/components/profile-mascot"
 import { USER } from "@/features/portfolio/data/user"
 import { Link } from "@/i18n/navigation"
+import { PERSON_ID } from "@/lib/person-jsonld"
 import {
   getAbsoluteUrl,
   getLanguageAlternates,
@@ -114,12 +115,14 @@ function getPageJsonLd(post: Post, locale: string): WithContext<PageSchema> {
     dateModified: new Date(post.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
+      "@id": PERSON_ID,
       name: USER.displayName,
       url: SITE_INFO.url,
       image: getAbsoluteUrl(USER.avatar),
     },
     publisher: {
       "@type": "Person",
+      "@id": PERSON_ID,
       name: USER.displayName,
     },
     inLanguage: locale === "vi" ? "vi" : "en",
@@ -248,6 +251,15 @@ export default async function Page({
         <div>
           <MDX code={post.content} />
         </div>
+        <p className="not-prose mt-8 border-t border-edge pt-4 font-mono text-sm text-muted-foreground">
+          {t("hirePrompt")}{" "}
+          <Link
+            href="/hire"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+          >
+            {t("hireLink")}
+          </Link>
+        </p>
         <PostEndReaction />
       </Prose>
 

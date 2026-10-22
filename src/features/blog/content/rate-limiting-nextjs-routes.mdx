@@ -49,3 +49,10 @@ Trust that header only behind a proxy you control. If the app is reachable direc
 ## What this does not do
 
 It does not prove the visitor is human. It does not replace auth on a route that changes data you care about. View counts still only increment for slugs that exist, and chat still validates the body with Zod before any model call. The limiter is the first cheap check, not the only one.
+
+## Related on this site
+
+- [Counting blog views once](/blog/counting-blog-views-once) — where the 60/min views limit shows up
+- [Chatbot without Gemini](/blog/chatbot-that-answers-without-gemini) — the 20/min chat limit
+- [Visitor stats without a disk](/blog/visitor-stats-without-a-disk) — 30/min on `/api/visitors`
+- [Rebuilding this portfolio](/blog/rebuilding-my-developer-portfolio) — context for these routes

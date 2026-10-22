@@ -25,9 +25,10 @@ export default async function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            getPersonJsonLd(portfolioLocale, { pagePath: "/hire" })
-          ).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPersonJsonLd(portfolioLocale)).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
       <HirePageView locale={portfolioLocale} />

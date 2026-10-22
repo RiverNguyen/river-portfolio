@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   transpilePackages: ["next-mdx-remote"],
-  allowedDevOrigins: ["chanhdai-macbook.local"],
   turbopack: {
     root: path.join(__dirname, "."),
   },

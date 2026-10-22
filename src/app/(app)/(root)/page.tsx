@@ -16,6 +16,7 @@ import { ProfileHeader } from "@/features/portfolio/components/profile-header"
 import { Projects } from "@/features/portfolio/components/projects"
 import { SocialLinks } from "@/features/portfolio/components/social-links"
 import { TechStack } from "@/features/portfolio/components/tech-stack"
+import { getAllPosts } from "@/features/blog/data/posts"
 import { getUserByLocale } from "@/features/portfolio/data/user"
 import { Visitors } from "@/features/visitors/components/visitors"
 import { getPersonJsonLd } from "@/lib/person-jsonld"
@@ -89,6 +90,10 @@ export default async function Page() {
 
 function getPageJsonLd(locale: "en" | "vi"): WithContext<PageSchema> {
   const user = getUserByLocale(locale)
+  const latestPost = getAllPosts(locale)[0]
+  const dateModified = latestPost
+    ? new Date(latestPost.metadata.updatedAt).toISOString()
+    : new Date(user.dateCreated).toISOString()
 
   return {
     "@context": "https://schema.org",
@@ -96,7 +101,7 @@ function getPageJsonLd(locale: "en" | "vi"): WithContext<PageSchema> {
     name: `${user.displayName} | ${user.jobTitle}`,
     url: getLocalizedUrl("/", locale),
     dateCreated: new Date(user.dateCreated).toISOString(),
-    dateModified: new Date().toISOString(),
+    dateModified,
     inLanguage: locale,
     mainEntity: getPersonJsonLd(locale),
   }

@@ -1027,12 +1027,12 @@ const ARCHITECTURE: Record<string, { en: string[]; vi: string[] }> = {
     vi: ["Gói", "Bộ lọc", "Next.js", "Checkout"],
   },
   "luxury-travel-brand": {
-    en: ["Editorial", "Next.js", "Media budget", "CMS"],
-    vi: ["Editorial", "Next.js", "Ngân sách media", "CMS"],
+    en: ["Editorial", "WordPress theme", "GSAP", "ACF"],
+    vi: ["Editorial", "Theme WordPress", "GSAP", "ACF"],
   },
   "ai-product-brand": {
-    en: ["Product story", "Next.js", "Motion", "Knowledge hub"],
-    vi: ["Câu chuyện sản phẩm", "Next.js", "Motion", "Knowledge hub"],
+    en: ["Product story", "WordPress theme", "GSAP", "ACF"],
+    vi: ["Câu chuyện sản phẩm", "Theme WordPress", "GSAP", "ACF"],
   },
 }
 

@@ -49,3 +49,10 @@ Chỉ tin header đó khi đứng sau proxy mình kiểm soát. App mở thẳng
 ## Thứ này không làm
 
 Nó không chứng minh khách là người. Nó không thay auth trên route sửa dữ liệu quan trọng. Lượt xem vẫn chỉ tăng với slug có thật, chat vẫn validate body bằng Zod trước khi gọi model. Limiter là bước rẻ đầu tiên, không phải bước duy nhất.
+
+## Liên quan trên site
+
+- [Đếm lượt xem blog một lần](/blog/counting-blog-views-once) — trần 60 lần/phút cho views
+- [Chatbot khi Gemini tắt](/blog/chatbot-that-answers-without-gemini) — trần 20 lần/phút cho chat
+- [Thống kê khách không phụ thuộc đĩa](/blog/visitor-stats-without-a-disk) — 30 lần/phút trên `/api/visitors`
+- [Xây lại portfolio](/blog/rebuilding-my-developer-portfolio) — ngữ cảnh các route này

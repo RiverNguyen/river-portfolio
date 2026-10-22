@@ -3,11 +3,17 @@ import type { Metadata } from "next"
 import { SponsorItem } from "@/features/sponsors/components/sponsor-item"
 import { SponsorItemPlus } from "@/features/sponsors/components/sponsor-item-plus"
 import { sponsors } from "@/features/sponsors/data"
+import { createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Sponsors",
-  description:
-    "Grateful for the support that helps me grow and maintain high-quality projects.",
+const DESCRIPTION =
+  "Grateful for the support that helps me grow and maintain high-quality projects."
+
+export async function generateMetadata(): Promise<Metadata> {
+  return createPageMetadata({
+    path: "/sponsors",
+    title: "Sponsors",
+    description: DESCRIPTION,
+  })
 }
 
 export default function Page() {
@@ -19,7 +25,7 @@ export default function Page() {
 
       <div className="p-4">
         <p className="font-mono text-sm text-balance text-muted-foreground">
-          {metadata.description}
+          {DESCRIPTION}
         </p>
       </div>
 

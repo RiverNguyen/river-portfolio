@@ -1,15 +1,11 @@
-import dynamic from "next/dynamic"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, setRequestLocale } from "next-intl/server"
 
+import { DeferredAiChat } from "@/components/deferred-ai-chat"
 import { ScrollToHash } from "@/components/scroll-to-hash"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { routing } from "@/i18n/routing"
-
-const AiChat = dynamic(() =>
-  import("@/features/chatbot/components/ai-chat").then((mod) => mod.AiChat)
-)
 
 export default async function AppLayout({
   children,
@@ -27,7 +23,7 @@ export default async function AppLayout({
       <SiteHeader />
       <main className="max-w-screen overflow-x-hidden px-2">{children}</main>
       <SiteFooter />
-      <AiChat />
+      <DeferredAiChat />
     </NextIntlClientProvider>
   )
 }
