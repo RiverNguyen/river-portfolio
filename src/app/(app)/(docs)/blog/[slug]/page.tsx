@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/button"
 import { Prose } from "@/components/ui/typography"
 import { SITE_INFO } from "@/config/site"
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts"
+import { PostList } from "@/features/blog/components/post-list"
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions"
 import { PostPaginationButton } from "@/features/blog/components/post-pagination-button"
 import { PostShareMenu } from "@/features/blog/components/post-share-menu"
+import { PostViews } from "@/features/blog/components/post-views"
 import {
   findNeighbour,
   getAllPosts,
@@ -142,6 +144,9 @@ export default async function Page({
 
   const allPosts = getAllPosts(blogLocale)
   const { previous, next } = findNeighbour(allPosts, slug)
+  const morePosts = allPosts
+    .filter((p) => p.slug !== slug && p.metadata.category !== "components")
+    .slice(0, 2)
 
   return (
     <>
@@ -229,6 +234,7 @@ export default async function Page({
               </time>
               {" · "}
               {t("minRead", { minutes: readingMinutes(post.content) })}
+              <PostViews slug={post.slug} />
             </p>
             <p className="mt-1 max-w-prose">{t("authorBio")}</p>
           </div>
@@ -240,6 +246,15 @@ export default async function Page({
           <MDX code={post.content} />
         </div>
       </Prose>
+
+      {morePosts.length > 0 && (
+        <section className="screen-line-before mt-8">
+          <h2 className="screen-line-after px-4 pt-4 text-2xl font-semibold">
+            {t("keepReading")}
+          </h2>
+          <PostList posts={morePosts} />
+        </section>
+      )}
 
       <div className="screen-line-before h-4 w-full" />
     </>

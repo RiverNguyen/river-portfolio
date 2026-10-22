@@ -28,7 +28,9 @@
     "published": "Đăng",
     "updated": "Cập nhật",
     "minRead": "{minutes} phút đọc",
-    "authorBio": "Lập trình viên frontend ở Hà Nội. Mình viết về Next.js, WordPress và hiệu năng của những thứ mình thực sự ship."
+    "authorBio": "Lập trình viên frontend ở Hà Nội. Mình viết về Next.js, WordPress và hiệu năng của những thứ mình thực sự ship.",
+    "views": "{count} lượt xem",
+    "keepReading": "Đọc tiếp"
   },
   "ProjectsPage": {
     "title": "Dự án",
