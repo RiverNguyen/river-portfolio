@@ -235,7 +235,8 @@
     "contactCtaStatus": "Available for work",
     "contactCtaTitle": "Got an idea? Let's ship it.",
     "contactCtaDescription": "Brand sites, product UIs, or a rebuild that needs to feel fast — drop a line and I'll reply soon.",
-    "contactCtaAction": "Start a conversation"
+    "contactCtaAction": "Start a conversation",
+    "nowListening": "Listening"
   },
   "Visitors": {
     "title": "Insights",

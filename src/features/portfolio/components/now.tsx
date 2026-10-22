@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
 import { getNowByLocale } from "../data/now"
+import { NowPlaying } from "./now-playing"
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"
 
 export async function Now() {
@@ -72,6 +73,7 @@ export async function Now() {
             </div>
           )
         })}
+        <NowPlaying />
       </PanelContent>
     </Panel>
   )
