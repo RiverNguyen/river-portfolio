@@ -40,11 +40,17 @@ pnpm install
 
 Create a `.env` (or `.env.local`) as needed. Common variables:
 
-| Variable                            | Description                                            |
-| ----------------------------------- | ------------------------------------------------------ |
-| `APP_URL`                           | Public site URL (default: `https://rivernguyen.id.vn`) |
-| `GMAIL_USER` / `GMAIL_APP_PASSWORD` | Contact form (Nodemailer)                              |
-| `RESEND_API_KEY` / `RESEND_FROM`    | Optional email via Resend                              |
+| Variable                                               | Description                                                                                                                        |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `APP_URL`                                              | Public site URL (default: `https://rivernguyen.id.vn`)                                                                             |
+| `GMAIL_USER` / `GMAIL_APP_PASSWORD`                    | Contact form (Nodemailer)                                                                                                          |
+| `RESEND_API_KEY` / `RESEND_FROM`                       | Optional email via Resend                                                                                                          |
+| `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`  | Rate limiting, visitor stats and blog views (`KV_REST_API_*` also works). Without it, limits are per-instance and views are hidden |
+| `GOOGLE_GENERATIVE_AI_API_KEY`                         | Gemini for the chatbot; falls back to canned local replies                                                                         |
+| `GITHUB_API_TOKEN`                                     | GitHub stars count in the nav                                                                                                      |
+| `NEXT_PUBLIC_POSTHOG_KEY` / `NEXT_PUBLIC_POSTHOG_HOST` | PostHog analytics                                                                                                                  |
+| `NEXT_PUBLIC_OPENPANEL_CLIENT_ID`                      | OpenPanel analytics                                                                                                                |
+| `VISITORS_DATA_PATH`                                   | Visitor stats JSON file when Redis is not set (default: `data/visitors.json`)                                                      |
 
 ### Develop
 

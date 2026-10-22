@@ -29,6 +29,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "check-types": "tsc --noEmit --pretty",
+    "test": "tsx --test \"src/**/*.test.ts\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,mdx}\" --cache",
     "format:write": "prettier --write \"**/*.{ts,tsx,md,mdx}\" --cache",
     "registry:internal:build": "tsx --tsconfig ./tsconfig.scripts.json ./src/scripts/build-registry.mts",
