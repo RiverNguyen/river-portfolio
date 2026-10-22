@@ -1,10 +1,10 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Mascot } from "page-mascot"
 import { useCallback, useRef } from "react"
 import { toast } from "sonner"
 
+import { Mascot } from "@/components/mascot"
 import { useSoundLazy } from "@/hooks/use-sound"
 import { cn } from "@/lib/utils"
 

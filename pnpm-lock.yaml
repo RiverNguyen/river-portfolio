@@ -129,9 +129,6 @@ importers:
       nuqs:
         specifier: ^2.10.2
         version: 2.10.2(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.0)(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
-      page-mascot:
-        specifier: ^0.1.0
-        version: 0.1.0(react@19.3.1)
       posthog-js:
         specifier: ^1.438.14
         version: 1.438.14(@types/react@19.3.0)(react@19.3.1)
@@ -6180,12 +6177,6 @@ packages:
 
   package-manager-detector@1.9.0:
     resolution: {integrity: sha512-zAMfbta9nPA8AKkA4WdmNAT8R8s6Dk0/xwPsqNnRidMFcLo1YkLuPDTgs2f64XdzS8vbLNnoJ+uUIkgbz7oRHA==}
-
-  page-mascot@0.1.0:
-    resolution: {integrity: sha512-sw/BIqRKJ7nUfaxAGtmwQqm534I+lb2ZiXLDWZNexR1VF1RkmRl6BLVtj7hH+PrsiCPKtxHhA3IpVkXEm72FeA==}
-    engines: {node: '>=20'}
-    peerDependencies:
-      react: '>=18'
 
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
@@ -14043,10 +14034,6 @@ snapshots:
   package-json-from-dist@1.0.1: {}
 
   package-manager-detector@1.9.0: {}
-
-  page-mascot@0.1.0(react@19.3.1):
-    dependencies:
-      react: 19.3.1
 
   parent-module@1.0.1:
     dependencies:

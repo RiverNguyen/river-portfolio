@@ -1,7 +1,6 @@
 "use client"
 
-import { Mascot } from "page-mascot"
-
+import { Mascot } from "@/components/mascot"
 import { cn } from "@/lib/utils"
 
 type ChatMascotAvatarProps = {

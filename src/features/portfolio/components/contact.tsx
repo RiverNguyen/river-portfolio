@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { reactMascot } from "@/components/mascot"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -77,6 +78,7 @@ export function Contact() {
       }
 
       toast.success(t("toast.sendSuccess"))
+      reactMascot("heart")
       form.reset(defaultValues)
     } catch {
       toast.error(t("toast.sendFail"))

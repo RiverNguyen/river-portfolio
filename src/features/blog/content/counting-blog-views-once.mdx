@@ -1,0 +1,35 @@
+---
+title: Counting Blog Views Once, and Hiding the Number When Redis Is Off
+description: A per-post counter that only increments for real slugs, once per browser session, and stays invisible when Upstash is not configured.
+image: /blogs/next.webp
+new: true
+createdAt: 2026-10-22
+updatedAt: 2026-10-22
+---
+
+A view count is decoration until it inflates itself. Refreshing the tab, prefetching the route, or posting an unknown slug should not mint a new number. On this site the counter is a single Redis integer per post, and the page hides it when that store is missing.
+
+## Only slugs that exist
+
+`GET` and `POST /api/views` read `slug` from the query string and accept it only if `getAllPosts()` already has that file. Anything else is `404`. Arbitrary input never becomes a Redis key.
+
+```ts
+const views = await redis.incr(`blog:views:${slug}`)
+return NextResponse.json({ views })
+```
+
+`GET` reads the same key and treats a missing value as `0`. No Redis client means `{ views: null }` for both methods. The UI renders nothing when `views` is null, so a laptop without Upstash does not show a fake zero.
+
+## Once per tab session
+
+The client stores `rv_post_viewed:${slug}` in `sessionStorage`. The first visit in that tab sends `POST`. Later visits, including a refresh, send `GET` and leave the integer alone. A new tab is a new session, which is the trade I want: one person reading again tomorrow still counts, one person hammering reload does not.
+
+The flag is written only after a successful response. A `429` or a network error does not mark the post as seen, so the next try can still increment.
+
+`POST` is also rate limited at 60 requests per IP per minute, with the same helper the chat route uses. The slug check and the limiter are the whole abuse story. There is no account and no fingerprint.
+
+## What this does not survive
+
+Redis is the counter. Without `UPSTASH_REDIS_REST_URL` and its token (or the `KV_REST_API_*` names), the number is not stored in a JSON file and not kept in memory. A process restart would forget an in-memory count, and a serverless disk would forget a file. Hiding the widget is clearer than showing a number that resets on every deploy.
+
+The count is not unique people. Two browsers are two views. Clearing site data for the tab starts a new session. That is enough for a byline. It is not analytics.

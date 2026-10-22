@@ -1,0 +1,64 @@
+---
+title: A Portfolio Chatbot That Still Answers When Gemini Is Down
+description: One text stream, two backends. Gemini when the key works, a local phrase matcher when it doesn’t — same UI, no empty chat.
+image: /blogs/next.webp
+createdAt: 2026-10-21
+updatedAt: 2026-10-22
+---
+
+A chatbot on a portfolio is a nice extra until the model key is missing, the quota is gone, or the request times out. The widget should still answer “what have you shipped?” without a spinner that never ends.
+
+On this site the chat route always returns a plain-text stream. Gemini fills it when it can. A local matcher fills it when Gemini returns nothing.
+
+## One response shape
+
+The client does not care which brain wrote the tokens. Both paths send `text/plain` and `Cache-Control: no-store`. A response header tells me which one ran:
+
+```ts
+if (geminiStream) {
+  return new Response(geminiStream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-River-Chat": "gemini",
+    },
+  })
+}
+
+return new Response(localStream, {
+  headers: {
+    "Content-Type": "text/plain; charset=utf-8",
+    "X-River-Chat": "local",
+  },
+})
+```
+
+`streamGeminiReply` returns `null` when there is no `GOOGLE_GENERATIVE_AI_API_KEY`, the fetch throws, the status is not ok, or the body is empty. Null means fall through. It does not mean show an error toast.
+
+## What Gemini is allowed to say
+
+The system prompt is the portfolio, not the open web: about, experience, projects, awards, and the blog list. If the answer is not in that text, the model is told to say it doesn’t know and link `/contact`. Hiring questions go to `/hire`.
+
+History is capped at the last 12 turns. Output is capped. The request aborts after 20 seconds. A hung model should not hold the function open.
+
+## The local matcher
+
+Without a model I still need an answer in English or Vietnamese. The fallback scores the latest user message against phrase lists: greeting, projects, stack, experience, hire, contact, resume, blog, now, social.
+
+JavaScript `\b` breaks on Vietnamese letters, so the patterns use a Unicode lookaround instead of a word boundary. The highest-weight hit wins. No hit gets a short fallback that points at real pages.
+
+The local reply is then streamed word by word with a tiny delay, so the UI still feels like a reply instead of a pasted paragraph.
+
+## Guard the route first
+
+Neither backend runs until the request is boring and small:
+
+- 20 messages per IP per minute, then `429`
+- Zod: at most 24 messages, locale `en` or `vi`
+- Latest user text sliced to 2000 characters
+- Empty text is `400`
+
+The local matcher is not a jailbreak. It only knows this site. Gemini is told the same boundary. A visitor asking for a general coding tutorial gets a refusal and two example questions about the portfolio.
+
+## When to upgrade
+
+This is enough for a personal site. It is the wrong shape for a support bot that must remember tickets or call tools. If the local answers start feeling thin, add facts to the profile text both backends already read — don’t add a third model.

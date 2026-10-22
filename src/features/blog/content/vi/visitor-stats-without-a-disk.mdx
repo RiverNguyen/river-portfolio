@@ -1,0 +1,41 @@
+---
+title: Thống kê khách mà không phụ thuộc đĩa server
+description: Portfolio này đếm visitor, session và page view thế nào — Redis khi đã cấu hình, file JSON trên máy sống lâu, và bỏ qua khi đĩa chỉ đọc.
+image: /blogs/next.webp
+createdAt: 2026-10-18
+updatedAt: 2026-10-22
+---
+
+Biểu đồ khách dễ giả bằng một file trong repo. Cũng dễ mất. Host serverless xóa filesystem mỗi lần deploy. Bộ đếm ghi vào `data/visitors.json` ổn trong Docker và về không trên Vercel.
+
+Store chọn một backend lúc đọc. Có credential Upstash thì dùng Upstash. Không thì file JSON. Ghi lỗi thì log, request trang vẫn thành công.
+
+## Ba số, hai cookie
+
+`POST /api/visitors` với body rỗng ghi một page view. Hai cookie httpOnly quyết định còn tăng gì nữa:
+
+- `rv_vid` sống một năm. Thiếu nghĩa là visitor mới.
+- `rv_vsid` không có `maxAge`, nên chết theo phiên trình duyệt. Thiếu nghĩa là session mới.
+
+Mỗi POST được nhận đều cộng một view. Có visitor id mới thì cộng thêm một visitor. Có session id mới thì cộng thêm một session. Id là UUID ngẫu nhiên. Server không lưu chúng, chỉ lưu câu “cookie này đã có chưa?”
+
+Body JSON `{ durationMs }` là lần ghi khác: cộng vào tổng thời lượng, kẹp từ 1 giây đến 1 giờ. Không đẻ thêm view.
+
+## Bucket theo ngày
+
+Tổng và mảng `daily` nằm trong một object, key Redis `visitors:store`, hoặc trong file JSON. Mỗi ngày là `{ date, visitors, sessions, views }`. Mảng sắp mới nhất trước và cắt ở 400 ngày. Insights cho chart cộng một cửa sổ rồi so với cửa sổ trước cùng độ dài.
+
+Đường file mặc định là `data/visitors.json`, đổi được bằng `VISITORS_DATA_PATH`. Đường đó dành cho VPS hoặc container có volume. Sai chỗ trên host có đĩa tạm.
+
+## Lỗi thì im
+
+```ts
+} catch (error) {
+  // Đĩa chỉ đọc mà không có Redis không được làm hỏng trang.
+  console.error("[Visitors] Failed to persist store:", error)
+}
+```
+
+Redis chưa set và file không tạo được thì bộ đếm đứng yên, khách vẫn nhận response. Đọc lỗi thì trả store rỗng thay vì ném vào trang. Chart có thể hiện số không. Nó không được kéo site xuống.
+
+Route bị rate limit 30 request mỗi IP mỗi phút trước khi làm những việc trên. Cookie là `sameSite: "lax"` và `secure` khi production. Đủ chặn POST xuyên site kiểu sơ sài. Không chặn người curl thẳng endpoint. Các số này là phác thảo traffic, không phải báo cáo để tính tiền.

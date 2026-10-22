@@ -1,0 +1,41 @@
+---
+title: Visitor Stats That Don’t Depend on the Server Disk
+description: How this portfolio counts visitors, sessions, and page views — Redis when it is configured, a JSON file on a long-lived box, and a no-op when the disk is read-only.
+image: /blogs/next.webp
+createdAt: 2026-10-18
+updatedAt: 2026-10-22
+---
+
+A visitor chart is easy to fake with a file in the repo. It is also easy to lose. Serverless hosts wipe the filesystem on every deploy. A counter written to `data/visitors.json` looks fine in Docker and goes back to zero on Vercel.
+
+The store picks one backend at read time. Upstash if the credentials exist. A JSON file otherwise. A failed write is logged and the page request still succeeds.
+
+## Three numbers, two cookies
+
+`POST /api/visitors` with an empty body records a page view. Two httpOnly cookies decide what else increments:
+
+- `rv_vid` lasts a year. Missing means a new visitor.
+- `rv_vsid` has no `maxAge`, so it dies with the browser session. Missing means a new session.
+
+Every accepted POST adds one view. A new visitor id also adds one visitor. A new session id also adds one session. The ids are random UUIDs. The server never stores them, only the booleans “was this cookie already here?”
+
+A JSON body `{ durationMs }` is a different write: it adds to the duration total, clamped between 1 second and 1 hour. It does not mint another view.
+
+## Daily buckets
+
+Totals and a `daily` array live in one object under the Redis key `visitors:store`, or in the JSON file. Each day is `{ date, visitors, sessions, views }`. The array is sorted newest first and cut at 400 days. Insights for the chart sum a window and compare it with the previous window of the same length.
+
+The file path defaults to `data/visitors.json` and can be moved with `VISITORS_DATA_PATH`. That path is for a VPS or a container with a volume. It is the wrong place on a host whose disk is ephemeral.
+
+## Failure stays quiet
+
+```ts
+} catch (error) {
+  // A read-only disk without Redis must not fail the page.
+  console.error("[Visitors] Failed to persist store:", error)
+}
+```
+
+If Redis is unset and the file cannot be created, the counter does not move and the visitor still gets a response. A read error returns an empty store instead of throwing into the page. The chart can show zeros. It should not take the site down.
+
+The route is rate limited at 30 requests per IP per minute before any of this runs. Cookies are `sameSite: "lax"` and `secure` in production. That stops casual cross-site posts. It does not stop someone from curling the endpoint. The numbers are a sketch of traffic, not a billable report.

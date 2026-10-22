@@ -1,0 +1,51 @@
+---
+title: Rate limit route Next.js khi Redis có thể không có
+description: Một limiter cho chat và lượt xem — Upstash khi đã cấu hình, bucket trong memory khi chưa, và vì sao fallback đó chỉ là chốt local.
+image: /blogs/next.webp
+createdAt: 2026-10-12
+updatedAt: 2026-10-22
+---
+
+Route API public trên portfolio sẽ bị chọc. Liên hệ, chat và lượt xem không cần limiter toàn cục hoàn hảo ngay ngày đầu. Chúng cần một trần để một client không quay function hoặc ghi Redis mãi.
+
+Mình dùng một helper. Ưu tiên Upstash. Redis chưa set hoặc lệnh ném lỗi thì đếm trong memory của process.
+
+## Đường Redis
+
+```ts
+const count = await redis.incr(key)
+if (count === 1) await redis.pexpire(key, windowMs)
+return count > limit
+```
+
+`INCR` tạo key ở `1`. Hit đầu đặt TTL. Các hit sau trong cửa sổ chỉ tăng số, nên cửa sổ không bị đẩy về phía trước mỗi request. Quá limit thì trả true và route đáp `429`.
+
+Key tách riêng: `chat:rate:${ip}` là 20 lần mỗi phút, `views:rate:${ip}` là 60 lần mỗi phút. Người chat nhiều không nên bị khóa lượt xem, và một loạt view không nên làm chatbot câm.
+
+## Đường memory
+
+Không có `UPSTASH_REDIS_REST_URL` (hoặc `KV_REST_API_*`) thì dùng `Map` `{ count, resetAt }` trên instance đó. Redis lỗi thì log rồi rơi xuống cùng map. Route vẫn giới hạn. Không mở cửa unlimited.
+
+Map đó không phải limiter cho production nhiều máy:
+
+- Mỗi instance một bộ bucket riêng
+- Restart hoặc deploy mới xóa sạch
+- Hai instance có thể mỗi bên cho đủ limit
+
+Dev local và một container thì ổn. Host nhiều instance thì phải set Upstash, không thì limit chỉ là phép lịch sự.
+
+## IP nào
+
+```ts
+const forwarded = req.headers.get("x-forwarded-for")
+if (forwarded) return forwarded.split(",")[0]?.trim() || "unknown"
+return req.headers.get("x-real-ip") || "unknown"
+```
+
+Hop đầu trong `x-forwarded-for` là client mà proxy khai đã thấy. Thiếu cả hai header thì thành key chung `"unknown"`, các request đó dùng chung một bucket thay vì mỗi request một key.
+
+Chỉ tin header đó khi đứng sau proxy mình kiểm soát. App mở thẳng ra internet thì client tự gửi `x-forwarded-for` và né bucket.
+
+## Thứ này không làm
+
+Nó không chứng minh khách là người. Nó không thay auth trên route sửa dữ liệu quan trọng. Lượt xem vẫn chỉ tăng với slug có thật, chat vẫn validate body bằng Zod trước khi gọi model. Limiter là bước rẻ đầu tiên, không phải bước duy nhất.

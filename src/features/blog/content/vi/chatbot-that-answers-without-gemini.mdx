@@ -1,0 +1,64 @@
+---
+title: Chatbot portfolio vẫn trả lời khi Gemini tắt
+description: Một stream text, hai backend. Gemini khi key còn dùng được, matcher cụm từ khi không — cùng UI, không để khung chat trống.
+image: /blogs/next.webp
+createdAt: 2026-10-21
+updatedAt: 2026-10-22
+---
+
+Chatbot trên portfolio dễ thương cho đến khi thiếu key, hết quota, hoặc request timeout. Widget vẫn phải trả lời “đã ship những gì?” chứ không được quay spinner mãi.
+
+Trên site này route chat luôn trả stream plain text. Gemini điền khi gọi được. Matcher local điền khi Gemini không trả gì.
+
+## Một dạng response
+
+Client không cần biết token do não nào viết. Cả hai đường đều gửi `text/plain` và `Cache-Control: no-store`. Header cho mình biết đường nào vừa chạy:
+
+```ts
+if (geminiStream) {
+  return new Response(geminiStream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-River-Chat": "gemini",
+    },
+  })
+}
+
+return new Response(localStream, {
+  headers: {
+    "Content-Type": "text/plain; charset=utf-8",
+    "X-River-Chat": "local",
+  },
+})
+```
+
+`streamGeminiReply` trả `null` khi không có `GOOGLE_GENERATIVE_AI_API_KEY`, fetch ném lỗi, status không ok, hoặc body rỗng. Null nghĩa là rơi xuống local. Không phải hiện toast lỗi.
+
+## Gemini được phép nói gì
+
+System prompt là portfolio, không phải web mở: giới thiệu, kinh nghiệm, dự án, giải thưởng, và danh sách blog. Câu trả lời không nằm trong đó thì model phải nói không biết và dẫn `/contact`. Câu thuê người dẫn tới `/hire`.
+
+Lịch sử cắt còn 12 lượt cuối. Output có trần. Request hủy sau 20 giây. Model treo không được giữ function mở.
+
+## Matcher local
+
+Không có model thì vẫn cần câu trả lời tiếng Anh hoặc tiếng Việt. Fallback chấm điểm tin nhắn mới nhất theo các cụm: chào, dự án, stack, kinh nghiệm, thuê, liên hệ, CV, blog, đang làm, mạng xã hội.
+
+`\b` của JavaScript gãy trên chữ Việt, nên pattern dùng lookaround Unicode thay vì word boundary. Cụm nặng điểm nhất thắng. Không khớp thì một câu ngắn trỏ tới trang thật.
+
+Câu local được stream từng từ với delay rất nhỏ, để UI vẫn giống một câu trả lời chứ không phải một đoạn paste.
+
+## Chặn route trước
+
+Không backend nào chạy khi request chưa nhỏ và nhàm:
+
+- 20 tin mỗi IP mỗi phút, quá thì `429`
+- Zod: tối đa 24 message, locale `en` hoặc `vi`
+- Text người dùng mới nhất cắt còn 2000 ký tự
+- Text rỗng là `400`
+
+Matcher local không phải cửa jailbreak. Nó chỉ biết site này. Gemini bị buộc cùng biên đó. Khách hỏi tutorial code chung thì bị từ chối và được gợi ý hai câu hỏi về portfolio.
+
+## Khi nào đổi cách
+
+Đủ cho site cá nhân. Sai hình cho bot support phải nhớ ticket hoặc gọi tool. Câu local bắt đầu mỏng thì thêm fact vào profile text mà cả hai backend đã đọc — đừng thêm model thứ ba.

@@ -1,0 +1,35 @@
+---
+title: Đếm lượt xem blog một lần, và giấu số khi không có Redis
+description: Bộ đếm theo bài chỉ tăng với slug có thật, một lần mỗi phiên trình duyệt, và biến mất khi Upstash chưa được cấu hình.
+image: /blogs/next.webp
+new: true
+createdAt: 2026-10-22
+updatedAt: 2026-10-22
+---
+
+Lượt xem chỉ là trang trí nếu tự phình lên. Refresh tab, prefetch route, hay POST một slug không tồn tại không được phép đẻ thêm số. Trên site này mỗi bài là một số nguyên Redis, và trang giấu số đó khi kho không có.
+
+## Chỉ slug có thật
+
+`GET` và `POST /api/views` lấy `slug` từ query và chỉ nhận nếu `getAllPosts()` đã có file đó. Còn lại là `404`. Input tùy tiện không bao giờ thành Redis key.
+
+```ts
+const views = await redis.incr(`blog:views:${slug}`)
+return NextResponse.json({ views })
+```
+
+`GET` đọc cùng key và coi giá trị thiếu là `0`. Không có Redis client thì cả hai method trả `{ views: null }`. UI không render gì khi `views` là null, nên máy không có Upstash không hiện số 0 giả.
+
+## Một lần mỗi phiên tab
+
+Client lưu `rv_post_viewed:${slug}` trong `sessionStorage`. Lần đầu trong tab đó gửi `POST`. Những lần sau, kể cả refresh, gửi `GET` và không đụng tới số. Tab mới là phiên mới. Đó là cách mình chọn: ngày mai đọc lại vẫn tính, reload liên tục thì không.
+
+Cờ chỉ được ghi sau response thành công. `429` hoặc lỗi mạng không đánh dấu bài đã xem, nên lần thử sau vẫn tăng được.
+
+`POST` còn bị rate limit 60 request mỗi IP mỗi phút, cùng helper với route chat. Kiểm tra slug và limiter là toàn bộ phần chống lạm dụng. Không tài khoản, không fingerprint.
+
+## Thứ này không sống sót
+
+Redis là bộ đếm. Không có `UPSTASH_REDIS_REST_URL` và token (hoặc tên `KV_REST_API_*`) thì số không ghi ra file JSON và không giữ trong memory. Process restart sẽ quên số trong memory, đĩa serverless sẽ quên file. Giấu widget rõ hơn là hiện một số reset mỗi lần deploy.
+
+Số này không phải số người. Hai trình duyệt là hai lượt. Xóa dữ liệu site của tab là một phiên mới. Đủ cho dòng byline. Không phải analytics.

@@ -8,10 +8,12 @@ import {
   XIcon,
 } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
+import { useTheme } from "next-themes"
 import { useEffect, useId, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
+import { reactMascot } from "@/components/mascot"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import { Button } from "@/components/ui/button"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
@@ -85,6 +87,16 @@ export function AiChat() {
   const listRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
   const counterRef = useRef(0)
+  const { resolvedTheme } = useTheme()
+  const prevThemeRef = useRef(resolvedTheme)
+
+  // Mounted on every page, so this catches theme switches from any control, not the initial resolve.
+  useEffect(() => {
+    const prev = prevThemeRef.current
+    prevThemeRef.current = resolvedTheme
+    if (!prev || !resolvedTheme || prev === resolvedTheme) return
+    reactMascot(resolvedTheme === "dark" ? "sleepy" : "delighted")
+  }, [resolvedTheme])
 
   function nextId(role: string) {
     counterRef.current += 1

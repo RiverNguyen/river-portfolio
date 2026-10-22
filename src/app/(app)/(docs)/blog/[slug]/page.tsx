@@ -10,6 +10,7 @@ import { MDX } from "@/components/mdx"
 import { Button } from "@/components/ui/button"
 import { Prose } from "@/components/ui/typography"
 import { SITE_INFO } from "@/config/site"
+import { PostEndReaction } from "@/features/blog/components/post-end-reaction"
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts"
 import { PostList } from "@/features/blog/components/post-list"
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions"
@@ -245,6 +246,7 @@ export default async function Page({
         <div>
           <MDX code={post.content} />
         </div>
+        <PostEndReaction />
       </Prose>
 
       {morePosts.length > 0 && (

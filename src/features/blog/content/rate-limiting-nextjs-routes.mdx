@@ -1,0 +1,51 @@
+---
+title: Rate Limiting Next.js Routes When Redis Might Be Missing
+description: One limiter for chat and view counts — Upstash when it is configured, an in-memory bucket when it is not, and why that fallback is only a local guard.
+image: /blogs/next.webp
+createdAt: 2026-10-12
+updatedAt: 2026-10-22
+---
+
+Public API routes on a portfolio get poked. Contact, chat, and view counts do not need a perfect global limiter on day one. They do need a ceiling so one client cannot spin the function or write Redis forever.
+
+I use one helper. It prefers Upstash. If Redis is unset or the call throws, it counts in process memory.
+
+## The Redis path
+
+```ts
+const count = await redis.incr(key)
+if (count === 1) await redis.pexpire(key, windowMs)
+return count > limit
+```
+
+`INCR` creates the key at `1`. The first hit sets the TTL. Later hits in that window only increment, so the window does not slide forward on every request. Over the limit returns true and the route responds `429`.
+
+Keys are specific: `chat:rate:${ip}` at 20 per minute, `views:rate:${ip}` at 60 per minute. A chatty visitor should not lock themselves out of a page view, and a view burst should not mute the chatbot.
+
+## The memory path
+
+No `UPSTASH_REDIS_REST_URL` (or `KV_REST_API_*`) means a `Map` of `{ count, resetAt }` on that instance. A Redis error logs and falls through to the same map. The route still limits. It does not fail open to unlimited.
+
+That map is not a product limiter:
+
+- Each server instance has its own buckets
+- A restart or a new deploy wipes them
+- Two instances can each allow the full limit
+
+For local dev and a single container that is fine. For a multi-instance host, set Upstash or the limit is a courtesy, not a guarantee.
+
+## Which IP
+
+```ts
+const forwarded = req.headers.get("x-forwarded-for")
+if (forwarded) return forwarded.split(",")[0]?.trim() || "unknown"
+return req.headers.get("x-real-ip") || "unknown"
+```
+
+The first hop in `x-forwarded-for` is the client the proxy claims to have seen. Missing both headers becomes the shared key `"unknown"`, so those requests share one bucket instead of each looking unique.
+
+Trust that header only behind a proxy you control. If the app is reachable directly, a client can send any `x-forwarded-for` and dodge the bucket.
+
+## What this does not do
+
+It does not prove the visitor is human. It does not replace auth on a route that changes data you care about. View counts still only increment for slugs that exist, and chat still validates the body with Zod before any model call. The limiter is the first cheap check, not the only one.
