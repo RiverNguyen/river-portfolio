@@ -3,9 +3,7 @@ import {
   getExperiencesByLocale,
   type PortfolioLocale,
 } from "@/features/portfolio/data/experiences"
-import {
-  getProjectsByLocale,
-} from "@/features/portfolio/data/projects"
+import { getProjectsByLocale } from "@/features/portfolio/data/projects"
 import { getUserByLocale } from "@/features/portfolio/data/user"
 import type { Experience } from "@/features/portfolio/types/experiences"
 import type { Project } from "@/features/portfolio/types/projects"
@@ -93,7 +91,7 @@ function mapProject(project: Project): ResumeProject {
   }
 }
 
-function mapEducation(exp: Experience, locale: PortfolioLocale): ResumeEducation[] {
+function mapEducation(exp: Experience): ResumeEducation[] {
   return exp.positions.map((position) => ({
     school: exp.companyName,
     period: formatPeriod(
@@ -165,7 +163,7 @@ export function buildResume(locale: PortfolioLocale): Resume {
     skills: buildSkills(workExperiences, projects, locale),
     projects: projects.map(mapProject),
     education: educationExperiences.flatMap((experience) =>
-      mapEducation(experience, locale)
+      mapEducation(experience)
     ),
   }
 }

@@ -13,7 +13,7 @@ export function ConsentManagerClient({
     <ClientSideOptionsProvider
       callbacks={{
         onConsentSet({ preferences }) {
-            applyPostHogConsent(Boolean(preferences.measurement))
+          applyPostHogConsent(Boolean(preferences.measurement))
         },
       }}
     >

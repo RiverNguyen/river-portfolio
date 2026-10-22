@@ -88,7 +88,7 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
     const interval = setInterval(updateTime, 60000)
 
     return () => clearInterval(interval)
-  }, [timeZone])
+  }, [timeZone, t])
 
   if (!timeString) {
     return (

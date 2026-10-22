@@ -123,7 +123,8 @@ export function StarfieldBackground({
         let opacity = depth * 0.85 + 0.12
         if (twinkle && star.twinkleSpeed > 0.015) {
           opacity *=
-            0.75 + 0.25 * Math.sin(tick * star.twinkleSpeed + star.twinkleOffset)
+            0.75 +
+            0.25 * Math.sin(tick * star.twinkleSpeed + star.twinkleOffset)
         }
 
         ctx.globalAlpha = opacity

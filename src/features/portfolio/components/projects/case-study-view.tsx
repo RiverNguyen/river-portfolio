@@ -191,7 +191,10 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
 
           <div className="grid grid-cols-2 divide-x divide-y divide-edge border border-edge sm:grid-cols-4 sm:divide-y-0">
             {study.metrics.map((metric) => (
-              <div key={`${metric.label}-${metric.value}`} className="space-y-2 px-4 py-4">
+              <div
+                key={`${metric.label}-${metric.value}`}
+                className="space-y-2 px-4 py-4"
+              >
                 <p className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
                   {metric.label}
                 </p>

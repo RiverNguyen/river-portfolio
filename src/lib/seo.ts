@@ -16,9 +16,7 @@ export function getLocalizedPath(path: string, locale: string) {
     return normalizedPath
   }
 
-  return normalizedPath === "/"
-    ? `/${locale}`
-    : `/${locale}${normalizedPath}`
+  return normalizedPath === "/" ? `/${locale}` : `/${locale}${normalizedPath}`
 }
 
 export function getAbsoluteUrl(path: string) {
@@ -31,10 +29,7 @@ export function getLocalizedUrl(path: string, locale: string) {
 
 export function getLanguageAlternates(path: string) {
   const languages = Object.fromEntries(
-    routing.locales.map((locale) => [
-      locale,
-      getLocalizedUrl(path, locale),
-    ])
+    routing.locales.map((locale) => [locale, getLocalizedUrl(path, locale)])
   )
 
   return {

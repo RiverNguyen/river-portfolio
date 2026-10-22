@@ -19,8 +19,8 @@ export function CaseStudyArchitectureDiagram({
       <ol className="flex min-w-min items-stretch gap-0 sm:gap-1">
         {steps.map((step, index) => (
           <li key={`${step}-${index}`} className="flex items-stretch">
-            <div className="flex min-w-[6.5rem] max-w-[9rem] flex-col gap-2 sm:min-w-[7.5rem]">
-              <span className="font-mono text-[10px] leading-none tabular-nums text-muted-foreground">
+            <div className="flex max-w-[9rem] min-w-[6.5rem] flex-col gap-2 sm:min-w-[7.5rem]">
+              <span className="font-mono text-[10px] leading-none text-muted-foreground tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className="flex flex-1 items-center justify-center border border-edge bg-background px-2.5 py-2 text-center font-mono text-xs leading-snug text-foreground">

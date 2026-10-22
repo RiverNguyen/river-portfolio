@@ -40,11 +40,11 @@ pnpm install
 
 Create a `.env` (or `.env.local`) as needed. Common variables:
 
-| Variable | Description |
-| --- | --- |
-| `APP_URL` | Public site URL (default: `https://rivernguyen.id.vn`) |
-| `GMAIL_USER` / `GMAIL_APP_PASSWORD` | Contact form (Nodemailer) |
-| `RESEND_API_KEY` / `RESEND_FROM` | Optional email via Resend |
+| Variable                            | Description                                            |
+| ----------------------------------- | ------------------------------------------------------ |
+| `APP_URL`                           | Public site URL (default: `https://rivernguyen.id.vn`) |
+| `GMAIL_USER` / `GMAIL_APP_PASSWORD` | Contact form (Nodemailer)                              |
+| `RESEND_API_KEY` / `RESEND_FROM`    | Optional email via Resend                              |
 
 ### Develop
 
@@ -74,14 +74,14 @@ See `docker-compose.yml` / `Dockerfile` for image and env wiring.
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `pnpm dev` | Dev server (webpack) |
-| `pnpm build` | Production build |
-| `pnpm start` | Start production server |
-| `pnpm lint` | ESLint |
-| `pnpm check-types` | TypeScript check |
-| `pnpm format:write` | Prettier format |
+| Command               | Description                     |
+| --------------------- | ------------------------------- |
+| `pnpm dev`            | Dev server (webpack)            |
+| `pnpm build`          | Production build                |
+| `pnpm start`          | Start production server         |
+| `pnpm lint`           | ESLint                          |
+| `pnpm check-types`    | TypeScript check                |
+| `pnpm format:write`   | Prettier format                 |
 | `pnpm registry:build` | Build shadcn component registry |
 
 ## Project structure

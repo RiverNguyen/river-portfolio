@@ -16,7 +16,7 @@ export function Metrics01() {
       <div className="container mx-auto px-4">
         <div className="border-x border-line py-8">
           <div className="screen-line-top screen-line-bottom">
-            <h2 className="screen-line-bottom ml-4 font-heading text-3xl font-medium tracking-tight">
+            <h2 className="font-heading screen-line-bottom ml-4 text-3xl font-medium tracking-tight">
               Insights
               <sup className="top-[-0.75em] ml-1 text-sm font-medium tracking-normal text-muted-foreground">
                 ({format(new Date(data.startDate), "dd.MM")} –{" "}

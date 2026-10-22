@@ -291,7 +291,9 @@ export function isEducationExperience(experience: Experience) {
   return experience.id.startsWith("education")
 }
 
-export function getWorkExperiencesByLocale(locale: PortfolioLocale): Experience[] {
+export function getWorkExperiencesByLocale(
+  locale: PortfolioLocale
+): Experience[] {
   return getExperiencesByLocale(locale).filter(
     (experience) => !isEducationExperience(experience)
   )

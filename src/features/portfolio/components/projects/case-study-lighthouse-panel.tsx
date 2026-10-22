@@ -53,7 +53,7 @@ export function CaseStudyLighthousePanel({
             aria-label={`${performance.label} ${performanceScore}`}
           >
             <div className="grid size-full place-items-center rounded-full bg-background">
-              <span className="text-3xl font-semibold tabular-nums tracking-tight">
+              <span className="text-3xl font-semibold tracking-tight tabular-nums">
                 {performanceScore}
               </span>
             </div>
@@ -77,7 +77,7 @@ export function CaseStudyLighthousePanel({
           <p className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
             {lcp.label}
           </p>
-          <p className="text-3xl font-semibold tabular-nums tracking-tight sm:text-4xl">
+          <p className="text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">
             {lcp.value}
           </p>
           {lcp.note ? (

@@ -54,12 +54,12 @@ const ProjectGallery = dynamic(
 
 Mình chạy cùng checklist trên [rivernguyen.id.vn](https://rivernguyen.id.vn) trong audit full-site (chỉ Lighthouse lab — chưa cấu hình CrUX / PageSpeed API).
 
-| Surface | Device | Performance | LCP | Ghi chú |
-| ------- | ------ | ----------- | --- | ------- |
-| `/` | Mobile | ~44 | ~5.1s | Poor — critical path đông |
-| `/` | Desktop | ~90 | ~0.7s | Ổn |
-| `/projects` | Mobile | ~90 | ~2.6s | LCP cần cải thiện |
-| Bài blog | Mobile | ~74 | ~4.6s | Trang nội dung vẫn nặng |
+| Surface     | Device  | Performance | LCP   | Ghi chú                   |
+| ----------- | ------- | ----------- | ----- | ------------------------- |
+| `/`         | Mobile  | ~44         | ~5.1s | Poor — critical path đông |
+| `/`         | Desktop | ~90         | ~0.7s | Ổn                        |
+| `/projects` | Mobile  | ~90         | ~2.6s | LCP cần cải thiện         |
+| Bài blog    | Mobile  | ~74         | ~4.6s | Trang nội dung vẫn nặng   |
 
 CLS rất tốt (≤0.002). Homepage mobile sụp không phải vì “Next.js chậm” — mà vì **module analytics không dùng** (surveys / heatmaps / toolbar) cộng **Motion thành chunk global**, cộng quá nhiều preload font/ảnh cùng lúc.
 

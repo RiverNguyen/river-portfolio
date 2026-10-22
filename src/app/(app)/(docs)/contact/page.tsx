@@ -61,7 +61,7 @@ export default async function Page() {
         }}
       />
 
-      <section className="relative isolate overflow-hidden screen-line-after">
+      <section className="screen-line-after relative isolate overflow-hidden">
         <div
           aria-hidden
           className={cn(

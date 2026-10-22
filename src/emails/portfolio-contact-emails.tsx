@@ -4,7 +4,6 @@ import {
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
   Link,
@@ -160,11 +159,6 @@ const styles = {
     wordBreak: "break-word" as const,
     color: "#292524",
   },
-  divider: {
-    border: "none",
-    borderTop: "1px solid #eee7dc",
-    margin: "30px 0",
-  },
   footer: {
     marginTop: "26px",
     fontSize: "13px",
@@ -316,12 +310,10 @@ export function PortfolioContactOwnerEmail({
 export function PortfolioContactUserConfirmationEmail({
   logoUrl,
   name,
-  message,
   siteName,
 }: {
   logoUrl: string
   name: string
-  message: string
   siteName: string
 }) {
   return (
@@ -339,15 +331,7 @@ export function PortfolioContactUserConfirmationEmail({
         Your message landed safely in my inbox. I will read it and reply when I
         can.
       </Text>
-      <Text style={styles.lead}>
-        No need to resend anything. I included a copy of your note below so you
-        have it for your records.
-      </Text>
-      <Hr style={styles.divider} />
-      <Section>
-        <Text style={styles.fieldLabel}>Your message</Text>
-        <Text style={styles.messageBox}>{message}</Text>
-      </Section>
+      <Text style={styles.lead}>No need to resend anything.</Text>
       <Text style={styles.signature}>
         Warm regards,
         <br />

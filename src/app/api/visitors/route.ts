@@ -15,7 +15,10 @@ const SESSION_COOKIE = "rv_vsid"
 const ONE_YEAR = 60 * 60 * 24 * 365
 
 const durationSchema = z.object({
-  durationMs: z.number().min(1000).max(60 * 60 * 1000),
+  durationMs: z
+    .number()
+    .min(1000)
+    .max(60 * 60 * 1000),
 })
 
 export async function GET() {

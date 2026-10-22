@@ -10,10 +10,9 @@ import { MDX } from "@/components/mdx"
 import { Button } from "@/components/ui/button"
 import { Prose } from "@/components/ui/typography"
 import { SITE_INFO } from "@/config/site"
-import { Link } from "@/i18n/navigation"
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts"
-import { PostPaginationButton } from "@/features/blog/components/post-pagination-button"
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions"
+import { PostPaginationButton } from "@/features/blog/components/post-pagination-button"
 import { PostShareMenu } from "@/features/blog/components/post-share-menu"
 import {
   findNeighbour,
@@ -24,7 +23,13 @@ import {
 import type { Post } from "@/features/blog/types/post"
 import { ProfileMascot } from "@/features/portfolio/components/profile-mascot"
 import { USER } from "@/features/portfolio/data/user"
-import { getAbsoluteUrl, getLanguageAlternates, getLocalizedPath, getLocalizedUrl } from "@/lib/seo"
+import { Link } from "@/i18n/navigation"
+import {
+  getAbsoluteUrl,
+  getLanguageAlternates,
+  getLocalizedPath,
+  getLocalizedUrl,
+} from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 export async function generateStaticParams() {
@@ -86,10 +91,7 @@ export async function generateMetadata({
   }
 }
 
-function getPageJsonLd(
-  post: Post,
-  locale: string
-): WithContext<PageSchema> {
+function getPageJsonLd(post: Post, locale: string): WithContext<PageSchema> {
   const postUrl = getPostUrl(post)
 
   return {
@@ -218,7 +220,8 @@ export default async function Page({
             <p className="text-sm text-foreground">{USER.displayName}</p>
             <p>
               <time dateTime={post.metadata.createdAt}>
-                {t("published")} {formatPostDate(post.metadata.createdAt, locale)}
+                {t("published")}{" "}
+                {formatPostDate(post.metadata.createdAt, locale)}
               </time>
               {" · "}
               <time dateTime={post.metadata.updatedAt}>

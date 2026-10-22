@@ -28,7 +28,6 @@ export async function renderPortfolioContactEmails(
       createElement(PortfolioContactUserConfirmationEmail, {
         logoUrl,
         name,
-        message,
         siteName,
       })
     ),

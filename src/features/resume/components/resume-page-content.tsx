@@ -98,20 +98,13 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
 
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" asChild>
-              <a
-                href={RESUME_PDF_URL}
-                download="Nguyen-Dinh-Giang-Resume.pdf"
-              >
+              <a href={RESUME_PDF_URL} download="Nguyen-Dinh-Giang-Resume.pdf">
                 <DownloadIcon />
                 {labels.downloadPdf}
               </a>
             </Button>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.print()}
-            >
+            <Button variant="outline" size="sm" onClick={() => window.print()}>
               <PrinterIcon />
               {labels.print}
             </Button>
@@ -176,7 +169,10 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
           <ResumeSection title={labels.experience}>
             <div className="space-y-6">
               {resume.experience.map((item) => (
-                <div key={`${item.company}-${item.period}`} className="space-y-2">
+                <div
+                  key={`${item.company}-${item.period}`}
+                  className="space-y-2"
+                >
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                     <h3 className="text-base font-semibold">
                       {item.companyUrl ? (
@@ -261,7 +257,9 @@ export function ResumePageContent({ resume, labels }: ResumePageContentProps) {
                   </p>
 
                   <p className="font-mono text-xs text-muted-foreground">
-                    <span className="text-foreground">{labels.technologies}:</span>{" "}
+                    <span className="text-foreground">
+                      {labels.technologies}:
+                    </span>{" "}
                     {project.technologies}
                   </p>
 

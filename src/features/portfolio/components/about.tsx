@@ -1,7 +1,7 @@
-import { Markdown } from "@/components/markdown"
-import { ProseMono } from "@/components/ui/typography"
 import { getLocale, getTranslations } from "next-intl/server"
 
+import { Markdown } from "@/components/markdown"
+import { ProseMono } from "@/components/ui/typography"
 import { getUserByLocale } from "@/features/portfolio/data/user"
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"

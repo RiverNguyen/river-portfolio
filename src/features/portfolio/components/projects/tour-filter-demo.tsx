@@ -45,7 +45,8 @@ export function TourFilterDemo() {
 
   const filtered = useMemo(() => {
     return TOURS.filter((tour) => {
-      if (destination !== "all" && tour.destination !== destination) return false
+      if (destination !== "all" && tour.destination !== destination)
+        return false
       if (tour.price > maxPrice) return false
       return true
     })
@@ -86,7 +87,7 @@ export function TourFilterDemo() {
           onChange={(event) => setMaxPrice(Number(event.target.value))}
           className="w-full accent-foreground"
         />
-        <span className="tabular-nums text-foreground">${maxPrice}</span>
+        <span className="text-foreground tabular-nums">${maxPrice}</span>
       </label>
 
       <ul className="divide-y divide-edge border border-edge">
@@ -107,7 +108,9 @@ export function TourFilterDemo() {
           </li>
         ) : null}
       </ul>
-      <p className="font-mono text-[11px] text-muted-foreground">{t("demoNote")}</p>
+      <p className="font-mono text-[11px] text-muted-foreground">
+        {t("demoNote")}
+      </p>
     </div>
   )
 }

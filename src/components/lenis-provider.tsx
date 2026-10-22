@@ -12,8 +12,7 @@ import {
 const LenisContext = createContext<Lenis | null>(null)
 
 /** Soft ease for programmatic scrollTo only — not used for wheel smoothing. */
-const scrollToEasing = (t: number) =>
-  Math.min(1, 1.001 - Math.pow(2, -10 * t))
+const scrollToEasing = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 
 function createLenis(prefersReducedMotion: boolean) {
   if (prefersReducedMotion) {
@@ -62,9 +61,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  return (
-    <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
-  )
+  return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
 }
 
 export function useLenis(): Lenis | null {

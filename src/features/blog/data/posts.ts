@@ -79,8 +79,13 @@ export function getPostBySlug(slug: string, locale: BlogLocale = "en") {
   return getAllPosts(locale).find((post) => post.slug === slug)
 }
 
-export function getPostsByCategory(category: string, locale: BlogLocale = "en") {
-  return getAllPosts(locale).filter((post) => post.metadata?.category === category)
+export function getPostsByCategory(
+  category: string,
+  locale: BlogLocale = "en"
+) {
+  return getAllPosts(locale).filter(
+    (post) => post.metadata?.category === category
+  )
 }
 
 export function findNeighbour(posts: Post[], slug: string) {

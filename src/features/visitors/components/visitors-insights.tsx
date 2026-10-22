@@ -18,7 +18,9 @@ import type { InsightsPayload } from "../types"
 const TRACK_KEY = "rv_visit_tracked"
 
 function formatCount(value: number, locale: string) {
-  return new Intl.NumberFormat(locale === "vi" ? "vi-VN" : "en-US").format(value)
+  return new Intl.NumberFormat(locale === "vi" ? "vi-VN" : "en-US").format(
+    value
+  )
 }
 
 function formatDuration(ms: number, locale: string) {

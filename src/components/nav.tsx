@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation"
 import { useLocale } from "next-intl"
 import React from "react"
 
-import { Link } from "@/i18n/navigation"
 import { useLenis } from "@/components/lenis-provider"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import type { NavItem } from "@/types/nav"
 
@@ -55,10 +55,10 @@ export function Nav({
               )}
               onClick={(e) => {
                 e.preventDefault()
-                  lenis?.scrollTo(target, {
-                    duration: 1,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                  })
+                lenis?.scrollTo(target, {
+                  duration: 1,
+                  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                })
               }}
             >
               {title}

@@ -1,11 +1,7 @@
 "use client"
 
 import { ArrowUpRightIcon, BoxIcon, InfinityIcon } from "lucide-react"
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"

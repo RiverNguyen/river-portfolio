@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import { getLocale, getTranslations } from "next-intl/server"
 
+import { getUserByLocale } from "@/features/portfolio/data/user"
 import { ResumePageContent } from "@/features/resume/components/resume-page-content"
 import { getResumeByLocale } from "@/features/resume/data/resume"
-import { getUserByLocale } from "@/features/portfolio/data/user"
 import { getPersonJsonLd } from "@/lib/person-jsonld"
 import { createPageMetadata } from "@/lib/seo"
 

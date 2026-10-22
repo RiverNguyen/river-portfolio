@@ -41,8 +41,10 @@ export async function ConsentManager({
   const locale = await getLocale()
   const language = locale === "vi" ? "vi" : "en"
 
-  const enMessages = (await import("../messages/en.json")).default as ConsentMessages
-  const viMessages = (await import("../messages/vi.json")).default as ConsentMessages
+  const enMessages = (await import("../messages/en.json"))
+    .default as ConsentMessages
+  const viMessages = (await import("../messages/vi.json"))
+    .default as ConsentMessages
 
   const consentTranslations = {
     defaultLanguage: "en",

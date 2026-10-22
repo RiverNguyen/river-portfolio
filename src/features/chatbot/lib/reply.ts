@@ -218,7 +218,16 @@ const INTENT_RULES: IntentRule[] = [
     intent: "blog",
     weight: 3,
     patterns: [
-      phrase("blog", "article", "articles", "writing", "posts", "post", "bài viết", "viết gì"),
+      phrase(
+        "blog",
+        "article",
+        "articles",
+        "writing",
+        "posts",
+        "post",
+        "bài viết",
+        "viết gì"
+      ),
     ],
   },
   {
@@ -254,7 +263,11 @@ const INTENT_RULES: IntentRule[] = [
 ]
 
 function detectLocale(text: string): Locale {
-  if (/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(text)) {
+  if (
+    /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(
+      text
+    )
+  ) {
     return "vi"
   }
 
@@ -281,7 +294,10 @@ function scoreIntent(text: string): Intent {
       if (pattern.test(normalized)) hits += 1
     }
     if (hits > 0) {
-      scores.set(rule.intent, (scores.get(rule.intent) ?? 0) + hits * rule.weight)
+      scores.set(
+        rule.intent,
+        (scores.get(rule.intent) ?? 0) + hits * rule.weight
+      )
     }
   }
 
@@ -385,7 +401,9 @@ function buildExperienceReply(locale: Locale) {
   const lines = experiences.map((company) => {
     const roles = company.positions
       .map((position) => {
-        const end = position.employmentPeriod.end ?? (locale === "vi" ? "Hiện tại" : "Present")
+        const end =
+          position.employmentPeriod.end ??
+          (locale === "vi" ? "Hiện tại" : "Present")
         return `  • ${position.title} (${position.employmentPeriod.start} – ${end})`
       })
       .join("\n")
@@ -416,7 +434,9 @@ function buildEducationReply(locale: Locale) {
   const lines = education.map((school) => {
     const roles = school.positions
       .map((position) => {
-        const end = position.employmentPeriod.end ?? (locale === "vi" ? "Hiện tại" : "Present")
+        const end =
+          position.employmentPeriod.end ??
+          (locale === "vi" ? "Hiện tại" : "Present")
         return `  • ${position.title} (${position.employmentPeriod.start} – ${end})`
       })
       .join("\n")
@@ -424,16 +444,32 @@ function buildEducationReply(locale: Locale) {
   })
 
   if (locale === "vi") {
-    return [`Học vấn của River:`, "", ...lines, "", `Xem thêm ở [/vi](/vi)#education.`].join("\n")
+    return [
+      `Học vấn của River:`,
+      "",
+      ...lines,
+      "",
+      `Xem thêm ở [/vi](/vi)#education.`,
+    ].join("\n")
   }
 
-  return [`River's education:`, "", ...lines, "", `More on the homepage [/](/)#education.`].join("\n")
+  return [
+    `River's education:`,
+    "",
+    ...lines,
+    "",
+    `More on the homepage [/](/)#education.`,
+  ].join("\n")
 }
 
 function buildAboutReply(locale: Locale) {
-  const about = stripMarkdownLight(locale === "vi" ? USER_VI.about : USER_EN.about)
+  const about = stripMarkdownLight(
+    locale === "vi" ? USER_VI.about : USER_EN.about
+  )
   const user = locale === "vi" ? USER_VI : USER_EN
-  const jobs = user.jobs.map((job) => `${job.title} @ ${job.company}`).join("; ")
+  const jobs = user.jobs
+    .map((job) => `${job.title} @ ${job.company}`)
+    .join("; ")
 
   if (locale === "vi") {
     return [
@@ -481,7 +517,9 @@ function buildHireReply(locale: Locale) {
 }
 
 function buildContactReply(locale: Locale) {
-  const social = SOCIAL_LINKS.map((link) => `- [${link.title}](${link.href})`).join("\n")
+  const social = SOCIAL_LINKS.map(
+    (link) => `- [${link.title}](${link.href})`
+  ).join("\n")
 
   if (locale === "vi") {
     return [
@@ -532,11 +570,14 @@ function buildBlogReply(locale: Locale) {
 function buildNowReply(locale: Locale) {
   const now = locale === "vi" ? NOW_VI : NOW_EN
   const lines = now.items.map(
-    (item) => `- **${item.label}:** ${item.title}${item.note ? ` — ${item.note}` : ""}`
+    (item) =>
+      `- **${item.label}:** ${item.title}${item.note ? ` — ${item.note}` : ""}`
   )
 
   if (locale === "vi") {
-    return [`Đang diễn ra (cập nhật ${now.updatedAt}):`, "", ...lines].join("\n")
+    return [`Đang diễn ra (cập nhật ${now.updatedAt}):`, "", ...lines].join(
+      "\n"
+    )
   }
 
   return [`Right now (updated ${now.updatedAt}):`, "", ...lines].join("\n")

@@ -5,7 +5,7 @@ import {
   buildLocalReply,
   extractLatestUserText,
 } from "@/features/chatbot/lib/reply"
-import { getRedis } from "@/lib/redis"
+import { getClientIp, isRateLimited } from "@/lib/rate-limit"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
@@ -18,48 +18,8 @@ const bodySchema = z.object({
   locale: z.enum(["en", "vi"]).optional(),
 })
 
-const rateBucket = new Map<string, { count: number; resetAt: number }>()
-
-function getClientIp(req: Request) {
-  const forwarded = req.headers.get("x-forwarded-for")
-  if (forwarded) return forwarded.split(",")[0]?.trim() || "unknown"
-  return req.headers.get("x-real-ip") || "unknown"
-}
-
 const RATE_WINDOW_MS = 60_000
 const RATE_LIMIT = 20
-
-// Shared across serverless instances when Upstash is configured; per-instance memory otherwise.
-async function isRateLimited(ip: string) {
-  const redis = getRedis()
-  if (redis) {
-    try {
-      const key = `chat:rate:${ip}`
-      const count = await redis.incr(key)
-      if (count === 1) await redis.pexpire(key, RATE_WINDOW_MS)
-      return count > RATE_LIMIT
-    } catch (err) {
-      console.error("[chat] Redis rate limit failed", err)
-    }
-  }
-  return isRateLimitedInMemory(ip)
-}
-
-function isRateLimitedInMemory(ip: string) {
-  const now = Date.now()
-  const windowMs = RATE_WINDOW_MS
-  const limit = RATE_LIMIT
-  const current = rateBucket.get(ip)
-
-  if (!current || current.resetAt <= now) {
-    rateBucket.set(ip, { count: 1, resetAt: now + windowMs })
-    return false
-  }
-
-  if (current.count >= limit) return true
-  current.count += 1
-  return false
-}
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -73,7 +33,7 @@ function chunkReply(text: string): string[] {
 
 export async function POST(req: Request) {
   const ip = getClientIp(req)
-  if (await isRateLimited(ip)) {
+  if (await isRateLimited(`chat:rate:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)) {
     return Response.json(
       { error: "Too many messages. Please wait a minute." },
       { status: 429 }

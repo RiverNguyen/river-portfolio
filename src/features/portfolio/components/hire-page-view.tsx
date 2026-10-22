@@ -3,8 +3,8 @@ import { getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
 import { Tag } from "@/components/ui/tag"
-import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { getProjectsByLocale } from "@/features/portfolio/data/projects"
+import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { Link } from "@/i18n/navigation"
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel"

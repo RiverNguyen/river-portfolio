@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation"
 import { useLocale, useTranslations } from "next-intl"
 
 import { useLenis } from "@/components/lenis-provider"
-import { Link } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { Link } from "@/i18n/navigation"
 import type { NavItem } from "@/types/nav"
 
 export function MobileNav({ items }: { items: NavItem[] }) {

@@ -98,8 +98,7 @@ function normalizeStore(raw: unknown): VisitorsStore {
 
   const visitors = typeof data.visitors === "number" ? data.visitors : 0
   const views = typeof data.views === "number" ? data.views : visitors
-  const sessions =
-    typeof data.sessions === "number" ? data.sessions : views
+  const sessions = typeof data.sessions === "number" ? data.sessions : views
 
   const daily = Array.isArray(data.daily)
     ? data.daily.filter(
@@ -303,9 +302,7 @@ export async function getInsights(days = DAYS): Promise<InsightsPayload> {
     current.views > 0 || previous.views > 0 ? current.views : store.views
 
   const avgDuration =
-    store.durationCount > 0
-      ? store.durationTotalMs / store.durationCount
-      : 0
+    store.durationCount > 0 ? store.durationTotalMs / store.durationCount : 0
 
   return {
     range: { start, end },

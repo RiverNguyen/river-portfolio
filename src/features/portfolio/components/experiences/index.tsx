@@ -7,9 +7,7 @@ import { ExperienceItem } from "./experience-item"
 export async function Experiences() {
   const locale = await getLocale()
   const t = await getTranslations("Portfolio")
-  const experiences = getWorkExperiencesByLocale(
-    locale === "vi" ? "vi" : "en"
-  )
+  const experiences = getWorkExperiencesByLocale(locale === "vi" ? "vi" : "en")
 
   return (
     <Panel id="experience">

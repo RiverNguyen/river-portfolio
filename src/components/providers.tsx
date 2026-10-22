@@ -4,8 +4,8 @@ import { AppProgressProvider } from "@bprogress/next"
 import { Provider as JotaiProvider } from "jotai"
 import { ThemeProvider } from "next-themes"
 
-import { PixelModeListener } from "./pixel-mode-listener"
 import { TooltipProvider } from "./base/ui/tooltip"
+import { PixelModeListener } from "./pixel-mode-listener"
 import { Toaster } from "./ui/sonner"
 
 export function Providers({ children }: { children: React.ReactNode }) {

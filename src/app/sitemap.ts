@@ -29,10 +29,7 @@ function localizedEntries(
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts().flatMap((post) =>
-    localizedEntries(
-      `/blog/${post.slug}`,
-      new Date(post.metadata.updatedAt)
-    )
+    localizedEntries(`/blog/${post.slug}`, new Date(post.metadata.updatedAt))
   )
 
   const caseStudies = getAllCaseStudySlugs().flatMap((slug) =>

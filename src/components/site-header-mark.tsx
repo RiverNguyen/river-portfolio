@@ -52,7 +52,11 @@ function ChanhDaiMarkMotion() {
 
 export function SiteHeaderMark() {
   const pathname = usePathname()
-  const homePaths = ["/", "/index", ...routing.locales.map((locale) => `/${locale}`)]
+  const homePaths = [
+    "/",
+    "/index",
+    ...routing.locales.map((locale) => `/${locale}`),
+  ]
   const isHome = homePaths.includes(pathname)
 
   return isHome ? <ChanhDaiMarkMotion /> : <ChanhDaiMark />

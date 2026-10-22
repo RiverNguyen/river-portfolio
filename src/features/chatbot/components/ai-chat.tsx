@@ -12,9 +12,9 @@ import { useEffect, useId, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
+import { ScrollToTop } from "@/components/scroll-to-top"
 import { Button } from "@/components/ui/button"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
-import { ScrollToTop } from "@/components/scroll-to-top"
 import { ChatMascotAvatar } from "@/features/chatbot/components/chat-mascot-avatar"
 import { cn } from "@/lib/utils"
 

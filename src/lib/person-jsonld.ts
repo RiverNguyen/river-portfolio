@@ -2,12 +2,12 @@ import type { Person, WithContext } from "schema-dts"
 
 import { SITE_INFO } from "@/config/site"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
+import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import {
   getUserByLocale,
   type PortfolioLocale,
   USER,
 } from "@/features/portfolio/data/user"
-import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { getAbsoluteUrl, getLocalizedUrl } from "@/lib/seo"
 import { decodeEmail, decodePhoneNumber } from "@/utils/string"
 

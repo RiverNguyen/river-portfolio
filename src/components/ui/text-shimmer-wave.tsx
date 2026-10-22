@@ -1,9 +1,9 @@
-'use client';
+"use client"
 
-import type { Transition } from 'motion/react';
-import { motion } from 'motion/react';
+import type { Transition } from "motion/react"
+import { motion } from "motion/react"
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils"
 
 const motionByTag = {
   p: motion.p,
@@ -12,27 +12,27 @@ const motionByTag = {
   h1: motion.h1,
   h2: motion.h2,
   h3: motion.h3,
-} as const;
+} as const
 
-type MotionTag = keyof typeof motionByTag;
+type MotionTag = keyof typeof motionByTag
 
 export type TextShimmerWaveProps = {
-  children: string;
-  as?: MotionTag;
-  className?: string;
-  duration?: number;
-  zDistance?: number;
-  xDistance?: number;
-  yDistance?: number;
-  spread?: number;
-  scaleDistance?: number;
-  rotateYDistance?: number;
-  transition?: Transition;
-};
+  children: string
+  as?: MotionTag
+  className?: string
+  duration?: number
+  zDistance?: number
+  xDistance?: number
+  yDistance?: number
+  spread?: number
+  scaleDistance?: number
+  rotateYDistance?: number
+  transition?: Transition
+}
 
 export function TextShimmerWave({
   children,
-  as: tag = 'p',
+  as: tag = "p",
   className,
   duration = 1,
   zDistance = 10,
@@ -43,32 +43,32 @@ export function TextShimmerWave({
   rotateYDistance = 10,
   transition,
 }: TextShimmerWaveProps) {
-  const MotionEl = motionByTag[tag];
+  const MotionEl = motionByTag[tag]
 
   return (
     <MotionEl
       className={cn(
-        'relative inline-block [perspective:500px]',
-        '[--base-color:#a1a1aa] [--base-gradient-color:#000]',
-        'dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]',
+        "relative inline-block [perspective:500px]",
+        "[--base-color:#a1a1aa] [--base-gradient-color:#000]",
+        "dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]",
         className
       )}
-      style={{ color: 'var(--base-color)' }}
+      style={{ color: "var(--base-color)" }}
     >
-      {children.split('').map((char, i) => {
-        const delay = (i * duration * (1 / spread)) / children.length;
+      {children.split("").map((char, i) => {
+        const delay = (i * duration * (1 / spread)) / children.length
 
         return (
           <motion.span
             key={i}
             className={cn(
-              'inline-block whitespace-pre [transform-style:preserve-3d]'
+              "inline-block whitespace-pre [transform-style:preserve-3d]"
             )}
             initial={{
               translateZ: 0,
               scale: 1,
               rotateY: 0,
-              color: 'var(--base-color)',
+              color: "var(--base-color)",
             }}
             animate={{
               translateZ: [0, zDistance, 0],
@@ -77,9 +77,9 @@ export function TextShimmerWave({
               scale: [1, scaleDistance, 1],
               rotateY: [0, rotateYDistance, 0],
               color: [
-                'var(--base-color)',
-                'var(--base-gradient-color)',
-                'var(--base-color)',
+                "var(--base-color)",
+                "var(--base-gradient-color)",
+                "var(--base-color)",
               ],
             }}
             transition={{
@@ -87,14 +87,14 @@ export function TextShimmerWave({
               repeat: Infinity,
               repeatDelay: (children.length * 0.05) / spread,
               delay,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               ...transition,
             }}
           >
             {char}
           </motion.span>
-        );
+        )
       })}
     </MotionEl>
-  );
+  )
 }

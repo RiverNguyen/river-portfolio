@@ -5,11 +5,7 @@ import { toast } from "sonner"
 
 import { SpotlightLogo } from "@/components/spotlight-logo"
 
-export function CoverEasterEgg({
-  lines,
-}: {
-  lines: [string, string, string]
-}) {
+export function CoverEasterEgg({ lines }: { lines: [string, string, string] }) {
   const clicksRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -32,7 +28,8 @@ export function CoverEasterEgg({
           classNames: {
             toast: "font-mono",
             title: "font-mono text-xs tracking-wide",
-            description: "font-mono text-xs whitespace-pre-line text-muted-foreground",
+            description:
+              "font-mono text-xs whitespace-pre-line text-muted-foreground",
           },
         })
       }}

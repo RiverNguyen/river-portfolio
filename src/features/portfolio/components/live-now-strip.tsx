@@ -14,10 +14,7 @@ type LiveNowStripProps = {
   className?: string
 }
 
-export function LiveNowStrip({
-  timeZone,
-  className,
-}: LiveNowStripProps) {
+export function LiveNowStrip({ timeZone, className }: LiveNowStripProps) {
   const t = useTranslations("NowStrip")
   const [time, setTime] = useState("")
 
@@ -35,7 +32,7 @@ export function LiveNowStrip({
       href="/hire"
       aria-label={t("hireCta")}
       className={cn(
-        "hidden shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[10px] tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground md:inline-flex",
+        "hidden shrink-0 items-center gap-2 font-mono text-[10px] tracking-wider whitespace-nowrap text-muted-foreground uppercase transition-colors hover:text-foreground md:inline-flex",
         className
       )}
     >

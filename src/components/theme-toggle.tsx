@@ -43,10 +43,10 @@ export function ThemeToggle() {
             size="icon"
             className="size-11 sm:size-8"
             onClick={switchTheme}
-          // onClick={() => {
-          //   if (!document.startViewTransition) switchTheme();
-          //   document.startViewTransition(switchTheme);
-          // }}
+            // onClick={() => {
+            //   if (!document.startViewTransition) switchTheme();
+            //   document.startViewTransition(switchTheme);
+            // }}
           />
         }
       >

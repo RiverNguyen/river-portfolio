@@ -1,12 +1,12 @@
 import {
+  type CaseStudyVisualVariant,
+  getCaseStudyVisualVariant,
+} from "./case-study-visuals"
+import {
   getProjectsByLocale,
   type PortfolioLocale,
   PROJECTS_EN,
 } from "./projects"
-import {
-  getCaseStudyVisualVariant,
-  type CaseStudyVisualVariant,
-} from "./case-study-visuals"
 
 export type CaseStudySection = {
   title: string
@@ -61,7 +61,10 @@ type MetricSource = {
 
 const LIGHTHOUSE_COMPARE: Record<
   string,
-  { before: { performance: number; lcp: string }; after: { performance: number; lcp: string } }
+  {
+    before: { performance: number; lcp: string }
+    after: { performance: number; lcp: string }
+  }
 > = {
   "multilingual-tour-platform": {
     before: { performance: 62, lcp: "4.8s" },
@@ -1048,7 +1051,9 @@ function buildCaseStudy(
   projectId: string,
   locale: PortfolioLocale
 ): CaseStudy | null {
-  const project = getProjectsByLocale(locale).find((item) => item.id === projectId)
+  const project = getProjectsByLocale(locale).find(
+    (item) => item.id === projectId
+  )
   const copy = (locale === "vi" ? COPY_VI : COPY_EN)[projectId]
   if (!project || !copy) return null
 
@@ -1076,9 +1081,8 @@ function buildCaseStudy(
     })),
     outcomes: copy.outcomes,
     ctaNote: (CTA[projectId] ?? CTA["tour-booking-platform"]!)[locale],
-    architecture: (ARCHITECTURE[projectId] ?? ARCHITECTURE["tour-booking-platform"]!)[
-      locale
-    ],
+    architecture: (ARCHITECTURE[projectId] ??
+      ARCHITECTURE["tour-booking-platform"]!)[locale],
     visualVariant: getCaseStudyVisualVariant(projectId),
     ...(lighthouse
       ? {
@@ -1093,9 +1097,9 @@ function buildCaseStudy(
 }
 
 export function getCaseStudiesByLocale(locale: PortfolioLocale): CaseStudy[] {
-  return PROJECTS_EN.map((project) => buildCaseStudy(project.id, locale)).filter(
-    (item): item is CaseStudy => item !== null
-  )
+  return PROJECTS_EN.map((project) =>
+    buildCaseStudy(project.id, locale)
+  ).filter((item): item is CaseStudy => item !== null)
 }
 
 export function getCaseStudyBySlug(

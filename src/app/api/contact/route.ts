@@ -5,10 +5,11 @@ import { z } from "zod"
 
 import { renderPortfolioContactEmails } from "@/emails/render-portfolio-contact"
 import { USER } from "@/features/portfolio/data/user"
+import { getClientIp, isRateLimited } from "@/lib/rate-limit"
 import { decodeEmail } from "@/utils/string"
 
 const contactSchema = z.object({
-  name: z.string().min(1, "Name is required").max(200),
+  name: z.string().min(1, "Name is required").max(100),
   email: z.string().email("Invalid email"),
   subject: z.string().min(1, "Subject is required").max(200),
   message: z.string().min(1, "Message is required").max(5000),
@@ -35,6 +36,11 @@ const resendApiKey = process.env.RESEND_API_KEY
 const resendFrom = process.env.RESEND_FROM
   ? normalizeResendFrom(process.env.RESEND_FROM)
   : "Portfolio <onboarding@resend.dev>"
+// Confirmation goes to an unverified address, so it must not echo user-controlled subject/message.
+const CONFIRMATION_SUBJECT = "Thanks, your message was received"
+const RATE_LIMIT = 3
+const RATE_WINDOW_MS = 10 * 60_000
+
 const siteUrl = (process.env.APP_URL ?? USER.website).replace(/\/$/, "")
 const logoUrl = `${siteUrl}/logo.png`
 
@@ -75,7 +81,7 @@ async function sendWithGmail(
     transporter.sendMail({
       from: fromAddress,
       to: email,
-      subject: `Re: ${subject}`,
+      subject: CONFIRMATION_SUBJECT,
       html: userHtml,
     }),
   ])
@@ -110,7 +116,7 @@ async function sendWithResend(
     resend.emails.send({
       from: resendFrom,
       to: [email],
-      subject: `Re: ${subject}`,
+      subject: CONFIRMATION_SUBJECT,
       html: userConfirmationHtml,
     }),
   ])
@@ -120,6 +126,14 @@ async function sendWithResend(
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  if (await isRateLimited(`contact:rate:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)) {
+    return NextResponse.json(
+      { error: "Too many messages. Please try again later." },
+      { status: 429 }
+    )
+  }
+
   try {
     const body = await request.json()
     const parsed = contactSchema.safeParse(body)

@@ -56,7 +56,9 @@ export function LighthouseCompare({ before, after }: LighthouseCompareProps) {
             </div>
             <p className="font-mono text-xs text-muted-foreground">
               {t("lcp")}{" "}
-              <span className="text-foreground tabular-nums">{snapshot.lcp}</span>
+              <span className="text-foreground tabular-nums">
+                {snapshot.lcp}
+              </span>
             </p>
           </div>
         )

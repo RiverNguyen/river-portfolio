@@ -54,12 +54,12 @@ const ProjectGallery = dynamic(
 
 I ran the same checklist on [rivernguyen.id.vn](https://rivernguyen.id.vn) during a full-site audit (lab Lighthouse only — no CrUX / PageSpeed API credentials configured yet).
 
-| Surface | Device | Performance | LCP | Note |
-| ------- | ------ | ----------- | --- | ---- |
-| `/` | Mobile | ~44 | ~5.1s | Poor — critical path crowded |
-| `/` | Desktop | ~90 | ~0.7s | Fine |
-| `/projects` | Mobile | ~90 | ~2.6s | Needs improvement on LCP |
-| Blog post | Mobile | ~74 | ~4.6s | Content pages still heavy |
+| Surface     | Device  | Performance | LCP   | Note                         |
+| ----------- | ------- | ----------- | ----- | ---------------------------- |
+| `/`         | Mobile  | ~44         | ~5.1s | Poor — critical path crowded |
+| `/`         | Desktop | ~90         | ~0.7s | Fine                         |
+| `/projects` | Mobile  | ~90         | ~2.6s | Needs improvement on LCP     |
+| Blog post   | Mobile  | ~74         | ~4.6s | Content pages still heavy    |
 
 CLS stayed excellent (≤0.002). The homepage mobile collapse was not “Next.js is slow” — it was **unused analytics modules** (surveys / heatmaps / toolbar shipped with the SDK) plus **Motion as a page-global chunk**, plus too many simultaneous font/image preload hints.
 

@@ -50,7 +50,7 @@ export function Contact() {
   const t = useTranslations("Contact")
 
   const contactSchema = z.object({
-    name: z.string().min(1, t("validation.nameRequired")).max(200),
+    name: z.string().min(1, t("validation.nameRequired")).max(100),
     email: z.string().email(t("validation.emailInvalid")),
     subject: z.string().min(1, t("validation.subjectRequired")).max(200),
     message: z.string().min(1, t("validation.messageRequired")).max(5000),
@@ -86,7 +86,9 @@ export function Contact() {
   return (
     <Panel className="border-x-0">
       <PanelHeader>
-        <PanelTitle className="text-xl sm:text-2xl">{t("formTitle")}</PanelTitle>
+        <PanelTitle className="text-xl sm:text-2xl">
+          {t("formTitle")}
+        </PanelTitle>
       </PanelHeader>
 
       <PanelContent className="sm:px-6 sm:py-6">
@@ -173,7 +175,7 @@ export function Contact() {
                       rows={6}
                       className={cn(
                         fieldClassName,
-                        "min-h-32 h-auto resize-y py-2.5"
+                        "h-auto min-h-32 resize-y py-2.5"
                       )}
                       {...field}
                       disabled={form.formState.isSubmitting}

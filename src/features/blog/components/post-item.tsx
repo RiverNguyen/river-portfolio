@@ -33,10 +33,10 @@ export function PostItem({
             sizes="(max-width: 768px) 100vw, 384px"
             className={cn(
               "object-cover",
-              "grayscale brightness-90 contrast-[1.05]",
+              "brightness-90 contrast-[1.05] grayscale",
               "transition-[filter,scale] duration-500 ease-out",
               "will-change-[filter,transform]",
-              "group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100",
+              "group-hover:scale-[1.03] group-hover:brightness-100 group-hover:contrast-100 group-hover:grayscale-0",
               "motion-reduce:transition-none motion-reduce:group-hover:scale-100"
             )}
           />

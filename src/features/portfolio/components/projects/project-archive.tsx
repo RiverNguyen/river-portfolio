@@ -161,7 +161,7 @@ function ProjectArchiveCard({
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       onClick={() => onOpen(project)}
       className={cn(
-        "group scroll-mt-24 flex w-full cursor-pointer flex-col gap-2 p-2 text-left",
+        "group flex w-full cursor-pointer scroll-mt-24 flex-col gap-2 p-2 text-left",
         featured
           ? "screen-line-after"
           : "max-sm:screen-line-before max-sm:screen-line-after sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after"
@@ -342,10 +342,7 @@ function ProjectDetailDialog({
 
           {project.images && project.images.length > 0 ? (
             <div className="min-w-0 overflow-hidden border-b border-edge p-4 sm:p-5">
-              <ProjectGallery
-                images={project.images}
-                title={project.title}
-              />
+              <ProjectGallery images={project.images} title={project.title} />
             </div>
           ) : null}
 

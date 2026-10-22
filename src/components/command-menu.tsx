@@ -3,25 +3,19 @@
 import { useCommandState } from "cmdk"
 import type { LucideProps } from "lucide-react"
 import {
-  AwardIcon,
-  BookmarkIcon,
   BoxIcon,
   BriefcaseBusinessIcon,
-  CircleCheckBigIcon,
   CornerDownLeftIcon,
   DownloadIcon,
   FileTextIcon,
   GraduationCapIcon,
-  HeartIcon,
   LayersIcon,
   MoonStarIcon,
   MousePointer2Icon,
-  QuoteIcon,
   RssIcon,
   SunMediumIcon,
   TextIcon,
   TextInitialIcon,
-  TriangleDashedIcon,
   TypeIcon,
 } from "lucide-react"
 import Image from "next/image"
