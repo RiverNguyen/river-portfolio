@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
 import { isKnownPostSlug } from "@/features/blog/data/posts"
+import { getAllViews } from "@/features/blog/lib/views"
 import { getClientIp, isRateLimited } from "@/lib/rate-limit"
 import { getRedis } from "@/lib/redis"
 
@@ -16,6 +17,16 @@ function getSlug(request: Request) {
 }
 
 export async function GET(request: Request) {
+  // No slug: views for every post (blog list).
+  if (!new URL(request.url).searchParams.has("slug")) {
+    try {
+      return NextResponse.json({ views: await getAllViews() })
+    } catch (error) {
+      console.error("[Views] GET all error:", error)
+      return NextResponse.json({ views: null })
+    }
+  }
+
   const slug = getSlug(request)
   if (!slug) {
     return NextResponse.json({ error: "Unknown post" }, { status: 404 })

@@ -1,6 +1,7 @@
 import { format } from "date-fns"
 import Image from "next/image"
 
+import { PostViewCount } from "@/features/blog/components/post-view-count"
 import type { Post } from "@/features/blog/types/post"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
@@ -68,6 +69,7 @@ export function PostItem({
             <time dateTime={new Date(post.metadata.createdAt).toISOString()}>
               {format(new Date(post.metadata.createdAt), "dd.MM.yyyy")}
             </time>
+            <PostViewCount slug={post.slug} />
           </dd>
         </dl>
       </div>
