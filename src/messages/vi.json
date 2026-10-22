@@ -286,7 +286,16 @@
     "launcherCta": "Hỏi tôi",
     "launcherHint": "Dự án, stack, thuê — hỏi thoải mái.",
     "thinking": "Đang nghĩ…",
-    "error": "Có lỗi xảy ra. Thử lại nhé."
+    "error": "Có lỗi xảy ra. Thử lại nhé.",
+    "hints": {
+      "home": "Chào! Mình là bot của River. Hỏi gì về River cũng được nhé 👋",
+      "blogPost": "Đọc tới cuối nhé, có bất ngờ nhỏ đó ✨",
+      "blog": "Chưa biết đọc bài nào? Hỏi mình gợi ý nhé.",
+      "projects": "Tò mò project được làm thế nào? Hỏi mình đi.",
+      "guestbook": "Ký một dòng đi, River đọc hết đó!",
+      "contact": "Đang vội? Mình trả lời được hầu hết câu hỏi ngay.",
+      "stats": "Số liệu là thật đó. Cảm ơn bạn là một phần trong đó!"
+    }
   },
   "Common": {
     "goHome": "Về trang chủ",

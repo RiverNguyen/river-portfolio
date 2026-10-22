@@ -7,6 +7,7 @@ import {
   SquareIcon,
   XIcon,
 } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import { useTheme } from "next-themes"
 import { useEffect, useId, useRef, useState } from "react"
@@ -19,6 +20,22 @@ import { Button } from "@/components/ui/button"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import { ChatMascotAvatar } from "@/features/chatbot/components/chat-mascot-avatar"
 import { cn } from "@/lib/utils"
+
+const HINT_DELAY_MS = 4000
+const HINT_VISIBLE_MS = 9000
+
+// Which mascot hint to show for a pathname (locale prefix stripped).
+function getHintKey(pathname: string) {
+  const path = pathname.replace(/^\/vi(?=\/|$)/, "") || "/"
+  if (path === "/") return "home"
+  if (path.startsWith("/blog/")) return "blogPost"
+  if (path === "/blog") return "blog"
+  if (path.startsWith("/projects")) return "projects"
+  if (path === "/guestbook") return "guestbook"
+  if (path === "/contact") return "contact"
+  if (path === "/stats") return "stats"
+  return null
+}
 
 type ChatMessage = {
   id: string
@@ -87,6 +104,39 @@ export function AiChat() {
   const listRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
   const counterRef = useRef(0)
+  const pathname = usePathname()
+  const [hintKey, setHintKey] = useState<string | null>(null)
+
+  // A short speech bubble once per page per session, then it gets out of the way.
+  useEffect(() => {
+    const key = getHintKey(pathname)
+    const seenKey = `rv_hint_seen:${pathname}`
+    let seen = false
+    try {
+      seen = sessionStorage.getItem(seenKey) === "1"
+    } catch {
+      // private mode: still show once per page load
+    }
+    if (!key || seen) return
+
+    const show = setTimeout(() => {
+      try {
+        sessionStorage.setItem(seenKey, "1")
+      } catch {}
+      setHintKey(key)
+      reactMascot("wink")
+    }, HINT_DELAY_MS)
+    const hide = setTimeout(
+      () => setHintKey(null),
+      HINT_DELAY_MS + HINT_VISIBLE_MS
+    )
+    return () => {
+      clearTimeout(show)
+      clearTimeout(hide)
+      setHintKey(null)
+    }
+  }, [pathname])
+
   const { resolvedTheme } = useTheme()
   const prevThemeRef = useRef(resolvedTheme)
 
@@ -410,6 +460,19 @@ export function AiChat() {
               )}
             </form>
           </div>
+        ) : null}
+
+        {!open && hintKey ? (
+          <button
+            type="button"
+            onClick={() => {
+              setHintKey(null)
+              setOpen(true)
+            }}
+            className="relative mr-2 max-w-64 animate-in rounded-2xl rounded-br-sm border border-edge bg-background px-3.5 py-2.5 text-left text-sm shadow-lg duration-300 fade-in slide-in-from-bottom-2"
+          >
+            {t(`hints.${hintKey}`)}
+          </button>
         ) : null}
 
         <div className="flex items-end gap-2">

@@ -286,7 +286,16 @@
     "launcherCta": "Ask me",
     "launcherHint": "Projects, stack, hire — ask away.",
     "thinking": "Thinking…",
-    "error": "Something went wrong. Try again."
+    "error": "Something went wrong. Try again.",
+    "hints": {
+      "home": "Hi! I'm River's bot. Ask me anything about River's work 👋",
+      "blogPost": "Read to the end, there's a little surprise ✨",
+      "blog": "Not sure where to start? Ask me for a post recommendation.",
+      "projects": "Curious how a project was built? Just ask me.",
+      "guestbook": "Leave a line in the guestbook, River reads every one!",
+      "contact": "In a hurry? I can answer most questions right away.",
+      "stats": "Numbers are live. Thanks for being one of them!"
+    }
   },
   "Common": {
     "goHome": "Go to Home",
