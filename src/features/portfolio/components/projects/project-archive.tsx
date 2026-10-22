@@ -152,16 +152,14 @@ function ProjectArchiveCard({
   const indexLabel = String(index + 1).padStart(2, "0")
 
   return (
-    <motion.button
-      type="button"
+    <motion.div
       id={project.id}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      onClick={() => onOpen(project)}
       className={cn(
-        "group flex w-full cursor-pointer scroll-mt-24 flex-col gap-2 p-2 text-left",
+        "group flex w-full scroll-mt-24 flex-col gap-2 p-2 text-left",
         featured
           ? "screen-line-after"
           : "max-sm:screen-line-before max-sm:screen-line-after sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after"
@@ -188,19 +186,32 @@ function ProjectArchiveCard({
             ) : null}
           </div>
 
-          <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
+          <button
+            type="button"
+            onClick={() => onOpen(project)}
+            className="inline-flex shrink-0 cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+          >
             {t("viewDetails")}
             <ArrowUpRightIcon className="size-3.5" />
-          </span>
+          </button>
         </div>
 
         <h2
           className={cn(
-            "leading-snug font-medium text-balance underline-offset-4 group-hover:underline",
+            "leading-snug font-medium text-balance underline-offset-4",
             featured ? "text-2xl" : "text-lg"
           )}
         >
-          {project.title}
+          {project.caseStudySlug ? (
+            <Link
+              href={`/projects/${project.caseStudySlug}`}
+              className="hover:underline"
+            >
+              {project.title}
+            </Link>
+          ) : (
+            project.title
+          )}
         </h2>
 
         {summary ? (
@@ -222,7 +233,7 @@ function ProjectArchiveCard({
           </p>
         ) : null}
       </div>
-    </motion.button>
+    </motion.div>
   )
 }
 

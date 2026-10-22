@@ -48,11 +48,17 @@ ${PROJECTS.map((item) => {
 }).join("\n\n")}
 `
 
-export const awardsText = `## Awards
+export const awardsText =
+  AWARDS.length === 0
+    ? ""
+    : `## Awards
 
 ${AWARDS.map((item) => `### ${item.prize} | ${item.title}\n\n${item.description}`).join("\n\n")}
 `
 
-export const certificationsText = `## Certifications
+export const certificationsText =
+  CERTIFICATIONS.length === 0
+    ? ""
+    : `## Certifications
 
 ${CERTIFICATIONS.map((item) => `- [${item.title}](${item.credentialURL})`).join("\n")}`

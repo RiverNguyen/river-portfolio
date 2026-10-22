@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 import { ComponentIcon, Icons } from "@/components/icons"
 import { MDX } from "@/components/mdx"
@@ -19,12 +20,18 @@ import { Tag } from "@/components/ui/tag"
 import { registryConfig } from "@/config/registry"
 import { UTM_PARAMS } from "@/config/site"
 import { getPostsByCategory } from "@/features/blog/data/posts"
+import { createPageMetadata } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { addQueryParams } from "@/utils/url"
 
-export const metadata: Metadata = {
-  title: "Components",
-  description: "A collection of reusable components.",
+const DESCRIPTION = "A collection of reusable components."
+
+export async function generateMetadata(): Promise<Metadata> {
+  return createPageMetadata({
+    path: "/components",
+    title: "Components",
+    description: DESCRIPTION,
+  })
 }
 
 const componentsJSON = `\`\`\`json title="components.json" showLineNumbers {3}
@@ -37,6 +44,7 @@ const componentsJSON = `\`\`\`json title="components.json" showLineNumbers {3}
 
 export default function Page() {
   const posts = getPostsByCategory("components")
+  if (posts.length === 0) notFound()
 
   return (
     <div className="min-h-svh">
@@ -46,7 +54,7 @@ export default function Page() {
 
       <div className="space-y-4 p-4">
         <p className="font-mono text-sm text-balance text-muted-foreground">
-          {metadata.description} <span className="max-md:block" />
+          {DESCRIPTION} <span className="max-md:block" />
           <a
             className="whitespace-nowrap underline-offset-4 hover:underline"
             href={addQueryParams(`https://ui.shadcn.com/docs/directory`, {

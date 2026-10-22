@@ -70,6 +70,9 @@ export function getPersonJsonLd(
         url: "https://www.utc.edu.vn",
       },
     ],
-    sameAs: SOCIAL_LINKS.map((link) => link.href),
+    sameAs: [
+      ...SOCIAL_LINKS.map((link) => link.href),
+      "https://www.youtube.com/@Jang-1309",
+    ],
   }
 }

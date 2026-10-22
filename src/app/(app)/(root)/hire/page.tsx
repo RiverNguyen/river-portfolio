@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { getLocale, getTranslations } from "next-intl/server"
 
 import { HirePageView } from "@/features/portfolio/components/hire-page-view"
+import { getPersonJsonLd } from "@/lib/person-jsonld"
 import { createPageMetadata } from "@/lib/seo"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,5 +20,17 @@ export default async function Page() {
   const locale = await getLocale()
   const portfolioLocale = locale === "vi" ? "vi" : "en"
 
-  return <HirePageView locale={portfolioLocale} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            getPersonJsonLd(portfolioLocale, { pagePath: "/hire" })
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
+      <HirePageView locale={portfolioLocale} />
+    </>
+  )
 }

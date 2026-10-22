@@ -1,1 +1,1 @@
-export { default, metadata } from "@/app/(app)/(docs)/components/page"
+export { default, generateMetadata } from "@/app/(app)/(docs)/components/page"

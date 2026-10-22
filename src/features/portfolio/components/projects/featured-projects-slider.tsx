@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 
 import type { Project } from "@/features/portfolio/types/projects"
+import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
 function getProjectSummary(description?: string) {
@@ -229,11 +230,9 @@ export function FeaturedProjectsSlider({
       ) : null}
 
       <AnimatePresence mode="wait" initial={false}>
-        <motion.button
+        <motion.div
           key={active.id}
-          type="button"
           id={active.id}
-          onClick={() => onOpen(active)}
           variants={reduceMotion ? undefined : metaContainer}
           initial={reduceMotion ? false : "hidden"}
           animate="show"
@@ -242,7 +241,7 @@ export function FeaturedProjectsSlider({
               ? undefined
               : { opacity: 0, y: -8, transition: { duration: 0.2 } }
           }
-          className="group flex w-full cursor-pointer flex-col gap-1.5 p-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-inset sm:p-4"
+          className="group flex w-full flex-col gap-1.5 p-3 text-left sm:p-4"
         >
           <motion.div
             variants={reduceMotion ? undefined : metaItem}
@@ -265,17 +264,30 @@ export function FeaturedProjectsSlider({
               ) : null}
             </div>
 
-            <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
+            <button
+              type="button"
+              onClick={() => onOpen(active)}
+              className="inline-flex shrink-0 items-center gap-1 transition-colors hover:text-foreground"
+            >
               {t("viewDetails")}
               <ArrowUpRightIcon className="size-3.5" />
-            </span>
+            </button>
           </motion.div>
 
           <motion.h3
             variants={reduceMotion ? undefined : metaItem}
-            className="text-2xl leading-snug font-medium text-balance underline-offset-4 group-hover:underline"
+            className="text-2xl leading-snug font-medium text-balance underline-offset-4"
           >
-            {active.title}
+            {active.caseStudySlug ? (
+              <Link
+                href={`/projects/${active.caseStudySlug}`}
+                className="hover:underline"
+              >
+                {active.title}
+              </Link>
+            ) : (
+              active.title
+            )}
           </motion.h3>
 
           {summary ? (
@@ -295,7 +307,7 @@ export function FeaturedProjectsSlider({
               {active.skills.slice(0, 5).join(" · ")}
             </motion.p>
           ) : null}
-        </motion.button>
+        </motion.div>
       </AnimatePresence>
     </section>
   )

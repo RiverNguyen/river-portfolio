@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 import {
   TESTIMONIALS_1,
@@ -31,6 +32,8 @@ const TESTIMONIALS = [
 ]
 
 export default function TestimonialsPage() {
+  if (TESTIMONIALS.length === 0) notFound()
+
   return (
     <div className="min-h-svh">
       <div className="screen-line-after px-4">

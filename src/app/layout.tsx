@@ -85,7 +85,6 @@ export async function generateMetadata(): Promise<Metadata> {
       default: title,
     },
     description,
-    keywords: user.keywords,
     authors: [
       {
         name: USER.displayName,
