@@ -25,6 +25,17 @@ const eslintConfig = defineConfig([
       "simple-import-sort/exports": "error",
     },
   },
+  {
+    // Vendored chart library: keep upstream code as-is instead of rewriting it for React Compiler rules.
+    files: ["src/components/charts/**"],
+    rules: {
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

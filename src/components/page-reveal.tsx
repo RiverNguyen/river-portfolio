@@ -40,6 +40,8 @@ export function PageReveal() {
   useLayoutEffect(() => {
     if (!isHomePath(pathname)) {
       clearBootOverlay()
+      // Phase depends on pathname/localStorage, which are only known on the client before paint.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("done")
       return
     }
