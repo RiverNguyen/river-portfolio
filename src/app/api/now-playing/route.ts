@@ -9,76 +9,52 @@ type NowPlaying = {
   image?: string
 } | null
 
-const CACHE_MS = 30_000
-
-// shortcut: per-instance cache, fine for one owner polling Spotify; move to Redis if instances multiply.
-let cached: { at: number; data: NowPlaying } | null = null
-let accessToken: { value: string; expiresAt: number } | null = null
-
-async function getAccessToken(id: string, secret: string, refresh: string) {
-  if (accessToken && accessToken.expiresAt > Date.now())
-    return accessToken.value
-
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${id}:${secret}`).toString("base64")}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refresh,
-    }),
-  })
-  if (!res.ok) throw new Error(`Spotify token ${res.status}`)
-  const data = (await res.json()) as {
-    access_token: string
-    expires_in: number
-  }
-  accessToken = {
-    value: data.access_token,
-    expiresAt: Date.now() + (data.expires_in - 60) * 1000,
-  }
-  return accessToken.value
+type LastfmTrack = {
+  name: string
+  url: string
+  artist: { "#text": string }
+  image?: { size: string; "#text": string }[]
+  "@attr"?: { nowplaying?: string }
 }
 
+const CACHE_MS = 30_000
+// Last.fm's grey star shown when a track has no artwork.
+const PLACEHOLDER_IMAGE = "2a96cbd8b46e442fc41c2b86b821562f"
+
+// shortcut: per-instance cache, fine for one owner's feed; move to Redis if instances multiply.
+let cached: { at: number; data: NowPlaying } | null = null
+
 async function fetchNowPlaying(): Promise<NowPlaying> {
-  const id = process.env.SPOTIFY_CLIENT_ID
-  const secret = process.env.SPOTIFY_CLIENT_SECRET
-  const refresh = process.env.SPOTIFY_REFRESH_TOKEN
-  if (!id || !secret || !refresh) return null
+  const apiKey = process.env.LASTFM_API_KEY
+  const user = process.env.LASTFM_USERNAME
+  if (!apiKey || !user) return null
 
-  const token = await getAccessToken(id, secret, refresh)
-  const res = await fetch(
-    "https://api.spotify.com/v1/me/player/currently-playing",
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
-  // 204 = nothing playing.
-  if (res.status !== 200) return null
+  const url = new URL("https://ws.audioscrobbler.com/2.0/")
+  url.search = new URLSearchParams({
+    method: "user.getrecenttracks",
+    user,
+    api_key: apiKey,
+    format: "json",
+    limit: "1",
+  }).toString()
 
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Last.fm ${res.status}`)
   const data = (await res.json()) as {
-    is_playing: boolean
-    currently_playing_type: string
-    item?: {
-      name: string
-      artists: { name: string }[]
-      external_urls: { spotify: string }
-      album: { images: { url: string }[] }
-    }
-  }
-  if (
-    !data.is_playing ||
-    data.currently_playing_type !== "track" ||
-    !data.item
-  ) {
-    return null
+    recenttracks?: { track?: LastfmTrack | LastfmTrack[] }
   }
 
+  // Returns an array, or a lone object for a single track.
+  const tracks = [data.recenttracks?.track ?? []].flat()
+  const track = tracks.find((item) => item["@attr"]?.nowplaying === "true")
+  if (!track) return null
+
+  const image = track.image?.find((item) => item.size === "medium")?.["#text"]
   return {
-    title: data.item.name,
-    artist: data.item.artists.map((artist) => artist.name).join(", "),
-    url: data.item.external_urls.spotify,
-    image: data.item.album.images.at(-1)?.url,
+    title: track.name,
+    artist: track.artist["#text"],
+    url: track.url,
+    image: image && !image.includes(PLACEHOLDER_IMAGE) ? image : undefined,
   }
 }
 
