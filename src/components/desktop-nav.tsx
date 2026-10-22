@@ -69,7 +69,7 @@ export function DesktopNav({ items }: { items: NavItem[] }) {
   const activeId =
     pathnameNorm === "/" && activeHash ? activeHash : pathnameNorm
 
-  return <Nav className="max-sm:hidden" items={items} activeId={activeId} />
+  return <Nav className="max-md:hidden" items={items} activeId={activeId} />
 }
 
 function normalizePathname(pathname: string, locale: string) {
