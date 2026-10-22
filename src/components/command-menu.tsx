@@ -5,6 +5,7 @@ import type { LucideProps } from "lucide-react"
 import {
   BoxIcon,
   BriefcaseBusinessIcon,
+  ChartColumnIcon,
   CornerDownLeftIcon,
   DownloadIcon,
   FileTextIcon,
@@ -81,6 +82,12 @@ const MENU_LINKS: CommandLinkItem[] = [
     href: "/guestbook",
     icon: SignatureIcon,
     keywords: ["sign", "message", "hello"],
+  },
+  {
+    title: "Stats",
+    href: "/stats",
+    icon: ChartColumnIcon,
+    keywords: ["analytics", "views", "visitors"],
   },
 ]
 

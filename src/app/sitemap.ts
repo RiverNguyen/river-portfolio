@@ -13,6 +13,7 @@ const STATIC_ROUTES = [
   "/contact",
   "/hire",
   "/guestbook",
+  "/stats",
 ] as const
 
 function localizedEntries(

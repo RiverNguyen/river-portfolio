@@ -16,7 +16,8 @@
     "resume": "Resume",
     "projects": "Projects",
     "contact": "Contact",
-    "guestbook": "Guestbook"
+    "guestbook": "Guestbook",
+    "stats": "Stats"
   },
   "Blog": {
     "title": "Blog",
@@ -335,5 +336,16 @@
     "authError": "GitHub sign-in failed. Please try again.",
     "error": "Something went wrong. Please try again.",
     "delete": "Delete"
+  },
+  "Stats": {
+    "title": "Stats",
+    "description": "Open numbers for this site: visitors, the most-read posts and guestbook activity.",
+    "visitors": "Visitors",
+    "pageViews": "Page views",
+    "blogViews": "Blog views",
+    "guestbookEntries": "Guestbook",
+    "topPosts": "Most-read posts",
+    "noData": "No data yet.",
+    "views": "{count, plural, one {# view} other {# views}}"
   }
 }

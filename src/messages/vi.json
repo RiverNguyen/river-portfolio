@@ -16,7 +16,8 @@
     "resume": "CV",
     "projects": "Dự án",
     "contact": "Liên hệ",
-    "guestbook": "Lưu bút"
+    "guestbook": "Lưu bút",
+    "stats": "Thống kê"
   },
   "Blog": {
     "title": "Bài viết",
@@ -335,5 +336,16 @@
     "authError": "Đăng nhập GitHub thất bại. Vui lòng thử lại.",
     "error": "Có lỗi xảy ra. Vui lòng thử lại.",
     "delete": "Xoá"
+  },
+  "Stats": {
+    "title": "Thống kê",
+    "description": "Số liệu công khai của site: lượt truy cập, bài được đọc nhiều nhất và hoạt động sổ lưu bút.",
+    "visitors": "Khách truy cập",
+    "pageViews": "Lượt xem trang",
+    "blogViews": "Lượt đọc blog",
+    "guestbookEntries": "Lưu bút",
+    "topPosts": "Bài đọc nhiều nhất",
+    "noData": "Chưa có dữ liệu.",
+    "views": "{count} lượt xem"
   }
 }

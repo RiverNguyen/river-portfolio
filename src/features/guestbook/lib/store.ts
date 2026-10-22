@@ -38,3 +38,8 @@ export async function deleteEntry(id: string) {
   await redis.lrem(KEY, 1, entry)
   return true
 }
+
+export async function getEntryCount() {
+  const redis = getRedis()
+  return redis ? redis.llen(KEY) : null
+}

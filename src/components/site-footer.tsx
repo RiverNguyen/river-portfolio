@@ -50,6 +50,12 @@ export async function SiteFooter() {
 
           <span className="opacity-50">•</span>
 
+          <Link className="font-medium" href="/stats">
+            {t("stats")}
+          </Link>
+
+          <span className="opacity-50">•</span>
+
           <Link className="font-medium" href="/resume">
             {t("resume")}
           </Link>
