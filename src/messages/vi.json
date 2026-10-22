@@ -34,7 +34,13 @@
     "authorBio": "Lập trình viên frontend ở Hà Nội. Mình viết về Next.js, WordPress và hiệu năng của những thứ mình thực sự ship.",
     "views": "{count} lượt xem",
     "keepReading": "Đọc tiếp",
-    "readingNow": "{count} người đang đọc"
+    "readingNow": "{count} người đang đọc",
+    "reactPrompt": "Thấy hay không?",
+    "reaction": {
+      "like": "Thích",
+      "fire": "Tuyệt",
+      "idea": "Học được điều mới"
+    }
   },
   "ProjectsPage": {
     "title": "Dự án",

@@ -15,6 +15,7 @@ import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-
 import { PostList } from "@/features/blog/components/post-list"
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions"
 import { PostPaginationButton } from "@/features/blog/components/post-pagination-button"
+import { PostReactions } from "@/features/blog/components/post-reactions"
 import { PostShareMenu } from "@/features/blog/components/post-share-menu"
 import { PostViews } from "@/features/blog/components/post-views"
 import {
@@ -248,6 +249,10 @@ export default async function Page({
         </div>
         <PostEndReaction />
       </Prose>
+
+      <div className="screen-line-before">
+        <PostReactions slug={post.slug} />
+      </div>
 
       {morePosts.length > 0 && (
         <section className="screen-line-before mt-8">

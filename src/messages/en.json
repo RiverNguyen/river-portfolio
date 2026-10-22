@@ -34,7 +34,13 @@
     "authorBio": "Frontend developer in Ha Noi. I write about the Next.js, WordPress, and performance work I actually ship.",
     "views": "{count, plural, one {# view} other {# views}}",
     "keepReading": "Keep reading",
-    "readingNow": "{count} reading now"
+    "readingNow": "{count} reading now",
+    "reactPrompt": "Enjoyed it?",
+    "reaction": {
+      "like": "Like",
+      "fire": "Fire",
+      "idea": "Learned something"
+    }
   },
   "ProjectsPage": {
     "title": "Projects",
