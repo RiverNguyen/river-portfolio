@@ -353,5 +353,13 @@
     "topPosts": "Most-read posts",
     "noData": "No data yet.",
     "views": "{count, plural, one {# view} other {# views}}"
+  },
+  "Newsletter": {
+    "title": "Get new posts by email",
+    "description": "One email when I publish something new. No spam, unsubscribe anytime.",
+    "emailLabel": "Email address",
+    "submit": "Subscribe",
+    "success": "You're in! Thanks for subscribing.",
+    "error": "Something went wrong. Please try again."
   }
 }

@@ -10,6 +10,7 @@ import { MDX } from "@/components/mdx"
 import { Button } from "@/components/ui/button"
 import { Prose } from "@/components/ui/typography"
 import { SITE_INFO } from "@/config/site"
+import { NewsletterForm } from "@/features/blog/components/newsletter-form"
 import { PostEndReaction } from "@/features/blog/components/post-end-reaction"
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts"
 import { PostList } from "@/features/blog/components/post-list"
@@ -253,6 +254,10 @@ export default async function Page({
       <div className="screen-line-before">
         <PostReactions slug={post.slug} />
       </div>
+
+      {process.env.RESEND_API_KEY && process.env.RESEND_AUDIENCE_ID && (
+        <NewsletterForm />
+      )}
 
       {morePosts.length > 0 && (
         <section className="screen-line-before mt-8">

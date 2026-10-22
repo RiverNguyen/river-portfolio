@@ -353,5 +353,13 @@
     "topPosts": "Bài đọc nhiều nhất",
     "noData": "Chưa có dữ liệu.",
     "views": "{count} lượt xem"
+  },
+  "Newsletter": {
+    "title": "Nhận bài mới qua email",
+    "description": "Mỗi khi có bài mới, mình gửi một email. Không spam, huỷ lúc nào cũng được.",
+    "emailLabel": "Địa chỉ email",
+    "submit": "Đăng ký",
+    "success": "Xong rồi! Cảm ơn bạn đã đăng ký.",
+    "error": "Có lỗi xảy ra. Vui lòng thử lại."
   }
 }
